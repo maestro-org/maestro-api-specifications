@@ -1,0 +1,755 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bitcoin - Mempool Monitoring API",
+    "description": "Core indexer endpoints with mempool awareness.",
+    "contact": {
+      "name": "Maestro Blockchain Inc.",
+      "url": "https://gomaestro.org/",
+      "email": "info@gomaestro.org"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    },
+    "version": "v0.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://xbt-mainnet.gomaestro-api.org/v0",
+      "description": "Bitcoin Mainnet"
+    },
+    {
+      "url": "https://xbt-testnet.gomaestro-api.org/v0",
+      "description": "Bitcoin Testnet"
+    }
+  ],
+  "paths": {
+    "/mempool/addresses/{address}/balance": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Satoshi Balance by Address (Mempool-aware)",
+        "description": "Sum of satoshis in UTxOs which reside at the specified address or script pubkey.\n\nIn addition to confirmed transactions, mempool endpoints return data which reflects pending transactions in some number of \"estimated\" blocks - predicted blocks containing transactions which have been propagated around the network but not yet included in a mined block, with transactions with a higher sat/vB value being prioritised. The response details how many of these estimated blocks were considered when fetching the data.",
+        "operationId": "mempool_satoshi_balance_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Bitcoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MempoolTimestampedSatoshis"
+                },
+                "example": "{\n    \"data\": \"695100\",\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"000000000000000000012c80ffd2f0bd17f1f92a0bb4c098236d7108f727bfe5\",\n            \"block_height\": 874584\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 874585,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 8,\n                \"max\": 504\n            }\n        }]\n    }\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/mempool/addresses/{address}/runes": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Runes by Address (Mempool-aware)",
+        "description": "Map of all Runes tokens and corresponding amounts in UTxOs controlled by the specified address or script pubkey.\n\nIn addition to confirmed transactions, mempool endpoints return data which reflects pending transactions in some number of \"estimated\" blocks - predicted blocks containing transactions which have been propagated around the network but not yet included in a mined block, with transactions with a higher sat/vB value being prioritised. The response details how many of these estimated blocks were considered when fetching the data.",
+        "operationId": "mempool_runes_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Bitcoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+          },
+          {
+            "name": "mempool_blocks_limit",
+            "in": "query",
+            "description": "Limit the number of estimated mempool blocks to be reflected in the data (default: as many as available)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MempoolTimestampedRuneQuantities"
+                },
+                "example": "{\n    \"data\": {\n        \"867138:1861\": \"230000\"\n    },\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930\",\n            \"block_height\": 867154\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 867155,\n            \"sats_per_vb\": {\n                \"min\": 12,\n                \"median\": 14,\n                \"max\": 16\n            }\n        }]\n    }\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/mempool/addresses/{address}/utxos": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "UTxOs by Address (Mempool-aware)",
+        "description": "List of all UTxOs which reside at the specified address or script pubkey.\n\nIn addition to confirmed transactions, mempool endpoints return data which reflects pending transactions in some number of \"estimated\" blocks - predicted blocks containing transactions which have been propagated around the network but not yet included in a mined block, with transactions with a higher sat/vB value being prioritised. The response details how many of these estimated blocks were considered when fetching the data.",
+        "operationId": "mempool_utxos_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Bitcoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+          },
+          {
+            "name": "filter_dust",
+            "in": "query",
+            "description": "Ignore UTxOs containing less than 100000 sats",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "filter_dust_threshold",
+            "in": "query",
+            "description": "Ignore UTxOs containing less than specified satoshis",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "exclude_metaprotocols",
+            "in": "query",
+            "description": "Exclude UTxOs involved in metaprotocols (currently only runes and inscriptions will be discovered, more metaprotocols may be supported in future)",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted (by height at which UTxO was produced)",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only UTxOs created on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only UTxOs created on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "mempool_blocks_limit",
+            "in": "query",
+            "description": "Limit the number of estimated mempool blocks to be reflected in the data (default: as many as available)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MempoolPaginatedUtxo"
+                },
+                "example": "{\n    \"data\": [{\n        \"txid\": \"e60e70271cce70df4cc1f9d0217d7cc9cbced26f0526c6ba946945cd155b49e4\",\n        \"vout\": 0,\n        \"address\": \"bc1pkh05juaxqc3d388klrjq8msszzzfr33nnn5kt2na00jja3mue89q5wxvew\",\n        \"script_pubkey\": \"5120b5df4973a60622d89cf6f8e403ee10108491c6339ce965aa7d7be52ec77cc9ca\",\n        \"satoshis\": \"546\",\n        \"height\": 867154,\n        \"mempool\": false,\n        \"runes\": [{\n            \"rune_id\": \"867138:1861\",\n            \"amount\": \"2000\"\n        }],\n        \"inscriptions\": []\n    }, {\n        \"txid\": \"9f00f52bc6e9d95797e5597ea50427258ba873df059b13a319f0868ca9da1265\",\n        \"vout\": 0,\n        \"address\": \"bc1pkh05juaxqc3d388klrjq8msszzzfr33nnn5kt2na00jja3mue89q5wxvew\",\n        \"script_pubkey\": \"5120b5df4973a60622d89cf6f8e403ee10108491c6339ce965aa7d7be52ec77cc9ca\",\n        \"satoshis\": \"546\",\n        \"height\": 867155,\n        \"mempool\": true,\n        \"runes\": [{\n            \"rune_id\": \"867138:1861\",\n            \"amount\": \"44000\"\n        }],\n        \"inscriptions\": [{\n            \"offset\": 0,\n            \"inscription_id\": \"47bb5438d366863b25b4b1782af0d0cf0a89a922adce5da81253790d3e651501i0\"\n        }]\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930\",\n            \"block_height\": 867154\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 867155,\n            \"sats_per_vb\": {\n                \"min\": 12,\n                \"median\": 14,\n                \"max\": 16\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/mempool/assets/runes/{rune}/holders": {
+      "get": {
+        "tags": [
+          "Runes"
+        ],
+        "summary": "Holders by Rune (Mempool-aware)",
+        "description": "List of all addresses that hold the specified Rune, together with the respective amount of that Rune.\n\nIn addition to confirmed transactions, mempool endpoints return data which reflects pending transactions in some number of \"estimated\" blocks - predicted blocks containing transactions which have been propagated around the network but not yet included in a mined block, with transactions with a higher sat/vB value being prioritised. The response details how many of these estimated blocks were considered when fetching the data.",
+        "operationId": "mempool_holders_by_rune",
+        "parameters": [
+          {
+            "name": "rune",
+            "in": "path",
+            "description": "Rune, specified either by the Rune ID (etching block number and transaction index) or name (spaced or un-spaced)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2519999:31"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MempoolPaginatedRuneHolder"
+                },
+                "example": "{\n    \"data\": [{\n        \"address\": \"bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v\",\n        \"script_pubkey\": \"0014f6aa24e0d1e39edc330dbfa7376e896437f7e14b\",\n        \"balance\": \"9000000.000000000000000000\"\n    }, {\n        \"address\": \"bc1pqfhj6tlxgpvc72mvn9hh0z666k45fpxgsej92d9q08sfe572mhlqca68ld\",\n        \"script_pubkey\": \"5120026f2d2fe640598f2b6c996f778b5ad5ab4484c886645534a079e09cd3caddfe\",\n        \"balance\": \"420000.000000000000000000\"\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930\",\n            \"block_height\": 867154\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 867155,\n            \"sats_per_vb\": {\n                \"min\": 12,\n                \"median\": 14,\n                \"max\": 16\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/mempool/fee_rates": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Mempool Block Fee Rates",
+        "description": "Statistics regarding fee rates of transactions within estimated mempool blocks.",
+        "operationId": "fee_rates",
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MempoolTimestampedFeeRates"
+                },
+                "example": "{\n    \"data\": [{\n        \"block_height\": 874585,\n        \"sats_per_vb\": {\n            \"min\": 1,\n            \"median\": 8,\n            \"max\": 504\n        }\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"000000000000000000012c80ffd2f0bd17f1f92a0bb4c098236d7108f727bfe5\",\n            \"block_height\": 874584\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 874585,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 8,\n                \"max\": 504\n            }\n        }]\n    }\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BlockSatsPerVb": {
+        "type": "object",
+        "description": "For transactions within a block, these are the lowest, median and highest\nsatoshis per virtual-byte values.",
+        "required": [
+          "min",
+          "median",
+          "max"
+        ],
+        "properties": {
+          "max": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Highest sat/vB value of the transactions within the block",
+            "example": 255,
+            "minimum": 0
+          },
+          "median": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Median sat/vB value of the transactions within the block",
+            "example": 15,
+            "minimum": 0
+          },
+          "min": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Lowest sat/vB value of the transactions within the block",
+            "example": 11,
+            "minimum": 0
+          }
+        }
+      },
+      "ChainTip": {
+        "type": "object",
+        "required": [
+          "block_hash",
+          "block_height"
+        ],
+        "properties": {
+          "block_hash": {
+            "type": "string",
+            "description": "The hash of the block",
+            "example": "0000000000000000000a7f3b7b6b6e1d9a18db65a3b4a3f4f3bcb2e1f1b2d3e7"
+          },
+          "block_height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The height of the block in the blockchain",
+            "example": 707000,
+            "minimum": 0
+          }
+        }
+      },
+      "EstimatedBlock": {
+        "type": "object",
+        "required": [
+          "block_height",
+          "sats_per_vb"
+        ],
+        "properties": {
+          "block_height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Height of the estimated block",
+            "example": "707001",
+            "minimum": 0
+          },
+          "sats_per_vb": {
+            "$ref": "#/components/schemas/BlockSatsPerVb"
+          }
+        }
+      },
+      "InscriptionAndOffset": {
+        "type": "object",
+        "required": [
+          "offset",
+          "inscription_id"
+        ],
+        "properties": {
+          "inscription_id": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
+      "MempoolLastUpdated": {
+        "type": "object",
+        "required": [
+          "chain_tip",
+          "estimated_blocks"
+        ],
+        "properties": {
+          "chain_tip": {
+            "$ref": "#/components/schemas/ChainTip"
+          },
+          "estimated_blocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EstimatedBlock"
+            },
+            "description": "Information about any estimated blocks from the mempool that were indexed in addition to the mainchain"
+          },
+          "mempool_timestamp": {
+            "type": "string",
+            "description": "Timestamp of the indexed mempool snapshot, if any estimated blocks from the mempool have been indexed",
+            "nullable": true
+          }
+        }
+      },
+      "MempoolPaginatedRuneHolder": {
+        "type": "object",
+        "required": [
+          "data",
+          "indexer_info"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuneHolder"
+            }
+          },
+          "indexer_info": {
+            "$ref": "#/components/schemas/MempoolLastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "MempoolPaginatedUtxo": {
+        "type": "object",
+        "required": [
+          "data",
+          "indexer_info"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MempoolUtxo"
+            }
+          },
+          "indexer_info": {
+            "$ref": "#/components/schemas/MempoolLastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "MempoolTimestampedFeeRates": {
+        "type": "object",
+        "required": [
+          "data",
+          "indexer_info"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EstimatedBlock"
+            }
+          },
+          "indexer_info": {
+            "$ref": "#/components/schemas/MempoolLastUpdated"
+          }
+        }
+      },
+      "MempoolTimestampedRuneQuantities": {
+        "type": "object",
+        "required": [
+          "data",
+          "indexer_info"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "indexer_info": {
+            "$ref": "#/components/schemas/MempoolLastUpdated"
+          }
+        }
+      },
+      "MempoolTimestampedSatoshis": {
+        "type": "object",
+        "required": [
+          "data",
+          "indexer_info"
+        ],
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "indexer_info": {
+            "$ref": "#/components/schemas/MempoolLastUpdated"
+          }
+        }
+      },
+      "MempoolTimestampedTxOutMetaprotocols": {
+        "type": "object",
+        "required": [
+          "data",
+          "indexer_info"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TxOutMetaprotocols"
+          },
+          "indexer_info": {
+            "$ref": "#/components/schemas/MempoolLastUpdated"
+          }
+        }
+      },
+      "MempoolUtxo": {
+        "type": "object",
+        "required": [
+          "txid",
+          "vout",
+          "script_pubkey",
+          "satoshis",
+          "height",
+          "mempool",
+          "runes",
+          "inscriptions"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "inscriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionAndOffset"
+            }
+          },
+          "mempool": {
+            "type": "boolean"
+          },
+          "runes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuneAndAmount"
+            }
+          },
+          "satoshis": {
+            "type": "string"
+          },
+          "script_pubkey": {
+            "type": "string"
+          },
+          "txid": {
+            "type": "string"
+          },
+          "vout": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
+      "RuneAndAmount": {
+        "type": "object",
+        "required": [
+          "rune_id",
+          "amount"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "rune_id": {
+            "type": "string"
+          }
+        }
+      },
+      "RuneHolder": {
+        "type": "object",
+        "required": [
+          "script_pubkey",
+          "balance"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "balance": {
+            "type": "string"
+          },
+          "script_pubkey": {
+            "type": "string"
+          }
+        }
+      },
+      "TxOutMetaprotocols": {
+        "type": "object",
+        "required": [
+          "script_pubkey",
+          "satoshis",
+          "inscriptions",
+          "runes"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Address-encoding of the script pubkey at which the output containing the inscription resides.",
+            "example": "bc1ppth27qnr74qhusy9pmcyeaelgvsfky6qzquv9nf56gqmte59vfhqwkqguh",
+            "nullable": true
+          },
+          "inscriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionAndOffset"
+            },
+            "description": "List of inscription IDs and their offsets in this input."
+          },
+          "runes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuneAndAmount"
+            },
+            "description": "List of rune IDs and their amount in this input."
+          },
+          "satoshis": {
+            "type": "string",
+            "description": "Total number of satoshis in the UTxO.",
+            "example": "1234567"
+          },
+          "script_pubkey": {
+            "type": "string",
+            "description": "Script pubkey at which the output containing the inscription resides.",
+            "example": "51200aeeaf0263f5417e40850ef04cf73f43209b13401038c2cd34d201b5e685626e"
+          },
+          "spending_tx": {
+            "type": "string",
+            "description": "If this output is known to have been spent, hash of the transaction that spent it.",
+            "example": "2ca28d42583fc5bace84fe024d3697969e06dd1cf769a2141286825b81773fd5",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api-key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api-key",
+        "description": "Project API Key"
+      }
+    }
+  },
+  "security": [
+    {
+      "api-key": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Maestro"
+    }
+  ]
+}

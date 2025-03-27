@@ -1,0 +1,1322 @@
+{
+  "components": {
+    "schemas": {
+      "api_dogecoin.APIError": {
+        "properties": {
+          "error": {
+            "description": "Error returned from the API request",
+            "example": "Bad Request",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.BlockchainInfo": {
+        "properties": {
+          "bestblockhash": {
+            "type": "string"
+          },
+          "bip9_softforks": {
+            "properties": {
+              "csv": {
+                "properties": {
+                  "since": {
+                    "type": "integer"
+                  },
+                  "startTime": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "timeout": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "blocks": {
+            "type": "integer"
+          },
+          "chain": {
+            "type": "string"
+          },
+          "chainwork": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "number"
+          },
+          "headers": {
+            "type": "integer"
+          },
+          "initialblockdownload": {
+            "type": "boolean"
+          },
+          "mediantime": {
+            "type": "integer"
+          },
+          "pruned": {
+            "type": "boolean"
+          },
+          "size_on_disk": {
+            "type": "integer"
+          },
+          "softforks": {
+            "items": {
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "reject": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "version": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "verificationprogress": {
+            "type": "number"
+          },
+          "warnings": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.BlockchainInfoResponseBody": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/api_dogecoin.BlockchainInfo"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.DogecoinBlock": {
+        "properties": {
+          "auxpow": {
+            "properties": {
+              "chainindex": {
+                "type": "integer"
+              },
+              "chainmerklebranch": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": false
+              },
+              "index": {
+                "type": "integer"
+              },
+              "merklebranch": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": false
+              },
+              "parentblock": {
+                "type": "string"
+              },
+              "tx": {
+                "properties": {
+                  "blockhash": {
+                    "type": "string"
+                  },
+                  "hash": {
+                    "type": "string"
+                  },
+                  "hex": {
+                    "type": "string"
+                  },
+                  "locktime": {
+                    "type": "integer"
+                  },
+                  "size": {
+                    "type": "integer"
+                  },
+                  "txid": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "integer"
+                  },
+                  "vin": {
+                    "items": {
+                      "properties": {
+                        "coinbase": {
+                          "type": "string"
+                        },
+                        "sequence": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array",
+                    "uniqueItems": false
+                  },
+                  "vout": {
+                    "items": {
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "scriptPubKey": {
+                          "properties": {
+                            "addresses": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array",
+                              "uniqueItems": false
+                            },
+                            "asm": {
+                              "type": "string"
+                            },
+                            "hex": {
+                              "type": "string"
+                            },
+                            "reqSigs": {
+                              "type": "integer"
+                            },
+                            "type": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "value": {
+                          "type": "number"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array",
+                    "uniqueItems": false
+                  },
+                  "vsize": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "bits": {
+            "type": "string"
+          },
+          "chainwork": {
+            "type": "string"
+          },
+          "confirmations": {
+            "type": "integer"
+          },
+          "difficulty": {
+            "type": "number"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "mediantime": {
+            "type": "integer"
+          },
+          "merkleroot": {
+            "type": "string"
+          },
+          "nextblockhash": {
+            "type": "string"
+          },
+          "nonce": {
+            "type": "integer"
+          },
+          "previousblockhash": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "strippedsize": {
+            "type": "integer"
+          },
+          "time": {
+            "type": "integer"
+          },
+          "tx": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "version": {
+            "type": "integer"
+          },
+          "versionHex": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.DogecoinBlockResponseBody": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/api_dogecoin.DogecoinBlock"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.DogecoinBlocksResponseBody": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/api_dogecoin.DogecoinBlock"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.DogecoinTransaction": {
+        "properties": {
+          "blockhash": {
+            "type": "string"
+          },
+          "blocktime": {
+            "type": "integer"
+          },
+          "confirmations": {
+            "type": "integer"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "hex": {
+            "type": "string"
+          },
+          "locktime": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "time": {
+            "type": "integer"
+          },
+          "txid": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "vin": {
+            "items": {
+              "properties": {
+                "scriptSig": {
+                  "properties": {
+                    "asm": {
+                      "type": "string"
+                    },
+                    "hex": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "sequence": {
+                  "type": "integer"
+                },
+                "txid": {
+                  "type": "string"
+                },
+                "vout": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "vout": {
+            "items": {
+              "properties": {
+                "n": {
+                  "type": "integer"
+                },
+                "scriptPubKey": {
+                  "properties": {
+                    "addresses": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array",
+                      "uniqueItems": false
+                    },
+                    "asm": {
+                      "type": "string"
+                    },
+                    "hex": {
+                      "type": "string"
+                    },
+                    "reqSigs": {
+                      "type": "integer"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "vsize": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.DogecoinTransactionResponseBody": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/api_dogecoin.DogecoinTransaction"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.LastUpdatedBlock": {
+        "properties": {
+          "block_hash": {
+            "type": "string"
+          },
+          "block_height": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.MempoolInfoResponseBody": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/api_dogecoin.MempoolInfoResult"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.MempoolInfoResult": {
+        "properties": {
+          "bytes": {
+            "type": "integer"
+          },
+          "maxmempool": {
+            "type": "integer"
+          },
+          "mempoolminfee": {
+            "type": "number"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "usage": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.MempoolTxAncestorsResponseBody": {
+        "properties": {
+          "data": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.MempoolTxDescendantsResponseBody": {
+        "properties": {
+          "data": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.MempoolTxDetailsResponseBody": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/api_dogecoin.MempoolTxDetailsResult"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.MempoolTxDetailsResult": {
+        "properties": {
+          "ancestorcount": {
+            "type": "integer"
+          },
+          "ancestorsize": {
+            "type": "integer"
+          },
+          "bip125-replaceable": {
+            "type": "boolean"
+          },
+          "depends": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "descendantcount": {
+            "type": "integer"
+          },
+          "descendantsize": {
+            "type": "integer"
+          },
+          "fees": {
+            "$ref": "#/components/schemas/api_dogecoin.TxFees"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "spentby": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "time": {
+            "type": "integer"
+          },
+          "unbroadcast": {
+            "type": "boolean"
+          },
+          "vsize": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "wtxid": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.MempoolTxsResponseBody": {
+        "properties": {
+          "data": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_dogecoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.NodeRPCError": {
+        "properties": {
+          "code": {
+            "description": "Error code returned from the API request",
+            "example": 0,
+            "type": "integer"
+          },
+          "node rpc error": {
+            "description": "Error returned from the API request",
+            "example": "node rpc error",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "api_dogecoin.TxFees": {
+        "properties": {
+          "ancestor": {
+            "type": "number"
+          },
+          "base": {
+            "type": "number"
+          },
+          "descendant": {
+            "type": "number"
+          },
+          "modified": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "api-key": {
+        "description": "Project API Key",
+        "in": "header",
+        "name": "api-key",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "description": "Node RPC API for Dogecoin.",
+    "title": "Dogecoin - Node RPC API",
+    "version": "0.1"
+  },
+  "externalDocs": {
+    "description": "",
+    "url": ""
+  },
+  "paths": {
+    "/block/latest": {
+      "get": {
+        "description": "Latest block info",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.DogecoinBlockResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Error processing block response."
+          }
+        },
+        "summary": "Latest Block",
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/range/{start_height}/{end_height}": {
+      "get": {
+        "description": "Block range info by start and end height",
+        "parameters": [
+          {
+            "description": "Start height.",
+            "in": "path",
+            "name": "start_height",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "End height.",
+            "in": "path",
+            "name": "end_height",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page number.",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Number of blocks.",
+            "in": "query",
+            "name": "count",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.DogecoinBlocksResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                }
+              }
+            },
+            "description": "Node RPC error."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting blocks."
+          }
+        },
+        "summary": "Block Range Info",
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/recent/{count}": {
+      "get": {
+        "description": "Recent block info by count",
+        "parameters": [
+          {
+            "description": "Number of blocks",
+            "in": "path",
+            "name": "count",
+            "required": true,
+            "schema": {
+              "maximum": 10,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.DogecoinBlocksResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                }
+              }
+            },
+            "description": "Node RPC error."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting blocks."
+          }
+        },
+        "summary": "Recent Block Info",
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/{height_or_hash}": {
+      "get": {
+        "description": "Block info by height or hash",
+        "parameters": [
+          {
+            "description": "Block height or hash",
+            "in": "path",
+            "name": "height_or_hash",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.DogecoinBlockResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid height."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Error processing block response."
+          }
+        },
+        "summary": "Block Info",
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/general/info": {
+      "get": {
+        "description": "Blockchain info",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.BlockchainInfoResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                }
+              }
+            },
+            "description": "Node RPC error."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting blockchain info."
+          }
+        },
+        "summary": "Blockchain Info",
+        "tags": [
+          "General"
+        ]
+      }
+    },
+    "/mempool/info": {
+      "get": {
+        "description": "Mempool info",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.MempoolInfoResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                }
+              }
+            },
+            "description": "Node RPC error."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting mempool info."
+          }
+        },
+        "summary": "Mempool Info",
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/mempool/transactions": {
+      "get": {
+        "description": "Mempool transactions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.MempoolTxsResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting mempool transactions."
+          }
+        },
+        "summary": "Mempool Transactions",
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/mempool/transactions/{tx_hash}": {
+      "get": {
+        "description": "Mempool transaction info by hash",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "tx_hash",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.MempoolTxDetailsResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting mempool transaction info."
+          }
+        },
+        "summary": "Mempool Transaction Info",
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/mempool/transactions/{tx_hash}/ancestors": {
+      "get": {
+        "description": "Mempool transaction ancestors by hash",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "tx_hash",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.MempoolTxAncestorsResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting mempool transaction ancestors."
+          }
+        },
+        "summary": "Mempool Transaction Ancestors",
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/mempool/transactions/{tx_hash}/descendants": {
+      "get": {
+        "description": "Mempool transaction descendants by hash",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "tx_hash",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.MempoolTxDescendantsResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting mempool transaction descendants."
+          }
+        },
+        "summary": "Mempool Transaction Descendants",
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/transaction/submit": {
+      "post": {
+        "description": "Send transaction to the network",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Signed Tx Hex",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Error processing transaction response."
+          }
+        },
+        "summary": "Send Transaction",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/transaction/{tx_hash}": {
+      "get": {
+        "description": "Transaction info by hash",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "tx_hash",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_dogecoin.DogecoinTransactionResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_dogecoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Error processing transaction response."
+          }
+        },
+        "summary": "Transaction Info",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "description": "Dogecoin Mainnet",
+      "url": "https://xdg-mainnet.gomaestro-api.org/v0/rpc"
+    }
+  ],
+  "security": [
+    {
+      "api-key": []
+    }
+  ]
+}
