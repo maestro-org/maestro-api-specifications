@@ -68,7 +68,7 @@ jobs:
             - name: Transform OpenAPI to Postman Collection
               uses: stcalica/postman-publish-action/actions/transform-openapi-from-file@master
               with:
-                  openapi_schema_path: "${{ matrix.collections.chain }}/${{ matrix.collections.service }}/openapi.json" # Path to OpenAPI schema file
+                  openapi_schema_path: "./${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{ matrix.collections.filename }}" # Path to OpenAPI schema file
 
             - name: Update Postman Collection
               uses: stcalica/postman-publish-action/actions/update-collection@master
