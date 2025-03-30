@@ -72,6 +72,7 @@ jobs:
                   POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
                   POSTMAN_COLLECTION_ID: "${{ matrix.collections.collection_id }}"
               run: |
+
                   # Convert OpenAPI to Postman collection format
                   curl -X POST \
                       -H "X-Api-Key: $POSTMAN_API_KEY" \
@@ -80,6 +81,10 @@ jobs:
                       "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID?format=json" \
                       > collection.json
 
+                      # Validate the generated collection JSON
+                      cat collection.json
+                      jq . collection.json > /dev/null || { echo "Invalid JSON in collection.json"; exit 1; }
+                      
                   # Update the existing collection
                   curl -X PUT \
                       -H "X-Api-Key: $POSTMAN_API_KEY" \
