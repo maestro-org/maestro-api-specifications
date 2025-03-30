@@ -73,6 +73,19 @@ jobs:
                   POSTMAN_COLLECTION_ID: "${{ matrix.collections.collection_id }}"
               run: |
 
+                  # Convert and update with error checking
+                  RESPONSE=$(curl -s -w "%{http_code}" -X PUT \
+                    -H "X-Api-Key: $POSTMAN_API_KEY" \
+                    -H "Content-Type: application/json" \
+                    -d @${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{matrix.collections.filename}} \
+                    "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID")
+
+                  STATUS_CODE=$(echo "$RESPONSE" | tail -n1)
+                    if [ "$STATUS_CODE" -ne 200 ]; then
+                    echo "Failed to update collection. Status code: $STATUS_CODE"
+                    exit 1
+                    fi
+
                   # Convert OpenAPI to Postman collection format
                   curl -X POST \
                       -H "X-Api-Key: $POSTMAN_API_KEY" \
@@ -81,10 +94,6 @@ jobs:
                       "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID?format=json" \
                       > collection.json
 
-                      # Validate the generated collection JSON
-                      cat collection.json
-                      jq . collection.json > /dev/null || { echo "Invalid JSON in collection.json"; exit 1; }
-                      
                   # Update the existing collection
                   curl -X PUT \
                       -H "X-Api-Key: $POSTMAN_API_KEY" \
