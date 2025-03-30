@@ -78,4 +78,4 @@ jobs:
               with:
                   postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
                   collection_id: "${{ matrix.collections.collection_id }}" # Postman Collection ID to update
-                  collection_data: ${{ steps.Transform_OpenAPI_to_Postman_Collection.outputs.postman_collection }}
+                  collection_data: "${{ steps.Transform_OpenAPI_to_Postman_Collection.outputs.postman_collection }}"
