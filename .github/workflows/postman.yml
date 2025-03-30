@@ -63,19 +63,22 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Fetch Postman Collection
+              id: fetch
               uses: stcalica/postman-publish-action/actions/fetch-collection@master
               with:
                   postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
                   collection_id: "${{ matrix.collections.collection_id }}"
 
             - name: Transform OpenAPI to Postman Collection
+              id: transform
               uses: stcalica/postman-publish-action/actions/transform-openapi-from-file@master
               with:
                   openapi_schema_path: "${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{matrix.collections.filename}}" # Path to OpenAPI schema file
 
             - name: Update Postman Collection
+              id: update
               uses: stcalica/postman-publish-action/actions/update-collection@master
               with:
                   postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
                   collection_id: "${{ matrix.collections.collection_id }}" # Postman Collection ID to update
-                  collection_data: "${{ steps.Transform_OpenAPI_to_Postman_Collection.outputs.postman_collection }}"
+                  collection_data: "${{ steps.transform.outputs.postman_collection }}"
