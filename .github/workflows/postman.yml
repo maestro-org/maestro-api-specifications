@@ -44,7 +44,7 @@ jobs:
                     - chain: "cardano"
                       service: "defi-markets-api"
                       filename: "openapi.json"
-                      collection_id: "25680306-97bc45c9-8ee3-4492-9474-59a7732ed785" # Cardano - DeFi Markets API
+                      collection_id: "25680306-f91d95be-0874-48dc-82b9-a6e6a0ffcf65" # Cardano - DeFi Markets API
                     - chain: "dogecoin"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
@@ -90,7 +90,7 @@ jobs:
                       -H "x-api-key: $POSTMAN_API_KEY" \
                       -H "Content-Type: application/json" \
                       -d @temp.json \
-                      "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID"
+                      "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID" \
                       -o response.json
 
                   # Check response
