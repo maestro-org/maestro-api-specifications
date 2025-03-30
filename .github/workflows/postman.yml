@@ -62,23 +62,27 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v3
 
-            - name: Fetch Postman Collection
-              id: fetch
-              uses: stcalica/postman-publish-action/actions/fetch-collection@master
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
               with:
-                  postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
-                  collection_id: "${{ matrix.collections.collection_id }}"
-
-            - name: Transform OpenAPI to Postman Collection
-              id: transform
-              uses: stcalica/postman-publish-action/actions/transform-openapi-from-file@master
-              with:
-                  openapi_schema_path: "${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{matrix.collections.filename}}" # Path to OpenAPI schema file
+                  node-version: "18"
 
             - name: Update Postman Collection
-              id: update
-              uses: stcalica/postman-publish-action/actions/update-collection@master
-              with:
-                  postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
-                  collection_id: "${{ matrix.collections.collection_id }}" # Postman Collection ID to update
-                  collection_data: "${{ steps.transform.outputs.postman_collection }}"
+              env:
+                  POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+                  POSTMAN_COLLECTION_ID: "${{ matrix.collections.collection_id }}"
+              run: |
+                  # Convert OpenAPI to Postman collection format
+                  curl -X POST \
+                      -H "X-Api-Key: $POSTMAN_API_KEY" \
+                      -H "Content-Type: application/json" \
+                      -d @${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{matrix.collections.filename}} \
+                      "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID?format=json" \
+                      > collection.json
+
+                  # Update the existing collection
+                  curl -X PUT \
+                      -H "X-Api-Key: $POSTMAN_API_KEY" \
+                      -H "Content-Type: application/json" \
+                      -d @collection.json \
+                      "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID"
