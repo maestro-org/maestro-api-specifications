@@ -59,6 +59,9 @@ jobs:
                       collection_id: "25680306-2d91366a-2914-41b2-966c-0fa36b52240f" # Midnight - Indexer GraphQL API
 
         steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
             - name: Fetch Postman Collection
               uses: stcalica/postman-publish-action/actions/fetch-collection@master
               with:
@@ -68,7 +71,7 @@ jobs:
             - name: Transform OpenAPI to Postman Collection
               uses: stcalica/postman-publish-action/actions/transform-openapi-from-file@master
               with:
-                  openapi_schema_path: "./${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{ matrix.collections.filename }}" # Path to OpenAPI schema file
+                  openapi_schema_path: "${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{matrix.collections.filename}}" # Path to OpenAPI schema file
 
             - name: Update Postman Collection
               uses: stcalica/postman-publish-action/actions/update-collection@master
