@@ -67,6 +67,10 @@ jobs:
               with:
                   node-version: "18"
 
+            # Install openapi-to-postman converter
+            - name: Install Dependencies
+              run: npm install -g openapi-to-postmanv2
+
             - name: Update Postman Collection
               env:
                   POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
