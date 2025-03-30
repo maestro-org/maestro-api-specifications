@@ -53,10 +53,10 @@ jobs:
                       service: "node-rpc-api"
                       filename: "openapi.json"
                       collection_id: "25680306-e0b01373-b871-4fde-a547-66d3ef99e126" # Dogecoin - Node RPC API
-                    - chain: "midnight"
-                      service: "indexer-graphql-api"
-                      filename: "schema-v1.graphql"
-                      collection_id: "25680306-2d91366a-2914-41b2-966c-0fa36b52240f" # Midnight - Indexer GraphQL API
+                    # - chain: "midnight"
+                    #   service: "indexer-graphql-api"
+                    #   filename: "schema-v1.graphql"
+                    #   collection_id: "25680306-2d91366a-2914-41b2-966c-0fa36b52240f" # Midnight - Indexer GraphQL API
 
         steps:
             - name: Checkout repository
