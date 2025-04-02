@@ -44,7 +44,7 @@ jobs:
                     - chain: "cardano"
                       service: "defi-markets-api"
                       filename: "openapi.json"
-                      collection_id: "25680306-f91d95be-0874-48dc-82b9-a6e6a0ffcf65" # Cardano - DeFi Markets API
+                      collection_id: "25680306-ac39edad-6eca-4411-b9c4-ac7b0bdbf987" # Cardano - DeFi Markets API
                     - chain: "dogecoin"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
