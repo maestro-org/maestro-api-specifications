@@ -24,7 +24,7 @@ jobs:
                     - chain: "bitcoin"
                       service: "defi-markets-api"
                       filename: "openapi.json"
-                      collection_id: "25680306-dac18a0b-762a-4273-93b2-49246fb08178" # Bitcoin - DeFi Markets API
+                      collection_id: "39306006-4c68061e-b8bd-4ad7-82a0-147ea3bc1777" # Bitcoin - DeFi Markets API
                     - chain: "bitcoin"
                       service: "event-manager-api"
                       filename: "openapi.json"
