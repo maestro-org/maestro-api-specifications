@@ -1,0 +1,1711 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Cardano - Managed Contracts API",
+        "description": "https://docs.gomaestro.org/getting-started",
+        "contact": {
+            "name": "Maestro",
+            "email": "info@gomaestro.org",
+            "url": "https://gomaestro.org/"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        "version": "v1.9.0"
+    },
+    "servers": [
+        {
+            "url": "https://mainnet.gomaestro-api.org/v1",
+            "description": "Cardano Mainnet"
+        },
+        {
+            "url": "https://preprod.gomaestro-api.org/v1",
+            "description": "Cardano Preprod"
+        },
+        {
+            "url": "https://preview.gomaestro-api.org/v1",
+            "description": "Cardano Preview"
+        }
+    ],
+    "paths": {
+        "/contracts/vesting/lock": {
+            "post": {
+                "tags": ["Vesting"],
+                "summary": "Lock assets",
+                "description": "Lock assets into the vesting contract",
+                "operationId": "vesting_lock_assets",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "sender": {
+                                        "type": "string",
+                                        "description": "Sender's bech32 address"
+                                    },
+                                    "beneficiary": {
+                                        "type": "string",
+                                        "description": "Beneficiary's bech32 address"
+                                    },
+                                    "asset_policy_id": {
+                                        "type": "string",
+                                        "description": "Asset policy ID of the asset to be locked"
+                                    },
+                                    "asset_token_name": {
+                                        "type": "string",
+                                        "description": "Asset policy token name of the asset to be locked"
+                                    },
+                                    "total_vesting_quantity": {
+                                        "type": "number",
+                                        "description": "Total amount of the asset to be locked"
+                                    },
+                                    "vesting_period_start": {
+                                        "type": "number",
+                                        "description": "Vesting period start in UNIX time (seconds)"
+                                    },
+                                    "vesting_period_end": {
+                                        "type": "number",
+                                        "description": "Vesting period end in UNIX time (seconds)"
+                                    },
+                                    "first_unlock_possible_after": {
+                                        "type": "number",
+                                        "description": "Valid initial unlock period start in UNIX time (seconds)"
+                                    },
+                                    "total_installments": {
+                                        "type": "number",
+                                        "description": "Number of vesting installments used to collect vested assets"
+                                    }
+                                },
+                                "required": [
+                                    "sender",
+                                    "beneficiary",
+                                    "asset_policy_id",
+                                    "asset_token_name",
+                                    "total_vesting_quantity",
+                                    "vesting_period_start",
+                                    "vesting_period_end",
+                                    "first_unlock_possible_after",
+                                    "total_installments"
+                                ]
+                            },
+                            "example": {
+                                "sender": "addr_test1vqade9vdg4uj3gsc5zfmmyavfd5tpssyxn4m7c4slzlxddcmxc00w",
+                                "beneficiary": "addr_test1vpvz8req5wn4serhfsg9ha9wg7rf7jsr5hels2llkacq5gcq4utja",
+                                "asset_policy_id": "fb2b3a629a09014e28d0a54fc06499af12127c79b0bc1c39478da1dd",
+                                "asset_token_name": "7449534b59",
+                                "total_vesting_quantity": 1000000,
+                                "vesting_period_start": 1690304810,
+                                "vesting_period_end": 1690391304,
+                                "first_unlock_possible_after": 1690304810,
+                                "total_installments": 4
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Unsigned transaction created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cbor_hex": {
+                                            "type": "string"
+                                        },
+                                        "tx_hash": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/vesting/collect/{beneficiary}": {
+            "post": {
+                "tags": ["Vesting"],
+                "summary": "Collect assets",
+                "description": "Collect assets from the vesting contract",
+                "operationId": "vesting_collect_assets",
+                "parameters": [
+                    {
+                        "name": "beneficiary",
+                        "in": "path",
+                        "description": "Beneficiary's bech32 address",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Unsigned transaction created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cbor_hex": {
+                                            "type": "string"
+                                        },
+                                        "tx_hash": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/vesting/state/{beneficiary}": {
+            "get": {
+                "tags": ["Vesting"],
+                "summary": "State of vesting assets",
+                "description": "Detailed list of vesting assets at a beneficiary address",
+                "operationId": "vesting_state",
+                "parameters": [
+                    {
+                        "name": "beneficiary",
+                        "in": "path",
+                        "description": "Beneficiary bech32 address",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of vesting assets successfully returned",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VestingState"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid beneficiary address."
+                    }
+                }
+            }
+        },
+        "/contracts/directSwap/createOffer": {
+            "post": {
+                "tags": ["Direct Swap"],
+                "summary": "Create an offer",
+                "description": "Create a new offer for direct swap",
+                "operationId": "dswap_create_offer",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOfferRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Offer created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/directSwap/cancelOffer": {
+            "post": {
+                "tags": ["Direct Swap"],
+                "summary": "Cancel an offer",
+                "description": "Cancel an existing offer for direct swap",
+                "operationId": "dswap_cancel_offer",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CancelOfferRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Offer cancelled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/directSwap/getOffers": {
+            "get": {
+                "tags": ["Direct Swap"],
+                "summary": "Get all offers",
+                "description": "Get all the existing offers for direct swap",
+                "operationId": "dswap_get_all_offers",
+                "responses": {
+                    "200": {
+                        "description": "Offers retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReadableUTxOArray"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/directSwap/getOffers/{address}": {
+            "get": {
+                "tags": ["Direct Swap"],
+                "summary": "Get user's offers",
+                "description": "Get all the existing offers for a specific user",
+                "operationId": "dswap_get_user_offers",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "User's bech32 address",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Offers retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReadableUTxOArray"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/directSwap/fillOffer": {
+            "post": {
+                "tags": ["Direct Swap"],
+                "summary": "Fill an offer",
+                "description": "Fill an existing offer for direct swap",
+                "operationId": "dswap_fill_offer",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FillOfferRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Offer filled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/singleAssetStaking/createConfig": {
+            "post": {
+                "tags": ["Single Asset Staking"],
+                "summary": "Admin - Create the config for a new campaign",
+                "description": "Admin - Create the config for a new campaign",
+                "operationId": "sas_create_config",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateConfigRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Create config transaction build successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/singleAssetStaking/initStaking": {
+            "post": {
+                "tags": ["Single Asset Staking"],
+                "summary": "Admin - Initialize the staking for a new campaign",
+                "description": "Admin - Initialize the staking for a new campaign",
+                "operationId": "sas_init_staking",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InitStakingRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Init staking transaction build successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/singleAssetStaking/stakeToken": {
+            "post": {
+                "tags": ["Single Asset Staking"],
+                "summary": "User - Staking token to a campaign",
+                "description": "User - Staking token to a single asset staking campaign",
+                "operationId": "sas_stake_token",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StakeTokenRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Stake token transaction build successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/singleAssetStaking/updateStake": {
+            "post": {
+                "tags": ["Single Asset Staking"],
+                "summary": "User - Updating stake on a campaign",
+                "description": "User - Updating stake on a single asset staking campaign",
+                "operationId": "sas_update_stake",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateStakeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update stake transaction build successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/singleAssetStaking/withdrawStake": {
+            "post": {
+                "tags": ["Single Asset Staking"],
+                "summary": "User - Withdrawing stake from a campaign",
+                "description": "User - Withdrawing stake with or without rewards from a single asset staking campaign",
+                "operationId": "sas_withdraw_stake",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WithdrawStakeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Withdraw stake transaction build successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/singleAssetStaking/processRewards": {
+            "post": {
+                "tags": ["Single Asset Staking"],
+                "summary": "Admin - process rewards for a campaign",
+                "description": "Admin - Processing rewards for a single asset staking campaign",
+                "operationId": "sas_process_rewards",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProcessRewardsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Withdraw stake transaction build successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/singleAssetStaking/stakingState": {
+            "post": {
+                "tags": ["Single Asset Staking"],
+                "summary": "Get the state of a campaign",
+                "description": "Get the state of a campaign",
+                "operationId": "sas_staking_state",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StakingStateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Withdraw stake transaction build successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid request body provided."
+                    }
+                }
+            }
+        },
+        "/contracts/subscription/createService": {
+            "post": {
+                "tags": ["Subscription"],
+                "summary": "Create a subscription service",
+                "description": "Create a new subscription service",
+                "operationId": "createService",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateServiceDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Service created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error creating a subscription service"
+                    }
+                }
+            }
+        },
+        "/contracts/subscription/createUserAccount": {
+            "post": {
+                "tags": ["Subscription"],
+                "summary": "Create a user account",
+                "description": "Create a new user account for subscription",
+                "operationId": "createUserAccount",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserAccountDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "User account created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error creating user account"
+                    }
+                }
+            }
+        },
+        "/contracts/subscription/initSubscription": {
+            "post": {
+                "tags": ["Subscription"],
+                "summary": "Initiate a subscription",
+                "description": "Initiate a new subscription",
+                "operationId": "initSubscription",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InitSubscriptionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Subscription initiated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error initiating subscription"
+                    }
+                }
+            }
+        },
+        "/contracts/subscription/unsubscribe": {
+            "post": {
+                "tags": ["Subscription"],
+                "summary": "Unsubscribe",
+                "description": "Unsubscribe from a subscription",
+                "operationId": "unsubscribe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UnsubscribeDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Unsubscribed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error unsubscribing"
+                    }
+                }
+            }
+        },
+        "/contracts/subscription/withdrawFees": {
+            "post": {
+                "tags": ["Subscription"],
+                "summary": "Withdraw subscription fees",
+                "description": "Withdraw fees from a subscription",
+                "operationId": "withdrawFees",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MerchantWithdrawDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Fees withdrawn successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error withdrawing fees"
+                    }
+                }
+            }
+        },
+        "/contracts/multisig/initiate": {
+            "post": {
+                "tags": ["Multisig"],
+                "summary": "Initiate a multisig contract",
+                "description": "Initiate a new multisig contract",
+                "operationId": "initiateMultisig",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InitMultisigDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Multisig contract initiated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error initiating multisig contract"
+                    }
+                }
+            }
+        },
+        "/contracts/multisig/update": {
+            "post": {
+                "tags": ["Multisig"],
+                "summary": "Update a multisig contract",
+                "description": "Update an existing multisig contract",
+                "operationId": "updateMultisig",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Multisig contract updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error updating multisig contract"
+                    }
+                }
+            }
+        },
+        "/contracts/multisig/end": {
+            "post": {
+                "tags": ["Multisig"],
+                "summary": "End a multisig contract",
+                "description": "End an existing multisig contract",
+                "operationId": "endMultisig",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EndDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Multisig contract ended successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error ending multisig contract"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "VestingState": {
+                "type": "object",
+                "description": "Vesting states at a beneficiary address",
+                "required": [
+                    "asset_name",
+                    "asset_symbol",
+                    "total_installments",
+                    "total_vesting_quantity",
+                    "vesting_period_start",
+                    "vesting_period_end"
+                ],
+                "properties": {
+                    "asset_name": {
+                        "type": "string",
+                        "description": "Asset policy token name of the asset to be locked"
+                    },
+                    "asset_symbol": {
+                        "type": "string",
+                        "description": "Asset policy token symbol of the asset to be locked"
+                    },
+                    "remaining_vesting_quantity": {
+                        "type": "integer",
+                        "description": "Remaning amount of the token left to vest"
+                    },
+                    "total_installments": {
+                        "type": "integer",
+                        "description": "Number of vesting installments used to collect vested assets"
+                    },
+                    "total_vesting_quantity": {
+                        "type": "integer",
+                        "description": "Total amount of the asset that will be vested"
+                    },
+                    "vesting_period_start": {
+                        "type": "integer",
+                        "description": "Vesting period start in UNIX time (seconds)"
+                    },
+                    "vesting_period_end": {
+                        "type": "integer",
+                        "description": "Vesting period end in UNIX time (seconds)"
+                    }
+                },
+                "example": {
+                    "asset_name": "564152444f",
+                    "asset_symbol": "6b0ffe54a4d0393ee7d4eb423ed933cf2dddbb0d05bc24237fd0f16a",
+                    "remaining_vesting_quantity": "0",
+                    "total_installments": "1",
+                    "total_vesting_quantity": "950000",
+                    "vesting_period_start": "1692664993000",
+                    "vesting_period_end": "1692664998000"
+                }
+            },
+            "OutRef": {
+                "type": "object",
+                "description": "UTXO",
+                "properties": {
+                    "tx_hash": {
+                        "type": "string",
+                        "description": "Transaction hash"
+                    },
+                    "output_index": {
+                        "type": "number",
+                        "description": "Output index"
+                    }
+                },
+                "required": ["tx_hash", "output_index"]
+            },
+            "Assets": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "string"
+                },
+                "example": {
+                    "policyId1assetName1": "123",
+                    "policyId2assetName2": "456",
+                    "policyId3assetName3": "789"
+                },
+                "description": "A record with string keys and bigint values"
+            },
+            "CreateOfferRequest": {
+                "type": "object",
+                "properties": {
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's bech32 address"
+                    },
+                    "offer": {
+                        "$ref": "#/components/schemas/Assets",
+                        "description": "Offer assets"
+                    },
+                    "toBuy": {
+                        "$ref": "#/components/schemas/Assets",
+                        "description": "Assets to buy"
+                    }
+                },
+                "required": ["sender", "offer", "toBuy"]
+            },
+            "CancelOfferRequest": {
+                "type": "object",
+                "properties": {
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's bech32 address"
+                    },
+                    "offerOutRef": {
+                        "$ref": "#/components/schemas/OutRef",
+                        "description": "Offer output reference"
+                    }
+                },
+                "required": ["sender", "offerOutRef"]
+            },
+            "FillOfferRequest": {
+                "type": "object",
+                "properties": {
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's bech32 address"
+                    },
+                    "offerOutRef": {
+                        "$ref": "#/components/schemas/OutRef",
+                        "description": "Offer output reference"
+                    }
+                },
+                "required": ["sender", "offerOutRef"]
+            },
+            "UTxO": {
+                "type": "object",
+                "properties": {
+                    "txHash": {
+                        "type": "string",
+                        "description": "Transaction hash"
+                    },
+                    "outputIndex": {
+                        "type": "number",
+                        "description": "Output index"
+                    },
+                    "address": {
+                        "type": "string",
+                        "description": "Address"
+                    },
+                    "assets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Assets"
+                        },
+                        "description": "Assets"
+                    },
+                    "datumHash": {
+                        "type": "string",
+                        "description": "Datum hash"
+                    },
+                    "datum": {
+                        "type": "string",
+                        "description": "Datum"
+                    },
+                    "scriptRef": {
+                        "type": "string",
+                        "description": "Script reference"
+                    }
+                },
+                "required": ["txHash", "outputIndex", "address", "assets"]
+            },
+            "CreateConfigRequest": {
+                "type": "object",
+                "properties": {
+                    "freezeStake": {
+                        "type": "number",
+                        "description": "Freeze stake"
+                    },
+                    "endStaking": {
+                        "type": "number",
+                        "description": "End staking"
+                    },
+                    "penaltyAddress": {
+                        "type": "string",
+                        "default": "Cardano address starting from addr",
+                        "description": "Penalty address"
+                    },
+                    "stakeCS": {
+                        "type": "string",
+                        "default": "Token policy id hex",
+                        "description": "Stake CS"
+                    },
+                    "stakeTN": {
+                        "type": "string",
+                        "default": "Token policy name in utf-8",
+                        "description": "Stake TN"
+                    },
+                    "minimumStake": {
+                        "type": "number",
+                        "description": "Minimum stake"
+                    },
+                    "rewardCS": {
+                        "type": "string",
+                        "default": "Token policy id hex",
+                        "description": "Reward CS"
+                    },
+                    "rewardTN": {
+                        "type": "string",
+                        "default": "Token policy name in utf-8",
+                        "description": "Reward TN"
+                    },
+                    "stakingInitWallet": {
+                        "type": "string",
+                        "description": "The wallet to initialize staking"
+                    },
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's address, the wallet to config staking campaign"
+                    },
+                    "currentTime": {
+                        "type": "number",
+                        "description": "Current time"
+                    }
+                },
+                "required": [
+                    "stakingInitUTXO",
+                    "freezeStake",
+                    "endStaking",
+                    "penaltyAddress",
+                    "stakeCS",
+                    "stakeTN",
+                    "minimumStake",
+                    "rewardCS",
+                    "rewardTN",
+                    "configInitUTXO",
+                    "sender"
+                ]
+            },
+            "InitStakingRequest": {
+                "type": "object",
+                "properties": {
+                    "configTN": {
+                        "type": "string",
+                        "description": "Configuration TN"
+                    },
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's address"
+                    },
+                    "rewardAmount": {
+                        "type": "number",
+                        "description": "Reward amount"
+                    }
+                },
+                "required": ["configTN", "sender", "rewardAmount"]
+            },
+            "StakeTokenRequest": {
+                "type": "object",
+                "properties": {
+                    "nodeUTxOs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UTxO"
+                        },
+                        "description": "Node UTXOs"
+                    },
+                    "configTN": {
+                        "type": "string",
+                        "description": "Configuration TN"
+                    },
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's address"
+                    },
+                    "toStake": {
+                        "type": "number",
+                        "description": "To stake"
+                    }
+                },
+                "required": ["configTN", "sender", "toStake"]
+            },
+            "UpdateStakeRequest": {
+                "type": "object",
+                "properties": {
+                    "nodeUTxOs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UTxO"
+                        },
+                        "description": "Node UTXOs"
+                    },
+                    "configTN": {
+                        "type": "string",
+                        "description": "Configuration TN"
+                    },
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's address"
+                    },
+                    "toStake": {
+                        "type": "number",
+                        "description": "To stake"
+                    }
+                },
+                "required": ["configTN", "sender", "toStake"]
+            },
+            "WithdrawStakeRequest": {
+                "type": "object",
+                "properties": {
+                    "nodeUTxOs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UTxO"
+                        },
+                        "description": "Node UTXOs"
+                    },
+                    "configTN": {
+                        "type": "string",
+                        "description": "Configuration TN"
+                    },
+                    "sender": {
+                        "type": "string",
+                        "description": "Sender's address"
+                    }
+                },
+                "required": ["configTN", "sender"]
+            },
+            "ProcessRewardsRequest": {
+                "type": "object",
+                "properties": {
+                    "configTN": {
+                        "type": "string",
+                        "description": "Configuration TN"
+                    }
+                },
+                "required": ["configTN"]
+            },
+            "StakingStateRequest": {
+                "type": "object",
+                "properties": {
+                    "configTN": {
+                        "type": "string",
+                        "description": "Configuration TN"
+                    }
+                },
+                "required": ["configTN"]
+            },
+            "Transaction": {
+                "type": "object",
+                "description": "Unsigned transaction",
+                "properties": {
+                    "cbor_hex": {
+                        "type": "string",
+                        "description": "CBOR hexadecimal representation of the transaction"
+                    },
+                    "tx_hash": {
+                        "type": "string",
+                        "description": "Transaction hash"
+                    }
+                },
+                "required": ["cbor_hex", "tx_hash"]
+            },
+            "PublicKeyCredential": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "ScriptCredential": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "Inline": {
+                "type": "array",
+                "items": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/schemas/PublicKeyCredential"
+                        },
+                        {
+                            "$ref": "#/components/schemas/ScriptCredential"
+                        }
+                    ]
+                }
+            },
+            "Pointer": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "slotNumber": {
+                            "type": "string",
+                            "format": "bigint"
+                        },
+                        "transactionIndex": {
+                            "type": "string",
+                            "format": "bigint"
+                        },
+                        "certificateIndex": {
+                            "type": "string",
+                            "format": "bigint"
+                        }
+                    },
+                    "required": [
+                        "slotNumber",
+                        "transactionIndex",
+                        "certificateIndex"
+                    ]
+                }
+            },
+            "Creator": {
+                "type": "object",
+                "properties": {
+                    "paymentCredential": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/PublicKeyCredential"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ScriptCredential"
+                            }
+                        ]
+                    },
+                    "stakeCredential": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Inline"
+                            },
+                            {
+                                "$ref": "#/components/schemas/Pointer"
+                            }
+                        ]
+                    }
+                },
+                "required": ["paymentCredential", "stakeCredential"]
+            },
+            "OfferDatum": {
+                "type": "object",
+                "properties": {
+                    "creator": {
+                        "$ref": "#/components/schemas/Creator"
+                    },
+                    "toBuy": {
+                        "type": "object",
+                        "example": {
+                            "policyId1": {
+                                "assetName1": "123"
+                            },
+                            "policyId2": {
+                                "assetName2": "456"
+                            },
+                            "policyId3": {
+                                "assetName3": "789"
+                            }
+                        },
+                        "additionalProperties": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "format": "bigint"
+                            }
+                        }
+                    }
+                },
+                "required": ["creator", "toBuy"]
+            },
+            "ReadableUTxO": {
+                "type": "object",
+                "properties": {
+                    "outRef": {
+                        "$ref": "#/components/schemas/OutRef"
+                    },
+                    "datum": {
+                        "$ref": "#/components/schemas/OfferDatum"
+                    },
+                    "assets": {
+                        "$ref": "#/components/schemas/Assets"
+                    }
+                },
+                "required": ["outRef", "datum", "assets"]
+            },
+            "ReadableUTxOArray": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/ReadableUTxO"
+                }
+            },
+            "CreateServiceDto": {
+                "type": "object",
+                "properties": {
+                    "merchant_address": {
+                        "type": "string",
+                        "description": "Merchant address"
+                    },
+                    "selected_out_ref": {
+                        "$ref": "#/components/schemas/OutRef"
+                    },
+                    "service_fee_policyid": {
+                        "type": "string",
+                        "description": "Policy ID of the service fee"
+                    },
+                    "service_fee_assetname": {
+                        "type": "string",
+                        "description": "Asset name of the service fee"
+                    },
+                    "service_fee": {
+                        "type": "integer",
+                        "description": "Service fee amount"
+                    },
+                    "penalty_fee_policyid": {
+                        "type": "string",
+                        "description": "Policy ID of the penalty fee"
+                    },
+                    "penalty_fee_assetname": {
+                        "type": "string",
+                        "description": "Asset name of the penalty fee"
+                    },
+                    "penalty_fee": {
+                        "type": "integer",
+                        "description": "Penalty fee amount"
+                    },
+                    "interval_length": {
+                        "type": "integer",
+                        "description": "Length of the interval"
+                    },
+                    "num_intervals": {
+                        "type": "integer",
+                        "description": "Number of intervals"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "description": "Is the service active"
+                    }
+                },
+                "required": [
+                    "service_fee",
+                    "service_fee_quantity",
+                    "penalty_fee",
+                    "penalty_fee_quantity",
+                    "interval_length",
+                    "num_intervals",
+                    "minimum_ada",
+                    "is_active"
+                ]
+            },
+            "CreateUserAccountDto": {
+                "type": "object",
+                "properties": {
+                    "subscriber_address": {
+                        "type": "string",
+                        "description": "Subscriber address"
+                    },
+                    "selected_out_ref": {
+                        "$ref": "#/components/schemas/OutRef"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "User's email hash"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "description": "User's phone number hash"
+                    }
+                },
+                "required": ["email_hash", "phone_hash"]
+            },
+            "InitSubscriptionDto": {
+                "type": "object",
+                "properties": {
+                    "service_nft_tn": {
+                        "type": "string",
+                        "description": "Service NFT token name"
+                    },
+                    "account_nft_tn": {
+                        "type": "string",
+                        "description": "Account NFT token name"
+                    },
+                    "subscription_fee": {
+                        "$ref": "#/components/schemas/FeeDto"
+                    },
+                    "total_subscription_fee": {
+                        "type": "string",
+                        "description": "Total subscription fee"
+                    },
+                    "subscription_start": {
+                        "type": "string",
+                        "description": "Subscription start timestamp"
+                    },
+                    "subscription_end": {
+                        "type": "string",
+                        "description": "Subscription end timestamp"
+                    },
+                    "interval_length": {
+                        "type": "string",
+                        "description": "Length of the interval"
+                    },
+                    "interval_amount": {
+                        "type": "string",
+                        "description": "Amount per interval"
+                    },
+                    "num_intervals": {
+                        "type": "string",
+                        "description": "Number of intervals"
+                    },
+                    "last_claimed": {
+                        "type": "string",
+                        "description": "Last claimed timestamp"
+                    },
+                    "penalty_fee": {
+                        "$ref": "#/components/schemas/FeeDto"
+                    },
+                    "penalty_fee_qty": {
+                        "type": "string",
+                        "description": "Quantity of the penalty fee"
+                    },
+                    "minimum_ada": {
+                        "type": "string",
+                        "description": "Minimum ADA required"
+                    }
+                },
+                "required": [
+                    "service_nft_tn",
+                    "account_nft_tn",
+                    "subscription_fee",
+                    "total_subscription_fee",
+                    "subscription_start",
+                    "subscription_end",
+                    "interval_length",
+                    "interval_amount",
+                    "num_intervals",
+                    "last_claimed",
+                    "penalty_fee",
+                    "penalty_fee_qty",
+                    "minimum_ada"
+                ]
+            },
+            "UnsubscribeDto": {
+                "type": "object",
+                "properties": {
+                    "subscriber_address": {
+                        "type": "string",
+                        "description": "Subscriber address"
+                    },
+                    "service_nft_tn": {
+                        "type": "string",
+                        "description": "Service NFT token name"
+                    },
+                    "subscriber_nft_tn": {
+                        "type": "string",
+                        "description": "Subscriber NFT token name"
+                    },
+                    "current_time": {
+                        "type": "string",
+                        "description": "Current timestamp"
+                    }
+                },
+                "required": [
+                    "service_nft_tn",
+                    "subscriber_nft_tn",
+                    "current_time"
+                ]
+            },
+            "MerchantWithdrawDto": {
+                "type": "object",
+                "properties": {
+                    "merchant_address": {
+                        "type": "string",
+                        "description": "Merchant address"
+                    },
+                    "service_nft_tn": {
+                        "type": "string",
+                        "description": "Service NFT token name"
+                    },
+                    "subscriber_nft_tn": {
+                        "type": "string",
+                        "description": "Subscriber NFT token name"
+                    },
+                    "merchant_nft_tn": {
+                        "type": "string",
+                        "description": "Merchant NFT token name"
+                    },
+                    "payment_nft_tn": {
+                        "type": "string",
+                        "description": "Payment NFT token name"
+                    },
+                    "current_time": {
+                        "type": "number",
+                        "description": "Current timestamp"
+                    }
+                },
+                "required": [
+                    "last_claimed",
+                    "service_nft_tn",
+                    "merchant_nft_tn"
+                ]
+            },
+            "InitMultisigDto": {
+                "type": "object",
+                "properties": {
+                    "signers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of signers"
+                    },
+                    "threshold": {
+                        "type": "string",
+                        "description": "Threshold for multisig"
+                    },
+                    "funds": {
+                        "$ref": "#/components/schemas/FundsDto"
+                    },
+                    "spending_limit": {
+                        "type": "string",
+                        "description": "Spending limit"
+                    },
+                    "total_funds_qty": {
+                        "type": "string",
+                        "description": "Total funds quantity"
+                    },
+                    "minimum_ada": {
+                        "type": "string",
+                        "description": "Minimum ADA required"
+                    },
+                    "validator": {
+                        "type": "string",
+                        "description": "Validator type"
+                    }
+                },
+                "required": [
+                    "signers",
+                    "threshold",
+                    "funds",
+                    "spending_limit",
+                    "total_funds_qty",
+                    "minimum_ada",
+                    "validator"
+                ]
+            },
+            "UpdateDto": {
+                "type": "object",
+                "properties": {
+                    "new_signers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of new signers"
+                    },
+                    "new_threshold": {
+                        "type": "string",
+                        "description": "New threshold for multisig"
+                    },
+                    "funds": {
+                        "$ref": "#/components/schemas/FundsDto"
+                    },
+                    "new_spending_limit": {
+                        "type": "string",
+                        "description": "New spending limit"
+                    },
+                    "minimum_ada": {
+                        "type": "string",
+                        "description": "Minimum ADA required"
+                    }
+                },
+                "required": [
+                    "new_signers",
+                    "new_threshold",
+                    "funds",
+                    "new_spending_limit",
+                    "minimum_ada"
+                ]
+            },
+            "EndDto": {
+                "type": "object",
+                "properties": {
+                    "signers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of signers"
+                    },
+                    "threshold": {
+                        "type": "string",
+                        "description": "Threshold for multisig"
+                    },
+                    "funds": {
+                        "$ref": "#/components/schemas/FundsDto"
+                    },
+                    "spending_limit": {
+                        "type": "string",
+                        "description": "Spending limit"
+                    },
+                    "minimum_ada": {
+                        "type": "string",
+                        "description": "Minimum ADA required"
+                    },
+                    "recipient_address": {
+                        "type": "string",
+                        "description": "Recipient address"
+                    }
+                },
+                "required": [
+                    "signers",
+                    "threshold",
+                    "funds",
+                    "spending_limit",
+                    "minimum_ada",
+                    "recipient_address"
+                ]
+            },
+            "FeeDto": {
+                "type": "object",
+                "properties": {
+                    "policy_id": {
+                        "type": "string",
+                        "description": "Policy ID"
+                    },
+                    "asset_name": {
+                        "type": "string",
+                        "description": "Asset name"
+                    }
+                },
+                "required": ["policy_id", "asset_name"]
+            },
+            "FundsDto": {
+                "type": "object",
+                "properties": {
+                    "policy_id": {
+                        "type": "string",
+                        "description": "Policy ID"
+                    },
+                    "asset_name": {
+                        "type": "string",
+                        "description": "Asset name"
+                    }
+                },
+                "required": ["policy_id", "asset_name"]
+            }
+        },
+        "securitySchemes": {
+            "api-key": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "api-key",
+                "description": "Project API Key"
+            }
+        }
+    },
+    "security": [
+        {
+            "api-key": []
+        }
+    ]
+}
