@@ -305,11 +305,11 @@
                 }
             }
         },
-        "/addresses/{address}/runes/{rune}": {
+        "/addresses/{address}/runes/utxos": {
             "get": {
                 "tags": ["Addresses"],
-                "summary": "Rune UTxOs by Address and Rune",
-                "description": "Return all UTxOs controlled by the specified address or script pubkey which\ncontain some of a specific kind of rune.",
+                "summary": "Rune UTxOs by Address",
+                "description": "Return all UTxOs controlled by the specified address or script pubkey which contain runes, with the option to filter by a specific rune kind.",
                 "operationId": "rune_utxos_by_address",
                 "parameters": [
                     {
@@ -320,7 +320,137 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1p27j3fa2mr3d50m3uaavr0ntyzr0v2a27n48lc9gxpkzd4xye6dgs2tzx6p"
+                    },
+                    {
+                        "name": "rune",
+                        "in": "query",
+                        "description": "Return only UTxOs containing a specific Rune, specified either by the Rune ID (etching block number and transaction index) or name (spaced or un-spaced)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "example": "840000:3"
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "The property by which response items should be sorted. Supported values: height (height of block which produced the UTxO - default), amount (amount of runes in UTxO)",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/OrderBy"
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "The order in which the results are sorted. Supported values: asc, desc",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "string",
+                                    "default": "asc",
+                                    "enum": ["asc", "desc"]
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "The max number of results per page",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "integer",
+                                    "default": 100,
+                                    "minimum": 0
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Return only UTxOs created on or after a specific height",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Return only UTxOs created on or before a specific height",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedRuneUtxoByAddress"
+                                },
+                                "example": "{\n    \"data\": [\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 3,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13636,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 4,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13636,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 5,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13636,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 6,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13636,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 7,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13636,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 8,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13636,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 9,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13636,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        }\n    ],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000e0b35ac5973cb61e9994c78b83d20f75f4b8f8d54fff\",\n        \"block_height\": 890589\n    },\n    \"next_cursor\": null\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/addresses/{address}/runes/{rune}": {
+            "get": {
+                "tags": ["Addresses"],
+                "summary": "Rune UTxOs by Address",
+                "description": "Return all UTxOs controlled by the specified address or script pubkey which contain runes, with the option to filter by a specific rune kind.",
+                "operationId": "rune_utxos_by_address",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Bitcoin address or hex encoded script pubkey",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "bc1p27j3fa2mr3d50m3uaavr0ntyzr0v2a27n48lc9gxpkzd4xye6dgs2tzx6p"
                     },
                     {
                         "name": "rune",
@@ -405,9 +535,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedAddressRuneUtxo"
+                                    "$ref": "#/components/schemas/PaginatedRuneUtxoByAddress"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"txid\": \"2e45365924186cac30baff7483e4717141625b219c5579b8840602f41faab11b\",\n        \"vout\": 1,\n        \"satoshis\": \"546\",\n        \"confirmations\": 16,\n        \"height\": 840002,\n        \"rune_amount\": \"100.00\"\n    }, {\n        \"txid\": \"852e1df7de4893840332bef0d382292b8f690f71ed14c7217211e06401a49f20\",\n        \"vout\": 1,\n        \"satoshis\": \"546\",\n        \"confirmations\": 16,\n        \"height\": 840002,\n        \"rune_amount\": \"100.00\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000ecce02d6c785d726bf8f7cfa93b10af3ba7ca69617fb\",\n        \"block_height\": 840018\n    },\n    \"next_cursor\": \"AAAAAAAM0UJgIJ-kAWTgEXIhxxTtcQ9pjyspgtPwvjIDhJNI3vcdLoVgAAAAAQ\"\n}"
+                                "example": "{\n    \"data\": [\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 3,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 4,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 5,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 6,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 7,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 8,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 9,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"d7c2ac8ed15cee4ff54ceea5f389dd67357b240093d080b4e0dfb9b35e53847d\",\n            \"vout\": 0,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13,\n            \"height\": 890575,\n            \"runes\": [\n                {\n                    \"rune_id\": \"840000:3\",\n                    \"amount\": \"432793.04235\"\n                }\n            ]\n        }\n    ],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000210d44d102ab68eaa052ce03fbe216d313294725bdfaf\",\n        \"block_height\": 890587\n    },\n    \"next_cursor\": null\n}"
                             }
                         }
                     },
@@ -417,7 +547,8 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "deprecated": true
             }
         },
         "/addresses/{address}/txs": {
@@ -1878,43 +2009,6 @@
                 "type": "string",
                 "enum": ["inscribe", "transfer"]
             },
-            "AddressRuneUtxo": {
-                "type": "object",
-                "required": [
-                    "txid",
-                    "vout",
-                    "satoshis",
-                    "confirmations",
-                    "height",
-                    "rune_amount"
-                ],
-                "properties": {
-                    "confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "rune_amount": {
-                        "type": "string"
-                    },
-                    "satoshis": {
-                        "type": "string"
-                    },
-                    "txid": {
-                        "type": "string"
-                    },
-                    "vout": {
-                        "type": "integer",
-                        "format": "int32",
-                        "minimum": 0
-                    }
-                }
-            },
             "BlockInfo": {
                 "type": "object",
                 "required": [
@@ -2799,24 +2893,15 @@
                 "type": "string",
                 "enum": ["inscriptions", "runes", "brc20"]
             },
-            "PaginatedAddressRuneUtxo": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/AddressRuneUtxo"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/ChainTip"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
+            "OrderBy": {
+                "type": "string",
+                "default": "height",
+                "enum": ["height", "amount"]
+            },
+            "OrderParam": {
+                "type": "string",
+                "default": "asc",
+                "enum": ["asc", "desc"]
             },
             "PaginatedBrc20Holder": {
                 "type": "object",
@@ -3032,6 +3117,25 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RuneUtxo"
+                        }
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/ChainTip"
+                    },
+                    "next_cursor": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "PaginatedRuneUtxoByAddress": {
+                "type": "object",
+                "required": ["data", "last_updated"],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RuneUtxoByAddress"
                         }
                     },
                     "last_updated": {
@@ -3264,6 +3368,46 @@
                         "type": "string"
                     },
                     "script_pubkey": {
+                        "type": "string"
+                    },
+                    "txid": {
+                        "type": "string"
+                    },
+                    "vout": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "RuneUtxoByAddress": {
+                "type": "object",
+                "required": [
+                    "txid",
+                    "vout",
+                    "satoshis",
+                    "confirmations",
+                    "height",
+                    "runes"
+                ],
+                "properties": {
+                    "confirmations": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "runes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RuneAndAmount"
+                        }
+                    },
+                    "satoshis": {
                         "type": "string"
                     },
                     "txid": {
