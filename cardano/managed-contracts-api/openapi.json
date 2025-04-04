@@ -1551,6 +1551,10 @@
             "InitMultisigDto": {
                 "type": "object",
                 "properties": {
+                    "initiator_address": {
+                        "type": "string",
+                        "description": "Initiator's address"
+                    },
                     "signers": {
                         "type": "array",
                         "items": {
@@ -1559,27 +1563,24 @@
                         "description": "List of signers"
                     },
                     "threshold": {
-                        "type": "string",
+                        "type": "number",
                         "description": "Threshold for multisig"
                     },
-                    "funds": {
-                        "$ref": "#/components/schemas/FundsDto"
+                    "fund_policy_id": {
+                        "type": "string",
+                        "description": "Policy ID of the fund"
+                    },
+                    "fund_asset_name": {
+                        "type": "string",
+                        "description": "Asset name of the fund"
                     },
                     "spending_limit": {
-                        "type": "string",
+                        "type": "number",
                         "description": "Spending limit"
                     },
                     "total_funds_qty": {
-                        "type": "string",
+                        "type": "number",
                         "description": "Total funds quantity"
-                    },
-                    "minimum_ada": {
-                        "type": "string",
-                        "description": "Minimum ADA required"
-                    },
-                    "validator": {
-                        "type": "string",
-                        "description": "Validator type"
                     }
                 },
                 "required": [
@@ -1603,19 +1604,20 @@
                         "description": "List of new signers"
                     },
                     "new_threshold": {
-                        "type": "string",
+                        "type": "number",
                         "description": "New threshold for multisig"
                     },
-                    "funds": {
-                        "$ref": "#/components/schemas/FundsDto"
+                    "fund_policy_id": {
+                        "type": "string",
+                        "description": "Policy ID of the fund"
+                    },
+                    "fund_asset_name": {
+                        "type": "string",
+                        "description": "Asset name of the fund"
                     },
                     "new_spending_limit": {
-                        "type": "string",
+                        "type": "number",
                         "description": "New spending limit"
-                    },
-                    "minimum_ada": {
-                        "type": "string",
-                        "description": "Minimum ADA required"
                     }
                 },
                 "required": [
@@ -1637,19 +1639,20 @@
                         "description": "List of signers"
                     },
                     "threshold": {
-                        "type": "string",
+                        "type": "number",
                         "description": "Threshold for multisig"
                     },
-                    "funds": {
-                        "$ref": "#/components/schemas/FundsDto"
+                    "fund_policy_id": {
+                        "type": "string",
+                        "description": "Policy ID of the fund"
+                    },
+                    "fund_asset_name": {
+                        "type": "string",
+                        "description": "Asset name of the fund"
                     },
                     "spending_limit": {
-                        "type": "string",
+                        "type": "number",
                         "description": "Spending limit"
-                    },
-                    "minimum_ada": {
-                        "type": "string",
-                        "description": "Minimum ADA required"
                     },
                     "recipient_address": {
                         "type": "string",
