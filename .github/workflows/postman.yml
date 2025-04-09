@@ -22,9 +22,9 @@ jobs:
                       filename: "openapi.json"
                       collection_id: "25680306-b8148b77-9a7c-4392-a368-2d5acc84b361" # Bitcoin - Blockchain Indexer API
                     - chain: "bitcoin"
-                      service: "defi-markets-api"
+                      service: "market-price-api"
                       filename: "openapi.json"
-                      collection_id: "39306006-4c68061e-b8bd-4ad7-82a0-147ea3bc1777" # Bitcoin - DeFi Markets API
+                      collection_id: "39306006-4c68061e-b8bd-4ad7-82a0-147ea3bc1777" # Bitcoin - Market Price API
                     - chain: "bitcoin"
                       service: "event-manager-api"
                       filename: "openapi.json"
@@ -42,9 +42,9 @@ jobs:
                       filename: "openapi.json"
                       collection_id: "25680306-45818341-0a26-4bdc-94f0-4655c3818258" # Cardano - Blockchain Indexer API
                     - chain: "cardano"
-                      service: "defi-markets-api"
+                      service: "market-price-api"
                       filename: "openapi.json"
-                      collection_id: "25680306-ac39edad-6eca-4411-b9c4-ac7b0bdbf987" # Cardano - DeFi Markets API
+                      collection_id: "25680306-ac39edad-6eca-4411-b9c4-ac7b0bdbf987" # Cardano - Market Price API
                     - chain: "cardano"
                       service: "managed-contracts-api"
                       filename: "openapi.json"
