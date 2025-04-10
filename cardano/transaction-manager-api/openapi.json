@@ -1,0 +1,417 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Maestro - Cardano Transaction Manager API",
+      "description": "Cardano Transaction Submit API with advanced monitoring.",
+      "contact": {
+        "name": "Maestro Blockchain Inc.",
+        "url": "https://gomaestro.org/",
+        "email": "info@gomaestro.org"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+      },
+      "version": "v1.7.0"
+    },
+    "servers": [
+      {
+        "url": "https://mainnet.gomaestro-api.org/v1",
+        "description": "Cardano Mainnet"
+      },
+      {
+        "url": "https://preprod.gomaestro-api.org/v1",
+        "description": "Cardano Preprod"
+      },
+      {
+        "url": "https://preview.gomaestro-api.org/v1",
+        "description": "Cardano Preview"
+      }
+    ],
+    "paths": {
+      "/txmanager": {
+        "post": {
+          "tags": [
+            "Transactions"
+          ],
+          "summary": "Submit a Transaction",
+          "description": "Submit an already serialized transaction to the Cardano network.",
+          "operationId": "submit_transaction",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/cbor": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "raw_transaction_hex_data_here"
+              }
+            }
+          },
+          "responses": {
+            "202": {
+              "description": "Transaction accepted for submission.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - Invalid transaction data",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "415": {
+              "description": "Unsupported Media Type",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Server Error",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "enum": ["application/cbor"]
+              }
+            }
+          ]
+        }
+      },
+      "/txmanager/turbosubmit": {
+        "post": {
+          "tags": [
+            "Transaction Manager"
+          ],
+          "summary": "Turbo submit transaction",
+          "description": "Submit a signed and serialized transaction to the network. A transaction submitted with this endpoint will be Turbo Submitted and Monitored by Maestro.",
+          "operationId": "tx_manager_turbo_submit",
+          "requestBody": {
+            "description": "CBOR encoded transaction",
+            "content": {
+              "application/cbor": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "202": {
+              "description": "Transaction accepted for turbo submission.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - Invalid transaction data",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "415": {
+              "description": "Unsupported Media Type",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Server Error",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+              {
+                "name": "Content-Type",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "enum": ["application/cbor"]
+                }
+              }
+          ]
+        }
+      },
+      "/txmanager/{txhash}/state": {
+        "get": {
+          "tags": [
+            "Transactions"
+          ],
+          "summary": "Get Transaction State",
+          "description": "Fetch the current state of a transaction using its transaction hash.",
+          "operationId": "get_transaction_state",
+          "parameters": [
+            {
+              "name": "txhash",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "The transaction hash to query."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Transaction state data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TransactionState"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Transaction not found"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/txmanager/history": {
+        "get": {
+          "tags": [
+            "Transactions"
+          ],
+          "summary": "Transaction History",
+          "description": "Retrieve a paginated list of historical transactions.",
+          "operationId": "get_transaction_history",
+          "parameters": [
+            {
+              "name": "count",
+              "in": "query",
+              "description": "Number of transactions per page.",
+              "schema": {
+                "type": "integer",
+                "default": 100,
+                "minimum": 1
+              }
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "Page number.",
+              "schema": {
+                "type": "integer",
+                "default": 1,
+                "minimum": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Transaction history retrieved successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PaginatedTransactionHistory"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - Invalid pagination parameters"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/webhooks/project/{project_id}": {
+        "post": {
+          "tags": [
+            "Webhooks"
+          ],
+          "summary": "Create a Webhook",
+          "description": "Set up a new webhook for transaction monitoring.",
+          "operationId": "create_webhook",
+          "parameters": [
+            {
+              "name": "project_id",
+              "in": "path",
+              "description": "Unique project identifier.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookCreateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Webhook created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/WebhookResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - Invalid webhook data"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "TransactionState": {
+          "type": "object",
+          "properties": {
+            "tx_hash": {
+              "type": "string",
+              "description": "Transaction hash"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["pending", "confirmed", "failed"]
+            },
+            "confirmations": {
+              "type": "integer",
+              "description": "Number of confirmations"
+            }
+          }
+        },
+        "PaginatedTransactionHistory": {
+          "type": "object",
+          "properties": {
+            "transactions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TransactionState"
+              }
+            },
+            "page": {
+              "type": "integer"
+            },
+            "total_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "WebhookCreateRequest": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the webhook"
+            },
+            "url": {
+              "type": "string",
+              "description": "Webhook URL"
+            }
+          },
+          "required": ["name", "url"]
+        },
+        "WebhookResponse": {
+          "type": "object",
+          "properties": {
+            "webhook_id": {
+              "type": "string",
+              "description": "Unique ID of the webhook"
+            },
+            "name": {
+              "type": "string",
+              "description": "Webhook name"
+            },
+            "url": {
+              "type": "string",
+              "description": "Webhook URL"
+            },
+            "active": {
+              "type": "boolean",
+              "description": "Whether the webhook is active"
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "api-key": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "api-key",
+          "description": "API key for authenticating requests."
+        }
+      }
+    },
+    "security": [
+      {
+        "api-key": []
+      }
+    ],
+    "tags": [
+      {
+        "name": "Transactions"
+      },
+      {
+        "name": "Webhooks"
+      },
+      {
+        "name": "Transaction Manager"
+      }
+    ]
+  }
+  
