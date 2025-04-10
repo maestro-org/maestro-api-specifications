@@ -49,6 +49,11 @@ jobs:
                       service: "managed-contracts-api"
                       filename: "openapi.json"
                       collection_id: "25680306-dfebe48e-adff-4e7f-abac-51ca700b27d1" # Cardano - Managed Contracts API
+                    - chain: "cardano"
+                      service: "transaction-manager-api"
+                      filename: "openapi.json"
+                      collection_id:
+                      "43394706-07401110-6118-4c64-bca2-d9e4c88879db" # Cardano - Transaction Manager API
                     - chain: "dogecoin"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
