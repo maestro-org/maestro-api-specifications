@@ -310,7 +310,7 @@
                 "tags": ["Addresses"],
                 "summary": "Rune UTxOs by Address",
                 "description": "Return all UTxOs controlled by the specified address or script pubkey which contain runes, with the option to filter by a specific rune kind.",
-                "operationId": "rune_utxos_by_address",
+                "operationId": "rune_utxos_by_address_v2",
                 "parameters": [
                     {
                         "name": "address",
@@ -438,7 +438,7 @@
         "/addresses/{address}/runes/{rune}": {
             "get": {
                 "tags": ["Addresses"],
-                "summary": "Rune UTxOs by Address",
+                "summary": "(deprecated) Rune UTxOs by Address and Rune",
                 "description": "Return all UTxOs controlled by the specified address or script pubkey which contain runes, with the option to filter by a specific rune kind.",
                 "operationId": "rune_utxos_by_address",
                 "parameters": [
@@ -460,7 +460,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "2519999:31"
+                        "example": "876947:7"
                     },
                     {
                         "name": "count",
@@ -535,9 +535,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedRuneUtxoByAddress"
+                                    "$ref": "#/components/schemas/PaginatedDeprecatedRuneUtxoByAddress"
                                 },
-                                "example": "{\n    \"data\": [\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 3,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 4,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 5,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 6,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 7,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 8,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 9,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"runes\": [\n                {\n                    \"rune_id\": \"876947:7\",\n                    \"amount\": \"2500000\"\n                }\n            ]\n        },\n        {\n            \"txid\": \"d7c2ac8ed15cee4ff54ceea5f389dd67357b240093d080b4e0dfb9b35e53847d\",\n            \"vout\": 0,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13,\n            \"height\": 890575,\n            \"runes\": [\n                {\n                    \"rune_id\": \"840000:3\",\n                    \"amount\": \"432793.04235\"\n                }\n            ]\n        }\n    ],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000210d44d102ab68eaa052ce03fbe216d313294725bdfaf\",\n        \"block_height\": 890587\n    },\n    \"next_cursor\": null\n}"
+                                "example": "{\n    \"data\": [\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 3,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"rune_amount\": \"2500000\"\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 4,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"rune_amount\": \"2500000\"\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 5,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"rune_amount\": \"2500000\"\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 6,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"rune_amount\": \"2500000\"\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 7,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"rune_amount\": \"2500000\"\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 8,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"rune_amount\": \"2500000\"\n        },\n        {\n            \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n            \"vout\": 9,\n            \"satoshis\": \"546\",\n            \"confirmations\": 13634,\n            \"height\": 876954,\n            \"rune_amount\": \"2500000\"\n        }\n    ],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000210d44d102ab68eaa052ce03fbe216d313294725bdfaf\",\n        \"block_height\": 890587\n    },\n    \"next_cursor\": null\n}"
                             }
                         }
                     },
@@ -2244,6 +2244,43 @@
                     }
                 }
             },
+            "DeprecatedRuneUtxoByAddress": {
+                "type": "object",
+                "required": [
+                    "txid",
+                    "vout",
+                    "satoshis",
+                    "confirmations",
+                    "height",
+                    "rune_amount"
+                ],
+                "properties": {
+                    "confirmations": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "rune_amount": {
+                        "type": "string"
+                    },
+                    "satoshis": {
+                        "type": "string"
+                    },
+                    "txid": {
+                        "type": "string"
+                    },
+                    "vout": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
             "EstimatedBlock": {
                 "type": "object",
                 "required": ["block_height", "sats_per_vb"],
@@ -2947,6 +2984,25 @@
                 "properties": {
                     "data": {
                         "$ref": "#/components/schemas/ContentBody"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/ChainTip"
+                    },
+                    "next_cursor": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "PaginatedDeprecatedRuneUtxoByAddress": {
+                "type": "object",
+                "required": ["data", "last_updated"],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DeprecatedRuneUtxoByAddress"
+                        }
                     },
                     "last_updated": {
                         "$ref": "#/components/schemas/ChainTip"
