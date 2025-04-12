@@ -1409,14 +1409,14 @@
                     },
                     "email": {
                         "type": "string",
-                        "description": "User's email hash"
+                        "description": "User's email"
                     },
                     "phone": {
                         "type": "string",
-                        "description": "User's phone number hash"
+                        "description": "User's phone number"
                     }
                 },
-                "required": ["email_hash", "phone_hash"]
+                "required": ["email", "phone"]
             },
             "InitSubscriptionDto": {
                 "type": "object",
@@ -1555,7 +1555,7 @@
                         "type": "string",
                         "description": "Initiator's address"
                     },
-                    "signers": {
+                    "signers_addr": {
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -1584,7 +1584,7 @@
                     }
                 },
                 "required": [
-                    "signers",
+                    "signers_addr",
                     "threshold",
                     "funds",
                     "spending_limit",
@@ -1596,7 +1596,7 @@
             "UpdateDto": {
                 "type": "object",
                 "properties": {
-                    "new_signers": {
+                    "new_signers_addr": {
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -1621,7 +1621,7 @@
                     }
                 },
                 "required": [
-                    "new_signers",
+                    "new_signers_addr",
                     "new_threshold",
                     "funds",
                     "new_spending_limit",
@@ -1631,7 +1631,7 @@
             "EndDto": {
                 "type": "object",
                 "properties": {
-                    "signers": {
+                    "signers_addr": {
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -1660,7 +1660,7 @@
                     }
                 },
                 "required": [
-                    "signers",
+                    "signers_addr",
                     "threshold",
                     "funds",
                     "spending_limit",
