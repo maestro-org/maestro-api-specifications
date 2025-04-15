@@ -1596,6 +1596,10 @@
             "UpdateDto": {
                 "type": "object",
                 "properties": {
+                    "initiator_address": {
+                        "type": "string",
+                        "description": "Initiator's address"
+                    },
                     "new_signers_addr": {
                         "type": "array",
                         "items": {
@@ -1631,6 +1635,10 @@
             "EndDto": {
                 "type": "object",
                 "properties": {
+                    "initiator_address": {
+                        "type": "string",
+                        "description": "Initiator's address"
+                    },
                     "signers_addr": {
                         "type": "array",
                         "items": {
