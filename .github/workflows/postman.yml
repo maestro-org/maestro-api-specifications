@@ -52,8 +52,7 @@ jobs:
                     - chain: "cardano"
                       service: "transaction-manager-api"
                       filename: "openapi.json"
-                      collection_id:
-                      "43394706-07401110-6118-4c64-bca2-d9e4c88879db" # Cardano - Transaction Manager API
+                      collection_id: "43394706-07401110-6118-4c64-bca2-d9e4c88879db" # Cardano - Transaction Manager API
                     - chain: "dogecoin"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
