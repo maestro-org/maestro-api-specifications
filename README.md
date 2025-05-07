@@ -1,4 +1,4 @@
-[![CI](https://github.com/maestro-org/maestro-api-specifications/actions/workflows/ci.yml/badge.svg)](https://github.com/maestro-org/maestro-api-specifications/actions/workflows/ci.yml)
+[![CI](https://github.com/maestro-org/maestro-api-specifications/actions/workflows/postman.yml/badge.svg)](https://github.com/maestro-org/maestro-api-specifications/actions/workflows/postman.yml)
 
 # Maestro API Specifications
 
