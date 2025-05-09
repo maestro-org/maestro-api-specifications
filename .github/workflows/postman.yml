@@ -20,7 +20,7 @@ jobs:
                     - chain: "bitcoin"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
-                      collection_id: "25680306-b8148b77-9a7c-4392-a368-2d5acc84b361" # Bitcoin - Blockchain Indexer API
+                      collection_id: "25680306-93b373ad-cb31-40a8-b666-7d45557ed414" # Bitcoin - Blockchain Indexer API
                     - chain: "bitcoin"
                       service: "market-price-api"
                       filename: "openapi.json"
@@ -32,7 +32,7 @@ jobs:
                     - chain: "bitcoin"
                       service: "mempool-monitoring-api"
                       filename: "openapi.json"
-                      collection_id: "25680306-5687b39d-a712-499f-8301-07db279dc688" # Bitcoin - Mempool Monitoring API
+                      collection_id: "25680306-b671fd32-e3ea-45f3-b10a-6137f509dc65" # Bitcoin - Mempool Monitoring API
                     - chain: "bitcoin"
                       service: "node-rpc-api"
                       filename: "openapi.json"
@@ -52,7 +52,7 @@ jobs:
                     - chain: "cardano"
                       service: "transaction-manager-api"
                       filename: "openapi.json"
-                      collection_id: "43394706-07401110-6118-4c64-bca2-d9e4c88879db" # Cardano - Transaction Manager API
+                      collection_id: "25680306-1f6ed3e5-f71a-4a37-bf38-3257b4ec3cf3" # Cardano - Transaction Manager API
                     - chain: "dogecoin"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
