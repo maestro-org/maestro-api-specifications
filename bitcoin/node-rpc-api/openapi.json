@@ -1261,7 +1261,7 @@
     }
   },
   "info": {
-    "description": "Node RPC API for Bitcoin.",
+    "description": "This API offers direct, low-latency access to Bitcoin full nodes via API (JSON-RPC protocol), giving developers reliable mempool visibility, transaction relay capabilities, and chain data without the hassle of running their own infrastructure.\n#### Key Features:\n- **Full JSON-RPC Support:** Access core Bitcoin functionality through RPC calls like `getblock`, `getrawtransaction`, `sendrawtransaction`, etc.\n- **Blockchain Data Retrieval:** Developers can fetch detailed information about blocks, transactions, and addresses.\n- **Mempool Insight:** Query unconfirmed transactions for faster, more responsive, real-time data access.\n- **High-Availabilitye**: Enterprise-grade infrastructure ensure uptime, sync accuracy and fast transaction relay.\n#### Key Benefits for Developers:\n- Skip the operational complexity and computational overhead of maintaining self-hosted Bitcoin nodes.\n- Query mempool and chain data to power wallets, explorers, and backends with minimal latency.\n- Broadcast and verify transactions with trusted relay endpoints.\n- Build production-ready Bitcoin apps without worrying about node health, bandwidth, or reorg handling.",
     "title": "Bitcoin - Node RPC API",
     "version": "0.1.1"
   },
@@ -1272,10 +1272,11 @@
   "paths": {
     "/block/latest": {
       "get": {
-        "description": "Latest block info",
+        "description": "Returns the most recent block on the Bitcoin blockchain.\nUseful for syncing frontends, indexing latest chain state, or watching for new block activity. Set `verbose=true` for full TX data without need for separate calls.",
         "parameters": [
           {
             "description": "Page number for block transactions.",
+            "example": 1,
             "in": "query",
             "name": "page",
             "schema": {
@@ -1285,6 +1286,7 @@
           },
           {
             "description": "Max number of block transactions per page.",
+            "example": 100,
             "in": "query",
             "name": "count",
             "schema": {
@@ -1293,10 +1295,12 @@
             }
           },
           {
-            "description": "Verbose",
+            "description": "Verbose.",
+            "example": false,
             "in": "query",
             "name": "verbose",
             "schema": {
+              "default": false,
               "type": "boolean"
             }
           }
@@ -1338,7 +1342,7 @@
     },
     "/block/range/{start_height}/{end_height}": {
       "get": {
-        "description": "Block range info by start and end height",
+        "description": "Fetches basic info for a contiguous block range (start and end height).",
         "parameters": [
           {
             "description": "Start height.",
@@ -1360,6 +1364,7 @@
           },
           {
             "description": "Page number.",
+            "example": 1,
             "in": "query",
             "name": "page",
             "schema": {
@@ -1369,6 +1374,7 @@
           },
           {
             "description": "Number of blocks.",
+            "example": 10,
             "in": "query",
             "name": "count",
             "schema": {
@@ -1377,7 +1383,8 @@
             }
           },
           {
-            "description": "Order of blocks.",
+            "description": "Order blocks by descending (desc) or ascending (asc).",
+            "example": "asc",
             "in": "query",
             "name": "order",
             "schema": {
@@ -1426,10 +1433,11 @@
     },
     "/block/recent": {
       "get": {
-        "description": "Recent block info",
+        "description": "Returns the most recent blocks from the tip going backward. Useful to view or stream recent blockchain activity.",
         "parameters": [
           {
             "description": "Page number.",
+            "example": 1,
             "in": "query",
             "name": "page",
             "schema": {
@@ -1439,6 +1447,7 @@
           },
           {
             "description": "Number of blocks.",
+            "example": 5,
             "in": "query",
             "name": "count",
             "schema": {
@@ -1447,7 +1456,8 @@
             }
           },
           {
-            "description": "Order of blocks.",
+            "description": "Order blocks by descending (desc) or ascending (asc).",
+            "example": "desc",
             "in": "query",
             "name": "order",
             "schema": {
@@ -1503,21 +1513,24 @@
     },
     "/block/recent/{count}": {
       "get": {
-        "description": "Recent block info by count",
+        "description": "Returns a list of the most recently mined blocks, limited by count. It provides a snapshot of the latest blockchain activity, starting from the current chain tip and going backward.",
         "parameters": [
           {
-            "description": "Number of blocks",
+            "description": "Number of blocks.",
+            "example": 5,
             "in": "path",
             "name": "count",
             "required": true,
             "schema": {
+              "default": 1,
               "maximum": 10,
               "minimum": 1,
               "type": "integer"
             }
           },
           {
-            "description": "Order of blocks.",
+            "description": "Order blocks by descending (desc) or ascending (asc).",
+            "example": "desc",
             "in": "query",
             "name": "order",
             "schema": {
@@ -1573,10 +1586,20 @@
     },
     "/block/{height_or_hash}": {
       "get": {
-        "description": "Block info by height or hash",
+        "description": "Retrieve full or summary information for a specific block.\nUseful for analyzing individual blocks or resolving TX data inline.",
         "parameters": [
           {
+            "description": "Block height or hash.",
+            "in": "path",
+            "name": "height_or_hash",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "Page number for block transactions.",
+            "example": 1,
             "in": "query",
             "name": "page",
             "schema": {
@@ -1586,6 +1609,7 @@
           },
           {
             "description": "Max number of block transactions per page.",
+            "example": 100,
             "in": "query",
             "name": "count",
             "schema": {
@@ -1594,20 +1618,13 @@
             }
           },
           {
-            "description": "Verbose",
+            "description": "Verbose.",
+            "example": false,
             "in": "query",
             "name": "verbose",
             "schema": {
+              "default": false,
               "type": "boolean"
-            }
-          },
-          {
-            "description": "Block height or hash",
-            "in": "path",
-            "name": "height_or_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -1665,10 +1682,10 @@
     },
     "/block/{height_or_hash}/miner": {
       "get": {
-        "description": "Block miner info",
+        "description": "Returns metadata about the miner for a specific block.\nIncludes name, known addresses, icon, and associated tags.\nUseful for research or visual analytics on pool distribution.",
         "parameters": [
           {
-            "description": "Block height or hash",
+            "description": "Block height or hash.",
             "in": "path",
             "name": "height_or_hash",
             "required": true,
@@ -1707,10 +1724,10 @@
     },
     "/block/{height_or_hash}/volume": {
       "get": {
-        "description": "Block volume in satoshis",
+        "description": "Returns total transaction output volume (in satoshis) for a block.\nThis provides insight into economic activity, not just block size.",
         "parameters": [
           {
-            "description": "Block height or hash",
+            "description": "Block height or hash.",
             "in": "path",
             "name": "height_or_hash",
             "required": true,
@@ -1749,7 +1766,7 @@
     },
     "/general/info": {
       "get": {
-        "description": "Blockchain info",
+        "description": "Returns global node and chain info: block count, difficulty, pruning, fork status, etc.\nUseful for diagnostics, UI status panels, or infrastructure monitoring.",
         "responses": {
           "200": {
             "content": {
@@ -1790,7 +1807,7 @@
     },
     "/mempool/info": {
       "get": {
-        "description": "Mempool info",
+        "description": "Returns size, memory usage, fee thresholds, and Replace-By-Fee (RBF) state.\nUseful for gauging current congestion and planning fees accordingly.",
         "responses": {
           "200": {
             "content": {
@@ -1831,7 +1848,7 @@
     },
     "/mempool/transactions": {
       "get": {
-        "description": "Mempool transactions",
+        "description": "Returns a list of transaction IDs currently in the mempool.",
         "responses": {
           "200": {
             "content": {
@@ -1879,10 +1896,10 @@
     },
     "/mempool/transactions/{tx_hash}": {
       "get": {
-        "description": "Mempool transaction info by hash",
+        "description": "Returns full information for a mempool transaction: fees, inputs, Replace-By-Fee (RBF) flags, unconfirmed descendants, etc.\nUseful for inspecting transactions or verifying status.",
         "parameters": [
           {
-            "description": "Transaction hash",
+            "description": "Transaction hash.",
             "in": "path",
             "name": "tx_hash",
             "required": true,
@@ -1938,10 +1955,10 @@
     },
     "/mempool/transactions/{tx_hash}/ancestors": {
       "get": {
-        "description": "Mempool transaction ancestors by hash",
+        "description": "Lists ancestor TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
         "parameters": [
           {
-            "description": "Transaction hash",
+            "description": "Transaction hash.",
             "in": "path",
             "name": "tx_hash",
             "required": true,
@@ -1997,10 +2014,10 @@
     },
     "/mempool/transactions/{tx_hash}/descendants": {
       "get": {
-        "description": "Mempool transaction descendants by hash",
+        "description": "Lists descendant TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
         "parameters": [
           {
-            "description": "Transaction hash",
+            "description": "Transaction hash.",
             "in": "path",
             "name": "tx_hash",
             "required": true,
@@ -2056,13 +2073,15 @@
     },
     "/transaction/batch": {
       "post": {
-        "description": "Transaction info batch by hash array",
+        "description": "Takes up to 50 TX hashes and returns verbose TX data in a single call.\nUseful for dashboards or syncing nodes without hitting rate limits.",
         "parameters": [
           {
-            "description": "Verbose",
+            "description": "Verbose.",
+            "example": false,
             "in": "query",
             "name": "verbose",
             "schema": {
+              "default": false,
               "type": "boolean"
             }
           }
@@ -2075,7 +2094,7 @@
               }
             }
           },
-          "description": "Transaction hash array",
+          "description": "Transaction hash array.",
           "required": true
         },
         "responses": {
@@ -2135,7 +2154,7 @@
     },
     "/transaction/decode": {
       "post": {
-        "description": "Decode raw transaction",
+        "description": "Takes a raw TX hex and returns structured JSON.\nUseful when building or validating raw transactions.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2144,7 +2163,7 @@
               }
             }
           },
-          "description": "Raw Transaction Hex",
+          "description": "Raw Transaction Hex.",
           "required": true
         },
         "responses": {
@@ -2201,21 +2220,24 @@
     },
     "/transaction/estimatefee/{blocks}": {
       "get": {
-        "description": "Estimate approximate fee per kilobyte needed for a transaction.",
+        "description": "Estimate approximate fee per kilobyte (kB) needed for a transaction.\nUseful for setting dynamic fee rates in wallets or broadcast tools.",
         "parameters": [
           {
-            "description": "Confirmation target in blocks",
+            "description": "Confirmation target in blocks.",
+            "example": 50,
             "in": "path",
             "name": "blocks",
             "required": true,
             "schema": {
+              "default": 1,
               "maximum": 1008,
               "minimum": 1,
               "type": "integer"
             }
           },
           {
-            "description": "Whether to return a more conservative estimate which also satisfies a longer history. A conservative estimate potentially returns a higher feerate and is more likely to be sufficient for the desired target, but is not as responsive to short term drops in the prevailing fee market. Must be one of: 'unset' 'economical' 'conservative'",
+            "description": "Whether to return a more conservative estimate which also satisfies a longer history. A conservative estimate potentially returns a higher feerate and is more likely to be sufficient for the desired target, but is not as responsive to short term drops in the prevailing fee market. Must be one of: 'unset' 'economical' 'conservative'.",
+            "example": "economical",
             "in": "query",
             "name": "mode",
             "schema": {
@@ -2281,13 +2303,15 @@
     },
     "/transaction/hex": {
       "post": {
-        "description": "Transaction info by hex",
+        "description": "Same as `/transaction/decode` in that it takes a raw TX hex and returns structured JSON, but it also fetches blockchain metadata such as confirmations and block height.",
         "parameters": [
           {
-            "description": "Verbose",
+            "description": "Verbose.",
+            "example": false,
             "in": "query",
             "name": "verbose",
             "schema": {
+              "default": false,
               "type": "boolean"
             }
           }
@@ -2300,7 +2324,7 @@
               }
             }
           },
-          "description": "Transaction hex",
+          "description": "Transaction hex.",
           "required": true
         },
         "responses": {
@@ -2357,7 +2381,7 @@
     },
     "/transaction/psbt/decode": {
       "post": {
-        "description": "Decode PSBT",
+        "description": "Takes a signed PSBT hex and returns the internal structure. Covers UTXO metadata, BIP32 deriv paths, inputs/outputs, etc.\nUseful for hardware wallet or multisig integrations.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2366,7 +2390,7 @@
               }
             }
           },
-          "description": "Signed PSBT Hex",
+          "description": "Signed PSBT Hex.",
           "required": true
         },
         "responses": {
@@ -2409,10 +2433,11 @@
     },
     "/transaction/recent": {
       "get": {
-        "description": "Recent transactions",
+        "description": "Returns a list of recent on-chain transactions.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
         "parameters": [
           {
             "description": "Page number.",
+            "example": 1,
             "in": "query",
             "name": "page",
             "schema": {
@@ -2422,6 +2447,7 @@
           },
           {
             "description": "Number of blocks.",
+            "example": 50,
             "in": "query",
             "name": "count",
             "schema": {
@@ -2431,6 +2457,7 @@
           },
           {
             "description": "Order of transactions.",
+            "example": "desc",
             "in": "query",
             "name": "order",
             "schema": {
@@ -2439,10 +2466,12 @@
             }
           },
           {
-            "description": "Verbose",
+            "description": "Verbose.",
+            "example": false,
             "in": "query",
             "name": "verbose",
             "schema": {
+              "default": false,
               "type": "boolean"
             }
           }
@@ -2507,21 +2536,24 @@
     },
     "/transaction/recent/{count}": {
       "get": {
-        "description": "Recent transactions with count",
+        "description": "Returns a list of recent on-chain transactions, specified by count.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
         "parameters": [
           {
-            "description": "Number of transactions",
+            "description": "Number of transactions.",
+            "example": 5,
             "in": "path",
             "name": "count",
             "required": true,
             "schema": {
+              "default": 3,
               "maximum": 100,
               "minimum": 1,
               "type": "integer"
             }
           },
           {
-            "description": "Order of transactions.",
+            "description": "Order transactions by descending (desc) or ascending (asc).",
+            "example": "desc",
             "in": "query",
             "name": "order",
             "schema": {
@@ -2530,10 +2562,12 @@
             }
           },
           {
-            "description": "Verbose",
+            "description": "Verbose.",
+            "example": false,
             "in": "query",
             "name": "verbose",
             "schema": {
+              "default": false,
               "type": "boolean"
             }
           }
@@ -2598,7 +2632,7 @@
     },
     "/transaction/submit": {
       "post": {
-        "description": "Send transaction to the network",
+        "description": "Pushes a signed raw transaction to the network.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2607,7 +2641,7 @@
               }
             }
           },
-          "description": "Signed Tx Hex",
+          "description": "Signed Tx Hex.",
           "required": true
         },
         "responses": {
@@ -2664,10 +2698,10 @@
     },
     "/transaction/{tx_hash}": {
       "get": {
-        "description": "Transaction info by hash",
+        "description": "This endpoint returns detailed information for a specific Bitcoin transaction, by its unique transaction hash.",
         "parameters": [
           {
-            "description": "Transaction hash",
+            "description": "Transaction hash.",
             "in": "path",
             "name": "tx_hash",
             "required": true,
@@ -2676,10 +2710,12 @@
             }
           },
           {
-            "description": "Verbose",
+            "description": "Verbose.",
+            "example": false,
             "in": "query",
             "name": "verbose",
             "schema": {
+              "default": false,
               "type": "boolean"
             }
           }
