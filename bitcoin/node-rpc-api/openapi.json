@@ -2073,7 +2073,7 @@
     },
     "/transaction/batch": {
       "post": {
-        "description": "Takes up to 50 TX hashes and returns verbose TX data in a single call.\nUseful for dashboards or syncing nodes without hitting rate limits.",
+        "description": "Takes up to 50 TX hashes and returns verbose TX data in a single call. Useful for dashboards or syncing nodes without hitting rate limits.",
         "parameters": [
           {
             "description": "Verbose.",
