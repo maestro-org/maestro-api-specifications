@@ -8,6 +8,13 @@ This repository contains a collection of OpenAPI specifications for various Maes
 
 Maestro provides a suite of APIs for blockchain services across multiple chains, including Bitcoin, Cardano, Dogecoin, and Midnight. Each API is documented using the OpenAPI standard, ensuring clarity and consistency for developers.
 
+## API Documentation Viewer
+You can explore all Maestro OpenAPI specifications using Swagger UI at:
+
+🔗 https://maestro-org.github.io/maestro-api-specifications
+
+This viewer supports switching between multiple chains/specs. Simply authorize the service with your [Maestro API key](https://dashboard.gomaestro.org) to begin testing out the endpoints.
+
 ## Postman Workspace
 
 All OpenAPI specifications in this repository are published to the public [Maestro Postman Workspace](https://www.postman.com/go-maestro/maestro-api/overview). Developers can explore, test, and integrate with Maestro APIs directly from Postman.
