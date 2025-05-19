@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Maestro API Specifications</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+  <style>
+    body { margin: 0; padding: 0; font-family: sans-serif; }
+    #selector-container { padding: 1rem; background: #f9f9f9; border-bottom: 1px solid #ddd; }
+    #swagger-ui { margin: 0 1rem; }
+    select { padding: 0.5rem; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <div id="selector-container">
+    <label for="spec-selector">Select API Spec:</label>
+    <select id="spec-selector">
+      <!-- Arch -->
+       <option value="arch/node-rpc-api/openapi.json">Arch - Node RPC API</option>
+
+      <!-- Bitcoin -->
+      <option value="bitcoin/blockchain-indexer-api/openapi.json">Bitcoin - Blockchain Indexer API</option>
+      <option value="bitcoin/event-manager-api/openapi.json">Bitcoin - Event Manager API</option>
+      <option value="bitcoin/market-price-api/openapi.json">Bitcoin - Market Price API</option>
+      <option value="bitcoin/mempool-monitoring-api/openapi.json">Bitcoin - Mempool Monitoring API</option>
+      <option value="bitcoin/node-rpc-api/openapi.json">Bitcoin - Node RPC API</option>
+
+      <!-- Cardano -->
+      <option value="cardano/blockchain-indexer-api/openapi.json">Cardano - Blockchain Indexer API</option>
+      <option value="cardano/managed-contracts-api/openapi.json">Cardano - Managed Contracts API</option>
+      <option value="cardano/market-price-api/openapi.json">Cardano - Market Price API</option>
+      <option value="cardano/transaction-manager-api/openapi.json">Cardano - Transaction Manager API</option>
+
+      <!-- Dogecoin -->
+      <option value="dogecoin/blockchain-indexer-api/openapi.json">Dogecoin - Blockchain Indexer API</option>
+      <option value="dogecoin/node-rpc-api/openapi.json">Dogecoin - Node RPC API</option>
+    </select>
+  </div>
+
+  <div id="swagger-ui"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+  <script>
+    let ui;
+
+    function loadSpec(url) {
+      ui = SwaggerUIBundle({
+        url: url,
+        dom_id: '#swagger-ui',
+        presets: [SwaggerUIBundle.presets.apis],
+        layout: 'BaseLayout',
+      });
+    }
+
+    document.getElementById('spec-selector').addEventListener('change', function () {
+      loadSpec(this.value);
+    });
+
+    // Load default spec
+    loadSpec(document.getElementById('spec-selector').value);
+  </script>
+</body>
+</html>
