@@ -11,7 +11,7 @@ Maestro provides a suite of APIs for blockchain services across multiple chains,
 ## API Documentation Viewer
 You can explore all Maestro OpenAPI specifications using Swagger UI at:
 
-🔗 https://maestro-org.github.io/maestro-api-specifications
+🔗 [https://swagger.gomaestro.org/](https://swagger.gomaestro.org/)
 
 This viewer supports switching between multiple chains/specs. Simply authorize the service with your [Maestro API key](https://dashboard.gomaestro.org) to begin testing out the endpoints.
 
