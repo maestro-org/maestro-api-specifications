@@ -4,6 +4,9 @@ on:
     push:
         branches:
             - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
     postman-sync:
@@ -84,28 +87,8 @@ jobs:
                   POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
                   POSTMAN_COLLECTION_ID: "${{ matrix.collections.collection_id }}"
               run: |
-
-                  # Convert OpenAPI to Postman Collection format
-                  openapi2postmanv2 -s ${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{matrix.collections.filename}} -o collection.json -O folderStrategy=Tags
-                                    
-                  # Wrap the collection in the required format
-                  echo '{"collection":' > temp.json
-                  cat collection.json >> temp.json
-                  echo '}' >> temp.json
-
-                  # Update the existing collection
-                  curl -X PUT \
-                      -H "x-api-key: $POSTMAN_API_KEY" \
-                      -H "Content-Type: application/json" \
-                      -d @temp.json \
-                      "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID" \
-                      -o response.json
-
-                  # Check response
-                  if [ $(cat response.json | grep -c "error") -gt 0 ]; then
-                    echo "Error updating collection:"
-                    cat response.json
-                    exit 1
-                  else
-                    echo "Successfully updated collection"
-                  fi
+                  bash ./scripts/update_postman_collection.sh ${{ secrets.POSTMAN_API_KEY }} \
+                      "${{ matrix.collections.collection_id }}" \
+                      "${{ matrix.collections.chain }}" \
+                      "${{ matrix.collections.service }}" \
+                      "${{ matrix.collections.filename }}"
