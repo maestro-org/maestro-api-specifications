@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Bitcoin - Blockchain Indexer API",
-    "description": "This API provides core indexer endpoints with support for Bitcoin metaprotocols by delivering real-time, rollback-protected access to Bitcoin's UTXO data, enabling developers to build responsive and reliable blockchain applications without managing complex infrastructure.\n\n#### Key Features:\n- **Real-Time Data with Rollback Protection:** Ensures data accuracy by handling chain reorganizations gracefully, providing live data without sacrificing integrity.\n- **Mempool Awareness:** Includes unconfirmed transactions from the mempool, allowing for faster price discovery and more responsive applications.\n- **Comprehensive UTXO Indexing:** Specialized pipelines extract, match, and process on-chain information, including handling rollbacks, to provide accurate and up-to-date data.\n\n#### Key Benefits for Developers:\nBy abstracting the complexities of blockchain data retrieval and processing, Maestro's Bitcoin Indexer API empowers developers to focus on building innovative applications with confidence in fast and reliable access to historical chain data.",
+    "description": "This API provides core indexer endpoints with support for Bitcoin metaprotocols by delivering real-time, rollback-protected access to Bitcoin's UTXO data, enabling developers to build responsive and reliable blockchain applications without managing complex infrastructure.\n\n#### Key Features:\n- **Real-Time Data with Rollback Protection:** Ensures data accuracy by handling chain reorganizations gracefully, providing live data without sacrificing integrity.\n- **Comprehensive UTXO Indexing:** Specialized pipelines extract, match, and process on-chain information, including handling rollbacks, to provide accurate and up-to-date data.\n\n#### Key Benefits for Developers:\nBy abstracting the complexities of blockchain data retrieval and processing, Maestro's Bitcoin Indexer API empowers developers to focus on building innovative applications with confidence in fast and reliable access to historical chain data.",
     "license": {
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
@@ -3116,8 +3116,7 @@
       "InscriptionActivityByTx": {
         "type": "object",
         "required": [
-          "inscription_id",
-          "to"
+          "inscription_id"
         ],
         "properties": {
           "from": {
@@ -3133,7 +3132,12 @@
             "description": "String representation of the inscription ID, whose first coordinate is the reveal transaction hash, and the second coordinate is the index of inscription in the reveal transaction."
           },
           "to": {
-            "$ref": "#/components/schemas/ToInscriptionLocation"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ToInscriptionLocation"
+              }
+            ],
+            "nullable": true
           }
         }
       },
