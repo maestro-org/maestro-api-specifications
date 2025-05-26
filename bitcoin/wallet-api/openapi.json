@@ -1,0 +1,1083 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bitcoin - Wallet API",
+    "description": "Maestro's Bitcoin Wallet API delivers detailed transaction activity data at the address level, spanning native Bitcoin (satoshis) and metaprotocol layers like inscriptions and runes. This API enables deep visibility into balance changes, token movements, and asset-specific behaviors. Useful for powering explorers, wallets, or dashboards with granular insight into address-level history and asset interactions.\n\n#### Key Features:\n- **Satoshi Activity Tracking:** Understand balance increases, decreases, and self-transfers with timestamped accuracy to support historical analysis and auditing.\n- **Inscription Insight:** Monitor Ordinals transactions, filtered by inscription ID, activity type (send/receive), or self-transfer logic to reduce noise from spam or internal moves.\n- **Rune Transaction Logging:** Track rune minting, transfers, etchings, and balance changes for a given address, including support for filtering by specific rune.\n- **Unified Metaprotocol View:** Fetch combined activity across satoshis, inscriptions, and runes in a single request to power holistic user or address histories.\n\n#### Key Benefits for Developers: \nDevelopers gain the ability to surface address-level insights without having to manually parse raw blockchain data. The Wallet API simplifies historical activity analysis, enables protocol-specific filtering, and lets developers build UX-enhancing features like transaction history views, asset trackers, and real-time alerts for wallet activity without managing indexing infrastructure.",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    },
+    "version": "v0.2.0"
+  },
+  "servers": [
+    {
+      "url": "https://xbt-mainnet.gomaestro-api.org/v0",
+      "description": "Bitcoin Mainnet"
+    },
+    {
+      "url": "https://xbt-testnet.gomaestro-api.org/v0",
+      "description": "Bitcoin Testnet"
+    }
+  ],
+  "paths": {
+    "/wallet/addresses/{address}/activity": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Satoshi Activity by Address",
+        "description": "Returns all transactions for a given address or script pubkey, allowing insight into when the balance increased, decreased, or remained the same. This endpoint supports customization to narrow results by time, transaction type, or ordering, enabling tailored historical views.",
+        "operationId": "satoshi_activity_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Bitcoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted. Supported values: asc, desc",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only transactions included on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only transactions included on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "activity_kind",
+            "in": "query",
+            "description": "Only return transactions of a specific activity kind. Supported values: \"increase\" for transactions where satoshi balance increases, \"decrease\" for decrease, and \"self_transfer\" for transactions where satoshi balance remained the same.",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ActivityKindByAddress"
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "exclude_self_transfers",
+            "in": "query",
+            "description": "Do not return self-transfer transactions - transactions in which satoshi balance did not increase or decrease.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedActivityByAddress"
+                },
+                "example": "{\n    \"data\": [{\n        \"height\": 892671,\n        \"confirmations\": 48,\n        \"tx_hash\": \"9f2d17f672ebb9962940aba94daef140cc876f32edba5e9325c18ca17534120e\",\n        \"kind\": \"increase\",\n        \"amount\": \"4456732\"\n    }, {\n        \"height\": 892676,\n        \"confirmations\": 43,\n        \"tx_hash\": \"2c34dbe0d8dcbf4faba291e50cda1d9b6f70cccdbb2fcd23a9341d2791845998\",\n        \"kind\": \"decrease\",\n        \"amount\": \"4456732\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000c7f19aca70cdeab9d7f04a79d1c8283b66dce78796e8\",\n        \"block_height\": 892719\n    },\n    \"next_cursor\": null\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/wallet/addresses/{address}/activity/metaprotocols": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Metaprotocol Activity by Address",
+        "description": "Return all transactions where the specified address has satoshi and/or metaprotocols activity. Supported metaprotocols: runes, inscriptions.",
+        "operationId": "metaprotocol_activity_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Bitcoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted. Supported values: asc, desc",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only UTxOs created on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only UTxOs created on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedActivityByAddressWithMetaprotocols"
+                },
+                "example": "{\n    \"data\": [{\n        \"height\": 840000,\n        \"confirmations\": 19,\n        \"tx_hash\": \"152b928e97bb9e874da1bd4abdf766ae0cdc7a2f260dad5542967cb414c58489\",\n        \"sat_activity\": {\n            \"kind\": \"increase\",\n            \"amount\": \"1100\"\n        },\n        \"inscription_activity\": {\n            \"self_transferred\": [],\n            \"sent\": [],\n            \"received\": [{\n                \"inscription_id\": \"152b928e97bb9e874da1bd4abdf766ae0cdc7a2f260dad5542967cb414c58489i0\",\n                \"from\": null,\n                \"to\": {\n                    \"address\": \"bc1pkhvq2h62093jtewlxjx6y6qmchjrx70wl7zu6yjhm5zcv5phkhusnasyrp\",\n                    \"script_pubkey\": \"5120b5d8055f4a796325e5df348da2681bc5e43379eeff85cd1257dd05865037b5f9\",\n                    \"output_vout\": 0,\n                    \"sat_offset\": 0\n                }\n            }]\n        },\n        \"rune_activity\": {\n            \"etched_rune\": {\n                \"rune_id\": \"840000:2\",\n                \"premined_amount\": \"21000000000.00\"\n            },\n            \"minted\": null,\n            \"self_transfers\": [],\n            \"increased_balances\": [{\n                \"rune_id\": \"840000:2\",\n                \"amount\": \"21000000000.00\"\n            }],\n            \"decreased_balances\": []\n        }\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000ecce02d6c785d726bf8f7cfa93b10af3ba7ca69617fb\",\n        \"block_height\": 840018\n    },\n    \"next_cursor\": null\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/wallet/addresses/{address}/inscriptions/activity": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Inscription Activity by Address",
+        "description": "Returns all inscription-related transactions involving a specific address. Can be filtered by activity type (send, receive, self-transfer), narrowed to a specific inscription, and sorted chronologically. Useful for building dashboards, tracking user behavior, or filtering unwanted spam activity.",
+        "operationId": "inscription_activity_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Bitcoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "bc1p27j3fa2mr3d50m3uaavr0ntyzr0v2a27n48lc9gxpkzd4xye6dgs2tzx6p"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted. Supported values: asc, desc",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only transactions created on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only transactions created on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "inscription_id",
+            "in": "query",
+            "description": "Return only transactions containing a specific inscription, specified by an inscription ID. In presence of activity_kind, it relates to this specific inscription. In presence of exclude_self_transfers, it is this specific inscription that should be sent or received but not self-transferred.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "example": "6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0"
+          },
+          {
+            "name": "activity_kind",
+            "in": "query",
+            "description": "Filter txs by presence of specific activity kind. Supported values: send, receive, self_transfer. In presence of inscription filter, the activity kind relates to that specific inscription. In presence of exclude_self_transfers, this activity kind cannot be self_transfer.",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/InscriptionActivityKindByAddress"
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "exclude_self_transfers",
+            "in": "query",
+            "description": "Exclude txs only containing inscriptions self-transfers. In presence of activity_kind, it cannot be self_transfer. In presence of inscription filter, that specific inscription should be sent or received, not self-transferred.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedInscriptionActivityByAddress"
+                },
+                "example": "{\n    \"data\": [{\n        \"height\": 836717,\n        \"confirmations\": 60911,\n        \"tx_hash\": \"a977a36055ba3d26203c82e6ee585539cadd12c3d17b236ffb67c051320b8991\",\n        \"self_transferred\": [],\n        \"sent\": [],\n        \"received\": [{\n          \"inscription_id\": \"696936486c96124784d46dec66dd9e806280a182d1addf9763ff4bb92d0bc918i64\",\n          \"from\": {\n            \"address\": \"bc1p4at29alvmmtunc5ffcpm9n5e4rvz63hlrjcrgd2zh7d7jy24xgns2g7rw7\",\n            \"script_pubkey\": \"5120af56a2f7ecded7c9e2894e03b2ce99a8d82d46ff1cb0343542bf9be911553227\",\n            \"input_index\": 0,\n            \"sat_offset\": 0\n          },\n          \"to\": {\n            \"address\": \"bc1p27j3fa2mr3d50m3uaavr0ntyzr0v2a27n48lc9gxpkzd4xye6dgs2tzx6p\",\n            \"script_pubkey\": \"512057a514f55b1c5b47ee3cef5837cd6410dec5755e9d4ffc15060d84da9899d351\",\n            \"output_vout\": 0,\n            \"sat_offset\": 0,\n            \"output_txid\": \"a977a36055ba3d26203c82e6ee585539cadd12c3d17b236ffb67c051320b8991\"\n          }\n        }]\n    }, {\n        \"height\": 836718,\n        \"confirmations\": 60910,\n        \"tx_hash\": \"7647d53756d6f03b5191baaca26d84dbe2715406912eb2543c9d19c892a29c73\",\n        \"self_transferred\": [],\n        \"sent\": [{\n            \"inscription_id\": \"696936486c96124784d46dec66dd9e806280a182d1addf9763ff4bb92d0bc918i64\",\n            \"from\": {\n                \"address\": \"bc1pjuewj3dd4kpjen4zaqxd354jnwdjunewu7ncuaqqgsr0xa4cczzseg9066\",\n                \"script_pubkey\": \"51209732e945adad832ccea2e80cd8d2b29b9b2e4f2ee7a78e74004406f376b8c085\",\n                \"input_index\": 2,\n                \"sat_offset\": 0\n            },\n            \"to\": {\n                \"address\": \"bc1pjuewj3dd4kpjen4zaqxd354jnwdjunewu7ncuaqqgsr0xa4cczzseg9066\",\n                \"script_pubkey\": \"51209732e945adad832ccea2e80cd8d2b29b9b2e4f2ee7a78e74004406f376b8c085\",\n                \"output_vout\": 1,\n                \"sat_offset\": 0,\n                \"output_txid\": \"7647d53756d6f03b5191baaca26d84dbe2715406912eb2543c9d19c892a29c73\"\n            }\n        }],\n        \"received\": []\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000119bd8dffd7d8285a69744011aa98f0d9091b0555ca46\",\n        \"block_height\": 897627\n    },\n    \"next_cursor\": null\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/wallet/addresses/{address}/runes/activity": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Rune Activity by Address",
+        "description": "Return all transactions where the specified address has rune activity, with the option to filter by a specific rune kind.",
+        "operationId": "rune_activity_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Bitcoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "bc1p27j3fa2mr3d50m3uaavr0ntyzr0v2a27n48lc9gxpkzd4xye6dgs2tzx6p"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted. Supported values: asc, desc",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only transactions created on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only transactions created on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "rune",
+            "in": "query",
+            "description": "Return only transactions containing a specific rune, specified either by the rune ID (etching block number and transaction index) or name (spaced or un-spaced). In presence of activity_kind, it relates to this specific rune. In presence of exclude_self_transfers, it is this specific rune that the queried address should see increase or decrease in balance in the tx, not just being self-transferred.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "example": "840000:3"
+          },
+          {
+            "name": "activity_kind",
+            "in": "query",
+            "description": "Filter txs by presence specific activity kind. Supported values: increased, decreased, self_transfer. In presence of rune filter, the activity kind relates to that specific rune. In presence of exclude_self_transfers, this activity kind cannot be self_transfer.",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/RuneActivityKindByAddress"
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "exclude_self_transfers",
+            "in": "query",
+            "description": "Exclude txs only containing runes self-transfers. In presence of activity_kind, it cannot be self_transfer. In presence of rune filter, that specific rune should be sent or received, not self-transferred.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedRuneActivityByAddress"
+                },
+                "example": "{\n    \"data\": [{\n        \"height\": 875944,\n        \"confirmations\": 21684,\n        \"tx_hash\": \"6a4237d43719e0766a8333eb8531b3bae9b20e7484e6962a731773b883315da1\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [],\n        \"increased_balances\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"1453573\"\n        }],\n        \"decreased_balances\": []\n    }, {\n        \"height\": 876070,\n        \"confirmations\": 21558,\n        \"tx_hash\": \"1c2c45980432108fda7b4eb2a390bd1cae7aac62b9309f5ef3911960e50b8501\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"1453573\"\n        }],\n        \"increased_balances\": [],\n        \"decreased_balances\": []\n    }, {\n        \"height\": 876103,\n        \"confirmations\": 21525,\n        \"tx_hash\": \"cbcbac069d142c303b062dda88635e4939d69120f66d89a9da17ebd0ff806a1f\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [],\n        \"increased_balances\": [],\n        \"decreased_balances\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"207654\"\n        }]\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000119bd8dffd7d8285a69744011aa98f0d9091b0555ca46\",\n        \"block_height\": 897627\n    },\n    \"next_cursor\": null\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActivityByAddress": {
+        "type": "object",
+        "required": [
+          "height",
+          "confirmations",
+          "tx_hash",
+          "sat_activity"
+        ],
+        "properties": {
+          "confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of confirmation blocks.",
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Height of block containing the satoshi activity.",
+            "minimum": 0
+          },
+          "sat_activity": {
+            "$ref": "#/components/schemas/SatActivity"
+          },
+          "tx_hash": {
+            "type": "string",
+            "description": "Hash of transaction containing the satoshi activity."
+          }
+        }
+      },
+      "ActivityByAddressWithMetaprotocols": {
+        "type": "object",
+        "required": [
+          "height",
+          "confirmations",
+          "tx_hash",
+          "sat_activity"
+        ],
+        "properties": {
+          "confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of confirmation blocks.",
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Height of block containing the satoshi activity.",
+            "minimum": 0
+          },
+          "inscription_activity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InscriptionActivity"
+              }
+            ],
+            "nullable": true
+          },
+          "rune_activity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RuneActivity"
+              }
+            ],
+            "nullable": true
+          },
+          "sat_activity": {
+            "$ref": "#/components/schemas/SatActivity"
+          },
+          "tx_hash": {
+            "type": "string",
+            "description": "Hash of transaction containing the satoshi activity."
+          }
+        }
+      },
+      "ActivityKindByAddress": {
+        "type": "string",
+        "enum": [
+          "self_transfer",
+          "increase",
+          "decrease"
+        ]
+      },
+      "ChainTip": {
+        "type": "object",
+        "required": [
+          "block_hash",
+          "block_height"
+        ],
+        "properties": {
+          "block_hash": {
+            "type": "string",
+            "description": "The hash of the block",
+            "example": "0000000000000000000a7f3b7b6b6e1d9a18db65a3b4a3f4f3bcb2e1f1b2d3e7"
+          },
+          "block_height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The height of the block in the blockchain",
+            "example": 707000,
+            "minimum": 0
+          }
+        }
+      },
+      "EtchAndPremine": {
+        "type": "object",
+        "required": [
+          "rune_id"
+        ],
+        "properties": {
+          "premined_amount": {
+            "type": "string",
+            "description": "Amount of premined runes.",
+            "nullable": true
+          },
+          "rune_id": {
+            "type": "string",
+            "description": "Rune ID."
+          }
+        }
+      },
+      "FromInscriptionLocation": {
+        "type": "object",
+        "required": [
+          "script_pubkey",
+          "input_index",
+          "sat_offset"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Address-encoding of the script pubkey at which the input containing the inscription resides.",
+            "nullable": true
+          },
+          "input_index": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Index of the input containing the inscription.",
+            "minimum": 0
+          },
+          "sat_offset": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Offset of the inscribed satoshi within the input.",
+            "minimum": 0
+          },
+          "script_pubkey": {
+            "type": "string",
+            "description": "Script pubkey at which the input containing the inscription resides."
+          }
+        }
+      },
+      "InscriptionActivity": {
+        "type": "object",
+        "required": [
+          "self_transferred",
+          "sent",
+          "received"
+        ],
+        "properties": {
+          "received": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionActivityByTx"
+            },
+            "description": "List of inscriptions which the script gained control over."
+          },
+          "self_transferred": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionActivityByTx"
+            },
+            "description": "List of inscriptions that were self-transferred in the transaction."
+          },
+          "sent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionActivityByTx"
+            },
+            "description": "List of inscriptions which the script lost control of."
+          }
+        }
+      },
+      "InscriptionActivityByAddress": {
+        "type": "object",
+        "required": [
+          "height",
+          "confirmations",
+          "tx_hash",
+          "inscription_activity"
+        ],
+        "properties": {
+          "confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of confirmation blocks.",
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Height of block containing the inscription activity.",
+            "minimum": 0
+          },
+          "inscription_activity": {
+            "$ref": "#/components/schemas/InscriptionActivity"
+          },
+          "tx_hash": {
+            "type": "string",
+            "description": "Hash of transaction containing the inscription activity."
+          }
+        }
+      },
+      "InscriptionActivityByTx": {
+        "type": "object",
+        "required": [
+          "inscription_id",
+          "to"
+        ],
+        "properties": {
+          "from": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FromInscriptionLocation"
+              }
+            ],
+            "nullable": true
+          },
+          "inscription_id": {
+            "type": "string",
+            "description": "String representation of the inscription ID, whose first coordinate is the reveal transaction hash, and the second coordinate is the index of inscription in the reveal transaction."
+          },
+          "to": {
+            "$ref": "#/components/schemas/ToInscriptionLocation"
+          }
+        }
+      },
+      "InscriptionActivityKindByAddress": {
+        "type": "string",
+        "enum": [
+          "self_transfer",
+          "send",
+          "receive"
+        ]
+      },
+      "InscriptionAndOffset": {
+        "type": "object",
+        "required": [
+          "offset",
+          "inscription_id"
+        ],
+        "properties": {
+          "inscription_id": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
+      },
+      "PaginatedActivityByAddress": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActivityByAddress"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/ChainTip"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedActivityByAddressWithMetaprotocols": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActivityByAddressWithMetaprotocols"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/ChainTip"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedInscriptionActivityByAddress": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionActivityByAddress"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/ChainTip"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedRuneActivityByAddress": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuneActivityByAddress"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/ChainTip"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RuneActivity": {
+        "type": "object",
+        "required": [
+          "self_transfers",
+          "increased_balances",
+          "decreased_balances"
+        ],
+        "properties": {
+          "decreased_balances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuneAndAmount"
+            },
+            "description": "List of runes and amounts, corresponding to decreased balances for this address."
+          },
+          "etched_rune": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EtchAndPremine"
+              }
+            ],
+            "nullable": true
+          },
+          "increased_balances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuneAndAmount"
+            },
+            "description": "List of runes and amounts, corresponding to increased balances for this address."
+          },
+          "minted": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RuneAndAmount"
+              }
+            ],
+            "nullable": true
+          },
+          "self_transfers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuneAndAmount"
+            },
+            "description": "List of runes that were self-transferred."
+          }
+        }
+      },
+      "RuneActivityByAddress": {
+        "type": "object",
+        "required": [
+          "height",
+          "confirmations",
+          "tx_hash",
+          "rune_activity"
+        ],
+        "properties": {
+          "confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of confirmation blocks.",
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Height of block containing the rune activity.",
+            "minimum": 0
+          },
+          "rune_activity": {
+            "$ref": "#/components/schemas/RuneActivity"
+          },
+          "tx_hash": {
+            "type": "string",
+            "description": "Hash of transaction containing the rune activity."
+          }
+        }
+      },
+      "RuneActivityKindByAddress": {
+        "type": "string",
+        "enum": [
+          "self_transfer",
+          "increase",
+          "decrease"
+        ]
+      },
+      "RuneAndAmount": {
+        "type": "object",
+        "required": [
+          "rune_id",
+          "amount"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "rune_id": {
+            "type": "string"
+          }
+        }
+      },
+      "SatActivity": {
+        "type": "object",
+        "required": [
+          "kind",
+          "amount"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string",
+            "description": "Amount of satoshis involved in the activity."
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ActivityKindByAddress"
+          }
+        }
+      },
+      "ToInscriptionLocation": {
+        "type": "object",
+        "required": [
+          "script_pubkey",
+          "output_vout",
+          "sat_offset",
+          "output_txid"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Address-encoding of the script pubkey at which the output containing the inscription resides.",
+            "nullable": true
+          },
+          "output_txid": {
+            "type": "string",
+            "description": "Hash of tx producing the output containing the inscription. If this is the hash of the coinbase tx of the block, then the inscription was spent as fee in a tx in the block and therefore sent to the output of the coinbase tx controlled by the block miner."
+          },
+          "output_vout": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Index of the output containing the inscription.",
+            "minimum": 0
+          },
+          "sat_offset": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Offset of the inscribed satoshi within the output.",
+            "minimum": 0
+          },
+          "script_pubkey": {
+            "type": "string",
+            "description": "Script pubkey at which the output containing the inscription resides."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api-key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api-key",
+        "description": "Project API Key"
+      }
+    }
+  },
+  "security": [
+    {
+      "api-key": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Maestro"
+    }
+  ]
+}
