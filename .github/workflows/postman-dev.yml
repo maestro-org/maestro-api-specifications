@@ -43,7 +43,7 @@ jobs:
                     - chain: "bitcoin"
                       service: "wallet-api"
                       filename: "openapi.json"
-                      collection_id: "43394706-258357ce-b3ae-4d3e-81f1-63a39502381e" # Bitcoin - Wallet API
+                      collection_id: "43394706-ca8245b6-3257-41f4-995d-1f9232700530" # Bitcoin - Wallet API
                     - chain: "cardano"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
