@@ -40,6 +40,10 @@ jobs:
                       service: "node-rpc-api"
                       filename: "openapi.json"
                       collection_id: "25680306-2b87c393-38ca-491e-a00c-c3ec5a9d1eb7" # Bitcoin - Node RPC API
+                    - chain: "bitcoin"
+                      service: "wallet-api"
+                      filename: "openapi.json"
+                      collection_id: "43394706-258357ce-b3ae-4d3e-81f1-63a39502381e" # Bitcoin - Wallet API
                     - chain: "cardano"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
