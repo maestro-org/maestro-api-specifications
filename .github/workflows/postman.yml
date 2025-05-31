@@ -46,6 +46,10 @@ jobs:
                       filename: "openapi.json"
                       dev_collection_id: "25680306-2b87c393-38ca-491e-a00c-c3ec5a9d1eb7" # Bitcoin - Node RPC API (DEV)
                       prod_collection_id: "25680306-ec0dc9e4-d4f1-4ef6-b5db-aeaae88bc49e" # Bitcoin - Node RPC API (PROD)
+                      service: "wallet-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "43394706-ca8245b6-3257-41f4-995d-1f9232700530" # Bitcoin - Wallet API (DEV)
+                      prod_collection_id: "43394706-258357ce-b3ae-4d3e-81f1-63a39502381e" # Bitcoin - Wallet API (PROD)
                     - chain: "cardano"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"

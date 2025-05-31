@@ -25,9 +25,9 @@
         "tags": [
           "Addresses"
         ],
-        "summary": "Activity by Address",
+        "summary": "Satoshi Activity by Address",
         "description": "Returns all transactions for a given address or script pubkey, allowing insight into when the balance increased, decreased, or remained the same. This endpoint supports customization to narrow results by time, transaction type, or ordering, enabling tailored historical views.",
-        "operationId": "activity_by_address",
+        "operationId": "satoshi_activity_by_address",
         "parameters": [
           {
             "name": "address",
