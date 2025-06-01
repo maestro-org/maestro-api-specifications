@@ -1,0 +1,113 @@
+name: Postman CI
+
+on:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
+
+jobs:
+    postman-sync:
+        name: Sync Postman Collection
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                collections:
+                    - chain: "arch"
+                      service: "node-rpc-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-fe78d627-7965-4e0b-918e-dbe692199a15" # Arch - Node RPC API (DEV)
+                      prod_collection_id: "25680306-7a02f047-cf8f-4d1d-aefe-fd0f3e950b4c" # Arch - Node RPC API (PROD)
+                    - chain: "bitcoin"
+                      service: "blockchain-indexer-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-2eb301f3-3699-4a6b-85ca-5074ace39abd" # Bitcoin - Blockchain Indexer API (DEV)
+                      prod_collection_id: "25680306-93b373ad-cb31-40a8-b666-7d45557ed414" # Bitcoin - Blockchain Indexer API (PROD)
+                    - chain: "bitcoin"
+                      service: "market-price-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-9ee2fc90-71b7-4638-8735-09619168f875" # Bitcoin - Market Price API (DEV)
+                      prod_collection_id: "39306006-4c68061e-b8bd-4ad7-82a0-147ea3bc1777" # Bitcoin - Market Price API (PROD)
+                    - chain: "bitcoin"
+                      service: "event-manager-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-0ac78955-2258-4b4d-a650-794a05059b20" # Bitcoin - Event Manager API (DEV)
+                      prod_collection_id: "25680306-1bc9bdd4-4d53-4223-992b-dcd1eaecea0f" # Bitcoin - Event Manager API (PROD)
+                    - chain: "bitcoin"
+                      service: "mempool-monitoring-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-9018a8d8-6225-46ab-8a55-212f981dc90e" # Bitcoin - Mempool Monitoring API (DEV)
+                      prod_collection_id: "25680306-b671fd32-e3ea-45f3-b10a-6137f509dc65" # Bitcoin - Mempool Monitoring API (PROD)
+                    - chain: "bitcoin"
+                      service: "node-rpc-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-2b87c393-38ca-491e-a00c-c3ec5a9d1eb7" # Bitcoin - Node RPC API (DEV)
+                      prod_collection_id: "25680306-ec0dc9e4-d4f1-4ef6-b5db-aeaae88bc49e" # Bitcoin - Node RPC API (PROD)
+                    - chain: "bitcoin"
+                      service: "wallet-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "43394706-ca8245b6-3257-41f4-995d-1f9232700530" # Bitcoin - Wallet API (DEV)
+                      prod_collection_id: "43394706-258357ce-b3ae-4d3e-81f1-63a39502381e" # Bitcoin - Wallet API (PROD)
+                    - chain: "cardano"
+                      service: "blockchain-indexer-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-11be0660-4aed-463e-8aeb-42b928312ece" # Cardano - Blockchain Indexer API (DEV)
+                      prod_collection_id: "25680306-45818341-0a26-4bdc-94f0-4655c3818258" # Cardano - Blockchain Indexer API (PROD)
+                    - chain: "cardano"
+                      service: "market-price-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-06607ddd-ec48-432a-875c-5882168e9d2f" # Cardano - Market Price API (DEV)
+                      prod_collection_id: "25680306-ac39edad-6eca-4411-b9c4-ac7b0bdbf987" # Cardano - Market Price API (PROD)
+                    - chain: "cardano"
+                      service: "managed-contracts-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-6fba519e-1528-4c67-a804-4e0f303327bf" # Cardano - Managed Contracts API (DEV)
+                      prod_collection_id: "25680306-dfebe48e-adff-4e7f-abac-51ca700b27d1" # Cardano - Managed Contracts API (PROD)
+                    - chain: "cardano"
+                      service: "transaction-manager-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-aa2792fb-c80a-4f86-ba70-899fad4aa0f2" # Cardano - Transaction Manager API (DEV)
+                      prod_collection_id: "25680306-1f6ed3e5-f71a-4a37-bf38-3257b4ec3cf3" # Cardano - Transaction Manager API (PROD)
+                    - chain: "dogecoin"
+                      service: "blockchain-indexer-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-e37b22b3-b981-4777-a62a-ffb302c7de32" # Dogecoin - Blockchain Indexer API (DEV)
+                      prod_collection_id: "25680306-d41b4aef-ebf4-4871-a518-bd26795ee65c" # Dogecoin - Blockchain Indexer API (PROD)
+                    - chain: "dogecoin"
+                      service: "node-rpc-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "25680306-42f880e4-8e29-4453-98d9-3da264ad18c7" # Dogecoin - Node RPC API (DEV)
+                      prod_collection_id: "25680306-e0b01373-b871-4fde-a547-66d3ef99e126" # Dogecoin - Node RPC API (PROD)
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18"
+
+            - name: Install Dependencies
+              run: npm install -g openapi-to-postmanv2
+
+            - name: Update Postman Collection
+              env:
+                  POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+              run: |
+                  if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+                    echo "Pushing to DEV workspace"
+                    COLLECTION_ID="${{ matrix.collections.dev_collection_id }}"
+                  elif [[ ${{ github.event_name }} == 'push' ]]; then
+                    echo "Pushing to PROD workspace"
+                    COLLECTION_ID="${{ matrix.collections.prod_collection_id }}"
+                  fi
+
+                  bash ./scripts/update_postman_collection.sh ${{ secrets.POSTMAN_API_KEY }} \
+                      "$COLLECTION_ID" \
+                      "${{ matrix.collections.chain }}" \
+                      "${{ matrix.collections.service }}" \
+                      "${{ matrix.collections.filename }}"
