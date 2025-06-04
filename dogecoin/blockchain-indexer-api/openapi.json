@@ -1200,20 +1200,6 @@
                     }
                 }
             }
-        },
-        "/healthcheck": {
-            "get": {
-                "tags": ["crate"],
-                "operationId": "healthcheck",
-                "responses": {
-                    "200": {
-                        "description": "Service is working"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
         }
     },
     "components": {
@@ -2171,11 +2157,6 @@
     "security": [
         {
             "api-key": []
-        }
-    ],
-    "tags": [
-        {
-            "name": "Maestro"
         }
     ]
 }

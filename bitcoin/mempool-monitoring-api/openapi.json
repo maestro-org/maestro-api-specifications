@@ -939,10 +939,5 @@
         {
             "api-key": []
         }
-    ],
-    "tags": [
-        {
-            "name": "Maestro"
-        }
     ]
 }
