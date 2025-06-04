@@ -1,0 +1,11 @@
+{
+    "inputs": [
+        {
+            "inputFile": "../blockchain-indexer-api/openapi.json"
+        },
+        {
+            "inputFile": "../node-rpc-api/openapi.json"
+        }
+    ],
+    "output": "./merged.json"
+}
