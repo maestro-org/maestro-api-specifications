@@ -1,0 +1,13 @@
+{
+    "inputs":
+        [
+            { "inputFile": "../blockchain-indexer-api/openapi.json" },
+            { "inputFile": "../mempool-monitoring-api/openapi.json" },
+            { "inputFile": "../wallet-api/openapi.json" },
+            {
+                "inputFile": "../node-rpc-api/openapi.json",
+                "pathModification": { "prepend": "/rpc" },
+            },
+        ],
+    "output": "./openapi-unified.json",
+}
