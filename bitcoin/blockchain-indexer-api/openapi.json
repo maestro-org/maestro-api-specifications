@@ -3237,6 +3237,49 @@
                     }
                 }
             },
+            "MagicEdenCollectionStats": {
+                "type": "object",
+                "required": [
+                    "totalVolume",
+                    "owners",
+                    "supply",
+                    "floorPrice",
+                    "totalListed",
+                    "pendingTransactions",
+                    "inscriptionNumberMin",
+                    "inscriptionNumberMax",
+                    "symbol"
+                ],
+                "properties": {
+                    "floorPrice": {
+                        "type": "string"
+                    },
+                    "inscriptionNumberMax": {
+                        "type": "string"
+                    },
+                    "inscriptionNumberMin": {
+                        "type": "string"
+                    },
+                    "owners": {
+                        "type": "string"
+                    },
+                    "pendingTransactions": {
+                        "type": "string"
+                    },
+                    "supply": {
+                        "type": "string"
+                    },
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "totalListed": {
+                        "type": "string"
+                    },
+                    "totalVolume": {
+                        "type": "string"
+                    }
+                }
+            },
             "MagicEdenRuneTrades": {
                 "type": "object",
                 "required": [
@@ -4359,6 +4402,18 @@
                 "properties": {
                     "data": {
                         "$ref": "#/components/schemas/MagicEdenCollection"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/ChainTip"
+                    }
+                }
+            },
+            "TimestampedCollectionStatsBySymbol": {
+                "type": "object",
+                "required": ["data", "last_updated"],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/MagicEdenCollectionStats"
                     },
                     "last_updated": {
                         "$ref": "#/components/schemas/ChainTip"
