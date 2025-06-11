@@ -1530,6 +1530,47 @@
           }
         }
       },
+      "/assets/collections/{collection_symbol}/stats": {
+        "get": {
+          "tags": [
+            "Inscriptions"
+          ],
+          "summary": "Collection Stats by Collection Symbol",
+          "description": "Provides stats for a given inscription total volume, floor price, and total listed. This is useful for rendering collection summaries or for display in marketplaces and aggregators.",
+          "operationId": "collection_stats_by_collection_symbol",
+          "parameters": [
+            {
+              "name": "collection_symbol",
+              "in": "path",
+              "description": "Collection symbol (UTF-8)",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "example": "twick"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Requested data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TimestampedCollectionStatsBySymbol"
+                  },
+                  "example": "{\n    \"data\": {\n        \"totalVolume\": \"123456789\",\n        \"owners\": \"42\",\n        \"supply\": \"1000\",\n        \"floorPrice\": \"0.05\",\n        \"totalListed\": \"150\",\n        \"pendingTransactions\": \"3\",\n        \"inscriptionNumberMin\": \"100000\",\n        \"inscriptionNumberMax\": \"200000\",\n        \"symbol\": \"twick\"\n    },\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000001998e2059bcbb25f76fd0ef39db8ddfc5c31c5ea95f1f\",\n        \"block_height\": 876644\n    }\n}"
+                }
+              }
+            },
+            "400": {
+              "description": "Malformed query parameters"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
       "/assets/inscriptions/{inscription_id}": {
         "get": {
           "tags": [
