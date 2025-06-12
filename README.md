@@ -9,6 +9,7 @@ This repository contains a collection of OpenAPI specifications for various Maes
 Maestro provides a suite of APIs for blockchain services across multiple chains, including Bitcoin, Cardano, Dogecoin, and Midnight. Each API is documented using the OpenAPI standard, ensuring clarity and consistency for developers.
 
 ## API Documentation Viewer
+
 You can explore all Maestro OpenAPI specifications using Swagger UI at:
 
 🔗 [https://swagger.gomaestro.org/](https://swagger.gomaestro.org/)
@@ -41,6 +42,21 @@ The repository is organized by blockchain and service:
     -   Indexer GraphQL API
 
 Each service's OpenAPI specification is located in its respective directory.
+
+## Merged Specifications and MCP Server
+
+For each chain, OpenAPI specifications have been merged using [openapi-merge-cli](https://www.npmjs.com/package/openapi-merge-cli).
+For example, specifications for Bitcoin can be merged using:
+
+```
+npx openapi-merge-cli --config bitcoin/merged/merge-config.json
+```
+
+The merged specification is then used to generate the [Maestro MCP Server](https://github.com/maestro-org/maestro-mcp-server) using [openapi-mcp-generator](https://github.com/harsha-iiiv/openapi-mcp-generator):
+
+```
+npx openapi-mcp-generator --input bitcoin/merged/openapi-merged.json --output /PATH/TO/maestro-mcp-server --force --transport streamable-http --port 3000
+```
 
 ## License
 
