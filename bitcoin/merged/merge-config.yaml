@@ -9,5 +9,5 @@
                 "pathModification": { "prepend": "/rpc" },
             },
         ],
-    "output": "./openapi-unified.json",
+    "output": "./openapi-merged.json",
 }

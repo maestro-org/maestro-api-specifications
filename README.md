@@ -43,7 +43,7 @@ The repository is organized by blockchain and service:
 
 Each service's OpenAPI specification is located in its respective directory.
 
-## Merged Specifications
+## Merged Specifications and MCP Server
 
 For each chain, OpenAPI specifications have been merged using [openapi-merge-cli](https://www.npmjs.com/package/openapi-merge-cli).
 For example, specifications for Bitcoin can be merged using:
@@ -52,10 +52,10 @@ For example, specifications for Bitcoin can be merged using:
 npx openapi-merge-cli --config bitcoin/merged/merge-config.yaml
 ```
 
-## Generate MCP server
+The merged specification is then used to generate the [Maestro MCP Server](https://github.com/maestro-org/maestro-mcp-server) using [openapi-mcp-generator](https://github.com/harsha-iiiv/openapi-mcp-generator):
 
 ```
-npx openapi-mcp-generator --input bitcoin/merged/openapi-unified.json --output ../maestro-mcp-server --force
+npx openapi-mcp-generator --input bitcoin/merged/openapi-merged.json --output /PATH/TO/maestro-mcp-server --force
 ```
 
 ## License
