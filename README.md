@@ -49,7 +49,7 @@ For each chain, OpenAPI specifications have been merged using [openapi-merge-cli
 For example, specifications for Bitcoin can be merged using:
 
 ```
-npx openapi-merge-cli --config bitcoin/merged/merge-config.yaml
+npx openapi-merge-cli --config bitcoin/merged/merge-config.json
 ```
 
 The merged specification is then used to generate the [Maestro MCP Server](https://github.com/maestro-org/maestro-mcp-server) using [openapi-mcp-generator](https://github.com/harsha-iiiv/openapi-mcp-generator):
