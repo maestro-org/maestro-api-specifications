@@ -55,7 +55,7 @@ npx openapi-merge-cli --config bitcoin/merged/merge-config.json
 The merged specification is then used to generate the [Maestro MCP Server](https://github.com/maestro-org/maestro-mcp-server) using [openapi-mcp-generator](https://github.com/harsha-iiiv/openapi-mcp-generator):
 
 ```
-npx openapi-mcp-generator --input bitcoin/merged/openapi-merged.json --output /PATH/TO/maestro-mcp-server --force
+npx openapi-mcp-generator --input bitcoin/merged/openapi-merged.json --output /PATH/TO/maestro-mcp-server --force --transport streamable-http --port 3000
 ```
 
 ## License
