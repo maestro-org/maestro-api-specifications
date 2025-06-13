@@ -1,2788 +1,2759 @@
 {
-  "components": {
-    "schemas": {
-      "api_bitcoin.APIError": {
-        "properties": {
-          "error": {
-            "description": "Error returned from the API request",
-            "example": "Bad Request",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BatchTxsRequest": {
-        "properties": {
-          "tx_ids": {
-            "items": {
-              "type": "string"
-            },
-            "maxItems": 50,
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "required": [
-          "tx_ids"
-        ],
-        "type": "object"
-      },
-      "api_bitcoin.Bip9": {
-        "properties": {
-          "bit": {
-            "type": "integer"
-          },
-          "since": {
-            "type": "integer"
-          },
-          "start_time": {
-            "type": "integer"
-          },
-          "statistics": {
-            "$ref": "#/components/schemas/api_bitcoin.Statistics"
-          },
-          "status": {
-            "type": "string"
-          },
-          "timeout": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinBlock": {
-        "properties": {
-          "bits": {
-            "type": "string"
-          },
-          "chainwork": {
-            "type": "string"
-          },
-          "confirmations": {
-            "type": "integer"
-          },
-          "difficulty": {
-            "type": "number"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "mediantime": {
-            "type": "integer"
-          },
-          "merkleroot": {
-            "type": "string"
-          },
-          "miner": {
-            "$ref": "#/components/schemas/api_bitcoin.MinerInfo"
-          },
-          "nTx": {
-            "type": "integer"
-          },
-          "nonce": {
-            "type": "integer"
-          },
-          "previousblockhash": {
-            "type": "string"
-          },
-          "size": {
-            "type": "integer"
-          },
-          "strippedsize": {
-            "type": "integer"
-          },
-          "time": {
-            "type": "integer"
-          },
-          "tx": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "version": {
-            "type": "integer"
-          },
-          "versionHex": {
-            "type": "string"
-          },
-          "weight": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinBlockResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.BitcoinBlock"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinBlockVerbose": {
-        "properties": {
-          "bits": {
-            "type": "string"
-          },
-          "chainwork": {
-            "type": "string"
-          },
-          "confirmations": {
-            "type": "integer"
-          },
-          "difficulty": {
-            "type": "number"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "mediantime": {
-            "type": "integer"
-          },
-          "merkleroot": {
-            "type": "string"
-          },
-          "miner": {
-            "$ref": "#/components/schemas/api_bitcoin.MinerInfo"
-          },
-          "nTx": {
-            "type": "integer"
-          },
-          "nonce": {
-            "type": "integer"
-          },
-          "previousblockhash": {
-            "type": "string"
-          },
-          "size": {
-            "type": "integer"
-          },
-          "strippedsize": {
-            "type": "integer"
-          },
-          "time": {
-            "type": "integer"
-          },
-          "tx": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "version": {
-            "type": "integer"
-          },
-          "versionHex": {
-            "type": "string"
-          },
-          "weight": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinBlockVerboseResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockVerbose"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinBlocksResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.BitcoinBlock"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinDecodedTransaction": {
-        "properties": {
-          "hash": {
-            "type": "string"
-          },
-          "hex": {
-            "type": "string"
-          },
-          "locktime": {
-            "type": "integer"
-          },
-          "size": {
-            "type": "integer"
-          },
-          "txid": {
-            "type": "string"
-          },
-          "version": {
-            "type": "integer"
-          },
-          "vin": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.Vin"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "vout": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.Vout"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "vsize": {
-            "type": "integer"
-          },
-          "weight": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinDecodedTransactionResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.BitcoinDecodedTransaction"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinTransactionVerbose": {
-        "properties": {
-          "blockhash": {
-            "type": "string"
-          },
-          "blockheight": {
-            "type": "integer"
-          },
-          "blocktime": {
-            "type": "integer"
-          },
-          "confirmations": {
-            "type": "integer"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "hex": {
-            "type": "string"
-          },
-          "input_addresses": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "locktime": {
-            "type": "integer"
-          },
-          "output_addresses": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "size": {
-            "type": "integer"
-          },
-          "time": {
-            "type": "integer"
-          },
-          "total_fees": {
-            "type": "number"
-          },
-          "total_input_volume": {
-            "type": "number"
-          },
-          "total_output_volume": {
-            "type": "number"
-          },
-          "txid": {
-            "type": "string"
-          },
-          "version": {
-            "type": "integer"
-          },
-          "vin": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.VinVerbose"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "vout": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.VoutVerbose"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "vsize": {
-            "type": "integer"
-          },
-          "weight": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinTransactionVerboseResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinTransactionsBatchResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BitcoinTransactionsVerboseResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BlockMinerResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.MinerInfo"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BlockVolume": {
-        "properties": {
-          "total_output_satoshis": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BlockVolumeResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.BlockVolume"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BlockchainInfo": {
-        "properties": {
-          "automatic_pruning": {
-            "type": "boolean"
-          },
-          "bestblockhash": {
-            "type": "string"
-          },
-          "blocks": {
-            "type": "integer"
-          },
-          "chain": {
-            "type": "string"
-          },
-          "chainwork": {
-            "type": "string"
-          },
-          "difficulty": {
-            "type": "number"
-          },
-          "headers": {
-            "type": "integer"
-          },
-          "initialblockdownload": {
-            "type": "boolean"
-          },
-          "mediantime": {
-            "type": "integer"
-          },
-          "prune_target_size": {
-            "type": "integer"
-          },
-          "pruned": {
-            "type": "boolean"
-          },
-          "pruneheight": {
-            "type": "integer"
-          },
-          "size_on_disk": {
-            "type": "integer"
-          },
-          "softforks": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/api_bitcoin.Softfork"
-            },
-            "type": "object"
-          },
-          "verificationprogress": {
-            "type": "number"
-          },
-          "warnings": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.BlockchainInfoResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.BlockchainInfo"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.EstimateSmartFee": {
-        "properties": {
-          "blocks": {
-            "type": "integer"
-          },
-          "feerate": {
-            "type": "number"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.EstimateSmartFeeResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.EstimateSmartFee"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.LastUpdatedBlock": {
-        "properties": {
-          "block_hash": {
-            "type": "string"
-          },
-          "block_height": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolInfoResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.MempoolInfoResult"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolInfoResult": {
-        "properties": {
-          "bytes": {
-            "description": "Total memory usage for the mempool (in bytes)",
-            "type": "integer"
-          },
-          "fullrbf": {
-            "description": "Whether full replace-by-fee (RBF) is enabled",
-            "type": "boolean"
-          },
-          "incrementalrelayfee": {
-            "description": "The incremental relay fee setting (in BTC)",
-            "type": "number"
-          },
-          "loaded": {
-            "description": "Whether the mempool is fully loaded",
-            "type": "boolean"
-          },
-          "maxmempool": {
-            "description": "Maximum memory usage for the mempool (in bytes)",
-            "type": "integer"
-          },
-          "mempoolminfee": {
-            "description": "The minimum fee rate (in BTC/kB) for mempool transactions",
-            "type": "number"
-          },
-          "minrelaytxfee": {
-            "description": "The minimum fee rate (in BTC/kB) for relaying transactions",
-            "type": "number"
-          },
-          "size": {
-            "description": "Number of transactions in the mempool",
-            "type": "integer"
-          },
-          "total_fee": {
-            "description": "The total fees (in BTC) in the mempool",
-            "type": "number"
-          },
-          "unbroadcastcount": {
-            "description": "Number of transactions that have not been broadcast",
-            "type": "integer"
-          },
-          "usage": {
-            "description": "Total usage of the mempool (in bytes)",
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolTxAncestorsResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolTxDescendantsResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolTxDetailsResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.MempoolTxDetailsResult"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolTxDetailsResult": {
-        "properties": {
-          "ancestorcount": {
-            "type": "integer"
-          },
-          "ancestorsize": {
-            "type": "integer"
-          },
-          "bip125-replaceable": {
-            "type": "boolean"
-          },
-          "depends": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "descendantcount": {
-            "type": "integer"
-          },
-          "descendantsize": {
-            "type": "integer"
-          },
-          "fees": {
-            "$ref": "#/components/schemas/api_bitcoin.TxFees"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "spentby": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "time": {
-            "type": "integer"
-          },
-          "unbroadcast": {
-            "type": "boolean"
-          },
-          "vsize": {
-            "type": "integer"
-          },
-          "weight": {
-            "type": "integer"
-          },
-          "wtxid": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolTxsResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.MempoolTxsResult"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MempoolTxsResult": {
-        "properties": {
-          "mempool_sequence": {
-            "description": "Sequence number of the mempool",
-            "type": "integer"
-          },
-          "txids": {
-            "description": "List of transaction IDs",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.MinerInfo": {
-        "properties": {
-          "addresses": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "icon_url": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "tags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "url": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.NodeRPCError": {
-        "properties": {
-          "code": {
-            "description": "Error code returned from the API request",
-            "example": 0,
-            "type": "integer"
-          },
-          "node rpc error": {
-            "description": "Error returned from the API request",
-            "example": "node rpc error",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.PSBT": {
-        "properties": {
-          "fee": {
-            "type": "number"
-          },
-          "global_xpubs": {
-            "items": {},
-            "type": "array",
-            "uniqueItems": false
-          },
-          "inputs": {
-            "items": {
-              "properties": {
-                "bip32_derivs": {
-                  "items": {
-                    "properties": {
-                      "master_fingerprint": {
+    "components": {
+        "schemas": {
+            "api_bitcoin.APIError": {
+                "properties": {
+                    "error": {
+                        "description": "Error returned from the API request",
+                        "example": "Bad Request",
                         "type": "string"
-                      },
-                      "path": {
-                        "type": "string"
-                      },
-                      "pubkey": {
-                        "type": "string"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "type": "array",
-                  "uniqueItems": false
+                    }
                 },
-                "non_witness_utxo": {
-                  "properties": {
-                    "hash": {
-                      "type": "string"
+                "type": "object"
+            },
+            "api_bitcoin.BatchTxsRequest": {
+                "properties": {
+                    "tx_ids": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "maxItems": 50,
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "required": ["tx_ids"],
+                "type": "object"
+            },
+            "api_bitcoin.Bip9": {
+                "properties": {
+                    "bit": {
+                        "type": "integer"
                     },
-                    "locktime": {
-                      "type": "integer"
+                    "since": {
+                        "type": "integer"
+                    },
+                    "start_time": {
+                        "type": "integer"
+                    },
+                    "statistics": {
+                        "$ref": "#/components/schemas/api_bitcoin.Statistics"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "timeout": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinBlock": {
+                "properties": {
+                    "bits": {
+                        "type": "string"
+                    },
+                    "chainwork": {
+                        "type": "string"
+                    },
+                    "confirmations": {
+                        "type": "integer"
+                    },
+                    "difficulty": {
+                        "type": "number"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "mediantime": {
+                        "type": "integer"
+                    },
+                    "merkleroot": {
+                        "type": "string"
+                    },
+                    "miner": {
+                        "$ref": "#/components/schemas/api_bitcoin.MinerInfo"
+                    },
+                    "nTx": {
+                        "type": "integer"
+                    },
+                    "nonce": {
+                        "type": "integer"
+                    },
+                    "previousblockhash": {
+                        "type": "string"
                     },
                     "size": {
-                      "type": "integer"
+                        "type": "integer"
                     },
-                    "txid": {
-                      "type": "string"
+                    "strippedsize": {
+                        "type": "integer"
+                    },
+                    "time": {
+                        "type": "integer"
+                    },
+                    "tx": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
                     },
                     "version": {
-                      "type": "integer"
+                        "type": "integer"
                     },
-                    "vin": {
-                      "items": {
-                        "properties": {
-                          "scriptSig": {
-                            "properties": {
-                              "asm": {
-                                "type": "string"
-                              },
-                              "hex": {
-                                "type": "string"
-                              }
-                            },
-                            "type": "object"
-                          },
-                          "sequence": {
-                            "type": "integer"
-                          },
-                          "txid": {
-                            "type": "string"
-                          },
-                          "vout": {
-                            "type": "integer"
-                          }
-                        },
-                        "type": "object"
-                      },
-                      "type": "array",
-                      "uniqueItems": false
-                    },
-                    "vout": {
-                      "items": {
-                        "properties": {
-                          "n": {
-                            "type": "integer"
-                          },
-                          "scriptPubKey": {
-                            "properties": {
-                              "address": {
-                                "type": "string"
-                              },
-                              "asm": {
-                                "type": "string"
-                              },
-                              "desc": {
-                                "type": "string"
-                              },
-                              "hex": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "type": "object"
-                          },
-                          "value": {
-                            "type": "number"
-                          }
-                        },
-                        "type": "object"
-                      },
-                      "type": "array",
-                      "uniqueItems": false
-                    },
-                    "vsize": {
-                      "type": "integer"
+                    "versionHex": {
+                        "type": "string"
                     },
                     "weight": {
-                      "type": "integer"
+                        "type": "integer"
                     }
-                  },
-                  "type": "object"
                 },
-                "witness_utxo": {
-                  "properties": {
-                    "amount": {
-                      "type": "number"
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinBlockResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.BitcoinBlock"
                     },
-                    "scriptPubKey": {
-                      "properties": {
-                        "address": {
-                          "type": "string"
-                        },
-                        "asm": {
-                          "type": "string"
-                        },
-                        "desc": {
-                          "type": "string"
-                        },
-                        "hex": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
                     }
-                  },
-                  "type": "object"
-                }
-              },
-              "type": "object"
+                },
+                "type": "object"
             },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "outputs": {
-            "items": {
-              "properties": {
-                "bip32_derivs": {
-                  "items": {
-                    "properties": {
-                      "master_fingerprint": {
+            "api_bitcoin.BitcoinBlockVerbose": {
+                "properties": {
+                    "bits": {
                         "type": "string"
-                      },
-                      "path": {
-                        "type": "string"
-                      },
-                      "pubkey": {
-                        "type": "string"
-                      }
                     },
-                    "type": "object"
-                  },
-                  "type": "array",
-                  "uniqueItems": false
-                }
-              },
-              "type": "object"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "proprietary": {
-            "items": {},
-            "type": "array",
-            "uniqueItems": false
-          },
-          "psbt_version": {
-            "type": "integer"
-          },
-          "tx": {
-            "properties": {
-              "hash": {
-                "type": "string"
-              },
-              "locktime": {
-                "type": "integer"
-              },
-              "size": {
-                "type": "integer"
-              },
-              "txid": {
-                "type": "string"
-              },
-              "version": {
-                "type": "integer"
-              },
-              "vin": {
-                "items": {
-                  "properties": {
-                    "scriptSig": {
-                      "properties": {
-                        "asm": {
-                          "type": "string"
+                    "chainwork": {
+                        "type": "string"
+                    },
+                    "confirmations": {
+                        "type": "integer"
+                    },
+                    "difficulty": {
+                        "type": "number"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "mediantime": {
+                        "type": "integer"
+                    },
+                    "merkleroot": {
+                        "type": "string"
+                    },
+                    "miner": {
+                        "$ref": "#/components/schemas/api_bitcoin.MinerInfo"
+                    },
+                    "nTx": {
+                        "type": "integer"
+                    },
+                    "nonce": {
+                        "type": "integer"
+                    },
+                    "previousblockhash": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "integer"
+                    },
+                    "strippedsize": {
+                        "type": "integer"
+                    },
+                    "time": {
+                        "type": "integer"
+                    },
+                    "tx": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
                         },
-                        "hex": {
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
+                        "type": "array",
+                        "uniqueItems": false
                     },
-                    "sequence": {
-                      "type": "integer"
+                    "version": {
+                        "type": "integer"
+                    },
+                    "versionHex": {
+                        "type": "string"
+                    },
+                    "weight": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinBlockVerboseResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockVerbose"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinBlocksResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.BitcoinBlock"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinDecodedTransaction": {
+                "properties": {
+                    "hash": {
+                        "type": "string"
+                    },
+                    "hex": {
+                        "type": "string"
+                    },
+                    "locktime": {
+                        "type": "integer"
+                    },
+                    "size": {
+                        "type": "integer"
                     },
                     "txid": {
-                      "type": "string"
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "integer"
+                    },
+                    "vin": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.Vin"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
                     },
                     "vout": {
-                      "type": "integer"
-                    }
-                  },
-                  "type": "object"
-                },
-                "type": "array",
-                "uniqueItems": false
-              },
-              "vout": {
-                "items": {
-                  "properties": {
-                    "n": {
-                      "type": "integer"
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.Vout"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
                     },
-                    "scriptPubKey": {
-                      "properties": {
-                        "address": {
-                          "type": "string"
+                    "vsize": {
+                        "type": "integer"
+                    },
+                    "weight": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinDecodedTransactionResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.BitcoinDecodedTransaction"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinTransactionVerbose": {
+                "properties": {
+                    "blockhash": {
+                        "type": "string"
+                    },
+                    "blockheight": {
+                        "type": "integer"
+                    },
+                    "blocktime": {
+                        "type": "integer"
+                    },
+                    "confirmations": {
+                        "type": "integer"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "hex": {
+                        "type": "string"
+                    },
+                    "input_addresses": {
+                        "items": {
+                            "type": "string"
                         },
-                        "asm": {
-                          "type": "string"
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "locktime": {
+                        "type": "integer"
+                    },
+                    "output_addresses": {
+                        "items": {
+                            "type": "string"
                         },
-                        "desc": {
-                          "type": "string"
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "size": {
+                        "type": "integer"
+                    },
+                    "time": {
+                        "type": "integer"
+                    },
+                    "total_fees": {
+                        "type": "number"
+                    },
+                    "total_input_volume": {
+                        "type": "number"
+                    },
+                    "total_output_volume": {
+                        "type": "number"
+                    },
+                    "txid": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "integer"
+                    },
+                    "vin": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.VinVerbose"
                         },
-                        "hex": {
-                          "type": "string"
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "vout": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.VoutVerbose"
                         },
-                        "type": {
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "vsize": {
+                        "type": "integer"
+                    },
+                    "weight": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinTransactionVerboseResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinTransactionsBatchResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BitcoinTransactionsVerboseResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerbose"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BlockMinerResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.MinerInfo"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BlockVolume": {
+                "properties": {
+                    "total_output_satoshis": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BlockVolumeResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.BlockVolume"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BlockchainInfo": {
+                "properties": {
+                    "automatic_pruning": {
+                        "type": "boolean"
+                    },
+                    "bestblockhash": {
+                        "type": "string"
+                    },
+                    "blocks": {
+                        "type": "integer"
+                    },
+                    "chain": {
+                        "type": "string"
+                    },
+                    "chainwork": {
+                        "type": "string"
+                    },
+                    "difficulty": {
+                        "type": "number"
+                    },
+                    "headers": {
+                        "type": "integer"
+                    },
+                    "initialblockdownload": {
+                        "type": "boolean"
+                    },
+                    "mediantime": {
+                        "type": "integer"
+                    },
+                    "prune_target_size": {
+                        "type": "integer"
+                    },
+                    "pruned": {
+                        "type": "boolean"
+                    },
+                    "pruneheight": {
+                        "type": "integer"
+                    },
+                    "size_on_disk": {
+                        "type": "integer"
+                    },
+                    "softforks": {
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/api_bitcoin.Softfork"
+                        },
+                        "type": "object"
+                    },
+                    "verificationprogress": {
+                        "type": "number"
+                    },
+                    "warnings": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.BlockchainInfoResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.BlockchainInfo"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.EstimateSmartFee": {
+                "properties": {
+                    "blocks": {
+                        "type": "integer"
+                    },
+                    "feerate": {
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.EstimateSmartFeeResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.EstimateSmartFee"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.LastUpdatedBlock": {
+                "properties": {
+                    "block_hash": {
+                        "type": "string"
+                    },
+                    "block_height": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolInfoResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.MempoolInfoResult"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolInfoResult": {
+                "properties": {
+                    "bytes": {
+                        "description": "Total memory usage for the mempool (in bytes)",
+                        "type": "integer"
+                    },
+                    "fullrbf": {
+                        "description": "Whether full replace-by-fee (RBF) is enabled",
+                        "type": "boolean"
+                    },
+                    "incrementalrelayfee": {
+                        "description": "The incremental relay fee setting (in BTC)",
+                        "type": "number"
+                    },
+                    "loaded": {
+                        "description": "Whether the mempool is fully loaded",
+                        "type": "boolean"
+                    },
+                    "maxmempool": {
+                        "description": "Maximum memory usage for the mempool (in bytes)",
+                        "type": "integer"
+                    },
+                    "mempoolminfee": {
+                        "description": "The minimum fee rate (in BTC/kB) for mempool transactions",
+                        "type": "number"
+                    },
+                    "minrelaytxfee": {
+                        "description": "The minimum fee rate (in BTC/kB) for relaying transactions",
+                        "type": "number"
+                    },
+                    "size": {
+                        "description": "Number of transactions in the mempool",
+                        "type": "integer"
+                    },
+                    "total_fee": {
+                        "description": "The total fees (in BTC) in the mempool",
+                        "type": "number"
+                    },
+                    "unbroadcastcount": {
+                        "description": "Number of transactions that have not been broadcast",
+                        "type": "integer"
+                    },
+                    "usage": {
+                        "description": "Total usage of the mempool (in bytes)",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolTxAncestorsResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolTxDescendantsResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolTxDetailsResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.MempoolTxDetailsResult"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolTxDetailsResult": {
+                "properties": {
+                    "ancestorcount": {
+                        "type": "integer"
+                    },
+                    "ancestorsize": {
+                        "type": "integer"
+                    },
+                    "bip125-replaceable": {
+                        "type": "boolean"
+                    },
+                    "depends": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "descendantcount": {
+                        "type": "integer"
+                    },
+                    "descendantsize": {
+                        "type": "integer"
+                    },
+                    "fees": {
+                        "$ref": "#/components/schemas/api_bitcoin.TxFees"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "spentby": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "time": {
+                        "type": "integer"
+                    },
+                    "unbroadcast": {
+                        "type": "boolean"
+                    },
+                    "vsize": {
+                        "type": "integer"
+                    },
+                    "weight": {
+                        "type": "integer"
+                    },
+                    "wtxid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolTxsResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.MempoolTxsResult"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MempoolTxsResult": {
+                "properties": {
+                    "mempool_sequence": {
+                        "description": "Sequence number of the mempool",
+                        "type": "integer"
+                    },
+                    "txids": {
+                        "description": "List of transaction IDs",
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.MinerInfo": {
+                "properties": {
+                    "addresses": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "icon_url": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "tags": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.NodeRPCError": {
+                "properties": {
+                    "code": {
+                        "description": "Error code returned from the API request",
+                        "example": 0,
+                        "type": "integer"
+                    },
+                    "node rpc error": {
+                        "description": "Error returned from the API request",
+                        "example": "node rpc error",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.PSBT": {
+                "properties": {
+                    "fee": {
+                        "type": "number"
+                    },
+                    "global_xpubs": {
+                        "items": {},
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "inputs": {
+                        "items": {
+                            "properties": {
+                                "bip32_derivs": {
+                                    "items": {
+                                        "properties": {
+                                            "master_fingerprint": {
+                                                "type": "string"
+                                            },
+                                            "path": {
+                                                "type": "string"
+                                            },
+                                            "pubkey": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "type": "array",
+                                    "uniqueItems": false
+                                },
+                                "non_witness_utxo": {
+                                    "properties": {
+                                        "hash": {
+                                            "type": "string"
+                                        },
+                                        "locktime": {
+                                            "type": "integer"
+                                        },
+                                        "size": {
+                                            "type": "integer"
+                                        },
+                                        "txid": {
+                                            "type": "string"
+                                        },
+                                        "version": {
+                                            "type": "integer"
+                                        },
+                                        "vin": {
+                                            "items": {
+                                                "properties": {
+                                                    "scriptSig": {
+                                                        "properties": {
+                                                            "asm": {
+                                                                "type": "string"
+                                                            },
+                                                            "hex": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "sequence": {
+                                                        "type": "integer"
+                                                    },
+                                                    "txid": {
+                                                        "type": "string"
+                                                    },
+                                                    "vout": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array",
+                                            "uniqueItems": false
+                                        },
+                                        "vout": {
+                                            "items": {
+                                                "properties": {
+                                                    "n": {
+                                                        "type": "integer"
+                                                    },
+                                                    "scriptPubKey": {
+                                                        "properties": {
+                                                            "address": {
+                                                                "type": "string"
+                                                            },
+                                                            "asm": {
+                                                                "type": "string"
+                                                            },
+                                                            "desc": {
+                                                                "type": "string"
+                                                            },
+                                                            "hex": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "value": {
+                                                        "type": "number"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array",
+                                            "uniqueItems": false
+                                        },
+                                        "vsize": {
+                                            "type": "integer"
+                                        },
+                                        "weight": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "witness_utxo": {
+                                    "properties": {
+                                        "amount": {
+                                            "type": "number"
+                                        },
+                                        "scriptPubKey": {
+                                            "properties": {
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "asm": {
+                                                    "type": "string"
+                                                },
+                                                "desc": {
+                                                    "type": "string"
+                                                },
+                                                "hex": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "outputs": {
+                        "items": {
+                            "properties": {
+                                "bip32_derivs": {
+                                    "items": {
+                                        "properties": {
+                                            "master_fingerprint": {
+                                                "type": "string"
+                                            },
+                                            "path": {
+                                                "type": "string"
+                                            },
+                                            "pubkey": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "type": "array",
+                                    "uniqueItems": false
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "proprietary": {
+                        "items": {},
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "psbt_version": {
+                        "type": "integer"
+                    },
+                    "tx": {
+                        "properties": {
+                            "hash": {
+                                "type": "string"
+                            },
+                            "locktime": {
+                                "type": "integer"
+                            },
+                            "size": {
+                                "type": "integer"
+                            },
+                            "txid": {
+                                "type": "string"
+                            },
+                            "version": {
+                                "type": "integer"
+                            },
+                            "vin": {
+                                "items": {
+                                    "properties": {
+                                        "scriptSig": {
+                                            "properties": {
+                                                "asm": {
+                                                    "type": "string"
+                                                },
+                                                "hex": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "sequence": {
+                                            "type": "integer"
+                                        },
+                                        "txid": {
+                                            "type": "string"
+                                        },
+                                        "vout": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "type": "array",
+                                "uniqueItems": false
+                            },
+                            "vout": {
+                                "items": {
+                                    "properties": {
+                                        "n": {
+                                            "type": "integer"
+                                        },
+                                        "scriptPubKey": {
+                                            "properties": {
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "asm": {
+                                                    "type": "string"
+                                                },
+                                                "desc": {
+                                                    "type": "string"
+                                                },
+                                                "hex": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "type": "array",
+                                "uniqueItems": false
+                            },
+                            "vsize": {
+                                "type": "integer"
+                            },
+                            "weight": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "unknown": {
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.PSBTResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_bitcoin.PSBT"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.Softfork": {
+                "properties": {
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "bip9": {
+                        "$ref": "#/components/schemas/api_bitcoin.Bip9"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.Statistics": {
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "elapsed": {
+                        "type": "integer"
+                    },
+                    "period": {
+                        "type": "integer"
+                    },
+                    "possible": {
+                        "type": "boolean"
+                    },
+                    "threshold": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.TxFees": {
+                "properties": {
+                    "ancestor": {
+                        "type": "number"
+                    },
+                    "base": {
+                        "type": "number"
+                    },
+                    "descendant": {
+                        "type": "number"
+                    },
+                    "modified": {
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.Vin": {
+                "properties": {
+                    "coinbase": {
+                        "type": "string"
+                    },
+                    "scriptSig": {
+                        "properties": {
+                            "asm": {
+                                "type": "string"
+                            },
+                            "hex": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "sequence": {
+                        "type": "integer"
+                    },
+                    "txid": {
+                        "type": "string"
+                    },
+                    "txinwitness": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "vout": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_bitcoin.VinVerbose": {
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "coinbase": {
+                        "type": "string"
+                    },
+                    "scriptSig": {
+                        "properties": {
+                            "asm": {
+                                "type": "string"
+                            },
+                            "hex": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "script_type": {
+                        "type": "string"
+                    },
+                    "sequence": {
+                        "type": "integer"
+                    },
+                    "txid": {
+                        "type": "string"
+                    },
+                    "txinwitness": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
                     },
                     "value": {
-                      "type": "number"
+                        "type": "number"
+                    },
+                    "vout": {
+                        "type": "integer"
                     }
-                  },
-                  "type": "object"
                 },
-                "type": "array",
-                "uniqueItems": false
-              },
-              "vsize": {
-                "type": "integer"
-              },
-              "weight": {
-                "type": "integer"
-              }
+                "type": "object"
             },
-            "type": "object"
-          },
-          "unknown": {
-            "type": "object"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.PSBTResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_bitcoin.PSBT"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.Softfork": {
-        "properties": {
-          "active": {
-            "type": "boolean"
-          },
-          "bip9": {
-            "$ref": "#/components/schemas/api_bitcoin.Bip9"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "type": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.Statistics": {
-        "properties": {
-          "count": {
-            "type": "integer"
-          },
-          "elapsed": {
-            "type": "integer"
-          },
-          "period": {
-            "type": "integer"
-          },
-          "possible": {
-            "type": "boolean"
-          },
-          "threshold": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.TxFees": {
-        "properties": {
-          "ancestor": {
-            "type": "number"
-          },
-          "base": {
-            "type": "number"
-          },
-          "descendant": {
-            "type": "number"
-          },
-          "modified": {
-            "type": "number"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.Vin": {
-        "properties": {
-          "coinbase": {
-            "type": "string"
-          },
-          "scriptSig": {
-            "properties": {
-              "asm": {
-                "type": "string"
-              },
-              "hex": {
-                "type": "string"
-              }
+            "api_bitcoin.Vout": {
+                "properties": {
+                    "n": {
+                        "type": "integer"
+                    },
+                    "scriptPubKey": {
+                        "properties": {
+                            "address": {
+                                "type": "string"
+                            },
+                            "asm": {
+                                "type": "string"
+                            },
+                            "desc": {
+                                "type": "string"
+                            },
+                            "hex": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "value": {
+                        "type": "number"
+                    }
+                },
+                "type": "object"
             },
-            "type": "object"
-          },
-          "sequence": {
-            "type": "integer"
-          },
-          "txid": {
-            "type": "string"
-          },
-          "txinwitness": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "vout": {
-            "type": "integer"
-          }
+            "api_bitcoin.VoutVerbose": {
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "n": {
+                        "type": "integer"
+                    },
+                    "scriptPubKey": {
+                        "properties": {
+                            "address": {
+                                "type": "string"
+                            },
+                            "asm": {
+                                "type": "string"
+                            },
+                            "desc": {
+                                "type": "string"
+                            },
+                            "hex": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "script_type": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            }
         },
-        "type": "object"
-      },
-      "api_bitcoin.VinVerbose": {
-        "properties": {
-          "address": {
-            "type": "string"
-          },
-          "coinbase": {
-            "type": "string"
-          },
-          "scriptSig": {
-            "properties": {
-              "asm": {
-                "type": "string"
-              },
-              "hex": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          },
-          "script_type": {
-            "type": "string"
-          },
-          "sequence": {
-            "type": "integer"
-          },
-          "txid": {
-            "type": "string"
-          },
-          "txinwitness": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "value": {
-            "type": "number"
-          },
-          "vout": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.Vout": {
-        "properties": {
-          "n": {
-            "type": "integer"
-          },
-          "scriptPubKey": {
-            "properties": {
-              "address": {
-                "type": "string"
-              },
-              "asm": {
-                "type": "string"
-              },
-              "desc": {
-                "type": "string"
-              },
-              "hex": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          },
-          "value": {
-            "type": "number"
-          }
-        },
-        "type": "object"
-      },
-      "api_bitcoin.VoutVerbose": {
-        "properties": {
-          "address": {
-            "type": "string"
-          },
-          "n": {
-            "type": "integer"
-          },
-          "scriptPubKey": {
-            "properties": {
-              "address": {
-                "type": "string"
-              },
-              "asm": {
-                "type": "string"
-              },
-              "desc": {
-                "type": "string"
-              },
-              "hex": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          },
-          "script_type": {
-            "type": "string"
-          },
-          "value": {
-            "type": "number"
-          }
-        },
-        "type": "object"
-      }
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "description": "Project API Key",
+                "in": "header",
+                "name": "api-key",
+                "type": "apiKey"
+            }
+        }
     },
-    "securitySchemes": {
-      "api-key": {
-        "description": "Project API Key",
-        "in": "header",
-        "name": "api-key",
-        "type": "apiKey"
-      }
-    }
-  },
-  "info": {
-    "description": "This API offers direct, low-latency access to Bitcoin full nodes via API (JSON-RPC protocol), giving developers reliable mempool visibility, transaction relay capabilities, and chain data without the hassle of running their own infrastructure.\n\n#### Key Features:\n- **Full JSON-RPC Support:** Access core Bitcoin functionality through RPC calls like `getblock`, `getrawtransaction`, `sendrawtransaction`, etc.\n- **Blockchain Data Retrieval:** Developers can fetch detailed information about blocks, transactions, and addresses.\n- **Mempool Insight:** Query unconfirmed transactions for faster, more responsive, real-time data access.\n- **High-Availability**: Enterprise-grade infrastructure ensures uptime, sync accuracy and fast transaction relay.\n\n#### Key Benefits for Developers:\n- Skip the operational complexity and computational overhead of maintaining self-hosted Bitcoin nodes.\n- Query mempool and chain data to power wallets, explorers, and backends with minimal latency.\n- Broadcast and verify transactions with trusted relay endpoints.\n- Build production-ready Bitcoin apps without worrying about node health, bandwidth, or reorg handling.",
-    "title": "Bitcoin - Node RPC API",
-    "version": "0.1.1"
-  },
-  "externalDocs": {
-    "description": "",
-    "url": ""
-  },
-  "paths": {
-    "/block/latest": {
-      "get": {
-        "description": "Returns the most recent block on the Bitcoin blockchain.\nUseful for syncing frontends, indexing latest chain state, or watching for new block activity. Set `verbose=true` for full TX data without need for separate calls.",
-        "parameters": [
-          {
-            "description": "Page number for block transactions.",
-            "example": 1,
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Max number of block transactions per page.",
-            "example": 100,
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 100,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Verbose.",
-            "example": false,
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockResponseBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockVerboseResponseBody"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting block."
-          }
-        },
-        "summary": "Latest Block",
-        "tags": [
-          "Blocks"
-        ]
-      }
+    "info": {
+        "description": "This API offers direct, low-latency access to Bitcoin full nodes via API (JSON-RPC protocol), giving developers reliable mempool visibility, transaction relay capabilities, and chain data without the hassle of running their own infrastructure.\n\n#### Key Features:\n- **Full JSON-RPC Support:** Access core Bitcoin functionality through RPC calls like `getblock`, `getrawtransaction`, `sendrawtransaction`, etc.\n- **Blockchain Data Retrieval:** Developers can fetch detailed information about blocks, transactions, and addresses.\n- **Mempool Insight:** Query unconfirmed transactions for faster, more responsive, real-time data access.\n- **High-Availability**: Enterprise-grade infrastructure ensures uptime, sync accuracy and fast transaction relay.\n\n#### Key Benefits for Developers:\n- Skip the operational complexity and computational overhead of maintaining self-hosted Bitcoin nodes.\n- Query mempool and chain data to power wallets, explorers, and backends with minimal latency.\n- Broadcast and verify transactions with trusted relay endpoints.\n- Build production-ready Bitcoin apps without worrying about node health, bandwidth, or reorg handling.",
+        "title": "Bitcoin - Node RPC API",
+        "version": "0.1.1"
     },
-    "/block/range/{start_height}/{end_height}": {
-      "get": {
-        "description": "Fetches basic info for a contiguous block range (start and end height).",
-        "parameters": [
-          {
-            "description": "Start height.",
-            "in": "path",
-            "name": "start_height",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "End height.",
-            "in": "path",
-            "name": "end_height",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Page number.",
-            "example": 1,
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Number of blocks.",
-            "example": 10,
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 10,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order blocks by descending (desc) or ascending (asc).",
-            "example": "asc",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinBlocksResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                }
-              }
-            },
-            "description": "Node RPC error."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting blocks."
-          }
-        },
-        "summary": "Block Range Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
+    "externalDocs": {
+        "description": "",
+        "url": ""
     },
-    "/block/recent": {
-      "get": {
-        "description": "Returns the most recent blocks from the tip going backward. Useful to view or stream recent blockchain activity.",
-        "parameters": [
-          {
-            "description": "Page number.",
-            "example": 1,
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Number of blocks.",
-            "example": 5,
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 10,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order blocks by descending (desc) or ascending (asc).",
-            "example": "desc",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinBlocksResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
+    "paths": {
+        "/block/latest": {
+            "get": {
+                "description": "Returns the most recent block on the Bitcoin blockchain.\nUseful for syncing frontends, indexing latest chain state, or watching for new block activity. Set `verbose=true` for full TX data without need for separate calls.",
+                "operationId": "rpc_latest_block",
+                "parameters": [
                     {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                        "description": "Page number for block transactions.",
+                        "example": 1,
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
                     },
                     {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
+                        "description": "Max number of block transactions per page.",
+                        "example": 100,
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 100,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Verbose.",
+                        "example": false,
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
                     }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting blocks."
-          }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockResponseBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockVerboseResponseBody"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting block."
+                    }
+                },
+                "summary": "Latest Block",
+                "tags": ["Blocks"]
+            }
         },
-        "summary": "Recent Block Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
+        "/block/range/{start_height}/{end_height}": {
+            "get": {
+                "description": "Fetches basic info for a contiguous block range (start and end height).",
+                "operationId": "rpc_block_range_info",
+                "parameters": [
+                    {
+                        "description": "Start height.",
+                        "in": "path",
+                        "name": "start_height",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "End height.",
+                        "in": "path",
+                        "name": "end_height",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Page number.",
+                        "example": 1,
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Number of blocks.",
+                        "example": 10,
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 10,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order blocks by descending (desc) or ascending (asc).",
+                        "example": "asc",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinBlocksResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                }
+                            }
+                        },
+                        "description": "Node RPC error."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting blocks."
+                    }
+                },
+                "summary": "Block Range Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/recent": {
+            "get": {
+                "description": "Returns the most recent blocks from the tip going backward. Useful to view or stream recent blockchain activity.",
+                "operationId": "rpc_recent_blocks_info",
+                "parameters": [
+                    {
+                        "description": "Page number.",
+                        "example": 1,
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Number of blocks.",
+                        "example": 5,
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 10,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order blocks by descending (desc) or ascending (asc).",
+                        "example": "desc",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinBlocksResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting blocks."
+                    }
+                },
+                "summary": "Recent Block Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/recent/{count}": {
+            "get": {
+                "description": "Returns a list of the most recently mined blocks, limited by count. It provides a snapshot of the latest blockchain activity, starting from the current chain tip and going backward.",
+                "operationId": "rpc_recent_blocks_info_count",
+                "parameters": [
+                    {
+                        "description": "Number of blocks.",
+                        "example": 5,
+                        "in": "path",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "default": 1,
+                            "maximum": 10,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order blocks by descending (desc) or ascending (asc).",
+                        "example": "desc",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinBlocksResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting blocks."
+                    }
+                },
+                "summary": "Recent Block Info Count",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/{height_or_hash}": {
+            "get": {
+                "description": "Retrieve full or summary information for a specific block.\nUseful for analyzing individual blocks or resolving TX data inline.",
+                "operationId": "rpc_block_info",
+                "parameters": [
+                    {
+                        "description": "Block height or hash.",
+                        "in": "path",
+                        "name": "height_or_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Page number for block transactions.",
+                        "example": 1,
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Max number of block transactions per page.",
+                        "example": 100,
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 100,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Verbose.",
+                        "example": false,
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockResponseBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockVerboseResponseBody"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid height."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting block."
+                    }
+                },
+                "summary": "Block Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/{height_or_hash}/miner": {
+            "get": {
+                "description": "Returns metadata about the miner for a specific block.\nIncludes name, known addresses, icon, and associated tags.\nUseful for research or visual analytics on pool distribution.",
+                "operationId": "rpc_block_miner_info",
+                "parameters": [
+                    {
+                        "description": "Block height or hash.",
+                        "in": "path",
+                        "name": "height_or_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BlockMinerResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting block miner."
+                    }
+                },
+                "summary": "Block Miner Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/{height_or_hash}/volume": {
+            "get": {
+                "description": "Returns total transaction output volume (in satoshis) for a block.\nThis provides insight into economic activity, not just block size.",
+                "operationId": "rpc_block_volume",
+                "parameters": [
+                    {
+                        "description": "Block height or hash.",
+                        "in": "path",
+                        "name": "height_or_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BlockVolumeResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting block volume."
+                    }
+                },
+                "summary": "Block Volume",
+                "tags": ["Blocks"]
+            }
+        },
+        "/general/info": {
+            "get": {
+                "description": "Returns global node and chain info: block count, difficulty, pruning, fork status, etc.\nUseful for diagnostics, UI status panels, or infrastructure monitoring.",
+                "operationId": "rpc_chain_info",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BlockchainInfoResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                }
+                            }
+                        },
+                        "description": "Node RPC error."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting blockchain info."
+                    }
+                },
+                "summary": "Blockchain Info",
+                "tags": ["General"]
+            }
+        },
+        "/mempool/info": {
+            "get": {
+                "description": "Returns size, memory usage, fee thresholds, and Replace-By-Fee (RBF) state.\nUseful for gauging current congestion and planning fees accordingly.",
+                "operationId": "rpc_mempool_info",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.MempoolInfoResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                }
+                            }
+                        },
+                        "description": "Node RPC error."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting mempool info."
+                    }
+                },
+                "summary": "Mempool Info",
+                "tags": ["Mempool"]
+            }
+        },
+        "/mempool/transactions": {
+            "get": {
+                "description": "Returns a list of transaction IDs currently in the mempool.",
+                "operationId": "rpc_mempool_transactions",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.MempoolTxsResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting mempool transactions."
+                    }
+                },
+                "summary": "Mempool Transactions",
+                "tags": ["Mempool"]
+            }
+        },
+        "/mempool/transactions/{tx_hash}": {
+            "get": {
+                "description": "Returns full information for a mempool transaction: fees, inputs, Replace-By-Fee (RBF) flags, unconfirmed descendants, etc.\nUseful for inspecting transactions or verifying status.",
+                "operationId": "rpc_mempool_transaction_details",
+                "parameters": [
+                    {
+                        "description": "Transaction hash.",
+                        "in": "path",
+                        "name": "tx_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.MempoolTxDetailsResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting mempool transaction info."
+                    }
+                },
+                "summary": "Mempool Transaction Info",
+                "tags": ["Mempool"]
+            }
+        },
+        "/mempool/transactions/{tx_hash}/ancestors": {
+            "get": {
+                "description": "Lists ancestor TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
+                "operationId": "rpc_mempool_transaction_ancestors",
+                "parameters": [
+                    {
+                        "description": "Transaction hash.",
+                        "in": "path",
+                        "name": "tx_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.MempoolTxAncestorsResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting mempool transaction ancestors."
+                    }
+                },
+                "summary": "Mempool Transaction Ancestors",
+                "tags": ["Mempool"]
+            }
+        },
+        "/mempool/transactions/{tx_hash}/descendants": {
+            "get": {
+                "description": "Lists descendant TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
+                "operationId": "rpc_mempool_transaction_descendants",
+                "parameters": [
+                    {
+                        "description": "Transaction hash.",
+                        "in": "path",
+                        "name": "tx_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.MempoolTxDescendantsResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting mempool transaction descendants."
+                    }
+                },
+                "summary": "Mempool Transaction Descendants",
+                "tags": ["Mempool"]
+            }
+        },
+        "/transaction/batch": {
+            "post": {
+                "description": "Takes up to 50 TX hashes and returns verbose TX data in a single call. Useful for dashboards or syncing nodes without hitting rate limits.",
+                "operationId": "rpc_transaction_info_batch",
+                "parameters": [
+                    {
+                        "description": "Verbose.",
+                        "example": false,
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/api_bitcoin.BatchTxsRequest"
+                            }
+                        }
+                    },
+                    "description": "Transaction hash array.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionsBatchResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request: too many transactions."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction response."
+                    }
+                },
+                "summary": "Transaction Info Batch",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/decode": {
+            "post": {
+                "description": "Takes a raw TX hex and returns structured JSON.\nUseful when building or validating raw transactions.",
+                "operationId": "rpc_transaction_decode",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "description": "Raw Transaction Hex.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinDecodedTransactionResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction response."
+                    }
+                },
+                "summary": "Decode Transaction",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/estimatefee/{blocks}": {
+            "get": {
+                "description": "Estimate approximate fee per kilobyte (kB) needed for a transaction.\nUseful for setting dynamic fee rates in wallets or broadcast tools.",
+                "operationId": "rpc_estimate_smart_fee",
+                "parameters": [
+                    {
+                        "description": "Confirmation target in blocks.",
+                        "example": 50,
+                        "in": "path",
+                        "name": "blocks",
+                        "required": true,
+                        "schema": {
+                            "default": 1,
+                            "maximum": 1008,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Whether to return a more conservative estimate which also satisfies a longer history. A conservative estimate potentially returns a higher feerate and is more likely to be sufficient for the desired target, but is not as responsive to short term drops in the prevailing fee market. Must be one of: 'unset' 'economical' 'conservative'.",
+                        "example": "economical",
+                        "in": "query",
+                        "name": "mode",
+                        "schema": {
+                            "default": "conservative",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.EstimateSmartFeeResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request. Ensure one of the following estimate modes is used: conservative, economical, unset."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing fee estimate response."
+                    }
+                },
+                "summary": "Estimate Fee",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/hex": {
+            "post": {
+                "description": "Same as `/transaction/decode` in that it takes a raw TX hex and returns structured JSON, but it also fetches blockchain metadata such as confirmations and block height.",
+                "operationId": "rpc_transaction_info_hex",
+                "parameters": [
+                    {
+                        "description": "Verbose.",
+                        "example": false,
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "description": "Transaction hex.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerboseResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction response."
+                    }
+                },
+                "summary": "Transaction Info Hex",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/psbt/decode": {
+            "post": {
+                "description": "Takes a signed PSBT hex and returns the internal structure. Covers UTXO metadata, BIP32 deriv paths, inputs/outputs, etc.\nUseful for hardware wallet or multisig integrations.",
+                "operationId": "rpc_psbt_decode",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "description": "Signed PSBT Hex.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.PSBTResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                }
+                            }
+                        },
+                        "description": "Node RPC error."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                }
+                            }
+                        },
+                        "description": "Internal server error."
+                    }
+                },
+                "summary": "Decode PSBT",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/recent": {
+            "get": {
+                "description": "Returns a list of recent on-chain transactions.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
+                "operationId": "rpc_transaction_recent",
+                "parameters": [
+                    {
+                        "description": "Page number.",
+                        "example": 1,
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Number of blocks.",
+                        "example": 50,
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 100,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order of transactions.",
+                        "example": "desc",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Verbose.",
+                        "example": false,
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionsVerboseResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "204": {
+                        "description": "No transactions in the last 10 blocks."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transactions response."
+                    }
+                },
+                "summary": "Recent Transactions",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/recent/{count}": {
+            "get": {
+                "description": "Returns a list of recent on-chain transactions, specified by count.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
+                "operationId": "rpc_transaction_recent_count",
+                "parameters": [
+                    {
+                        "description": "Number of transactions.",
+                        "example": 5,
+                        "in": "path",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "default": 3,
+                            "maximum": 100,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order transactions by descending (desc) or ascending (asc).",
+                        "example": "desc",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Verbose.",
+                        "example": false,
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionsVerboseResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "204": {
+                        "description": "No transactions in the last 10 blocks."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transactions response."
+                    }
+                },
+                "summary": "Recent Transactions Count",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/submit": {
+            "post": {
+                "description": "Pushes a signed raw transaction to the network.",
+                "operationId": "rpc_submit_transaction",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "description": "Signed Tx Hex.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction response."
+                    }
+                },
+                "summary": "Send Transaction",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/{tx_hash}": {
+            "get": {
+                "description": "This endpoint returns detailed information for a specific Bitcoin transaction, by its unique transaction hash.",
+                "operationId": "rpc_transaction_info",
+                "parameters": [
+                    {
+                        "description": "Transaction hash.",
+                        "in": "path",
+                        "name": "tx_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Verbose.",
+                        "example": false,
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerboseResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_bitcoin.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction response."
+                    }
+                },
+                "summary": "Transaction Info",
+                "tags": ["Transactions"]
+            }
+        }
     },
-    "/block/recent/{count}": {
-      "get": {
-        "description": "Returns a list of the most recently mined blocks, limited by count. It provides a snapshot of the latest blockchain activity, starting from the current chain tip and going backward.",
-        "parameters": [
-          {
-            "description": "Number of blocks.",
-            "example": 5,
-            "in": "path",
-            "name": "count",
-            "required": true,
-            "schema": {
-              "default": 1,
-              "maximum": 10,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order blocks by descending (desc) or ascending (asc).",
-            "example": "desc",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinBlocksResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting blocks."
-          }
-        },
-        "summary": "Recent Block Info Count",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/{height_or_hash}": {
-      "get": {
-        "description": "Retrieve full or summary information for a specific block.\nUseful for analyzing individual blocks or resolving TX data inline.",
-        "parameters": [
-          {
-            "description": "Block height or hash.",
-            "in": "path",
-            "name": "height_or_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Page number for block transactions.",
-            "example": 1,
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Max number of block transactions per page.",
-            "example": 100,
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 100,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Verbose.",
-            "example": false,
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockResponseBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.BitcoinBlockVerboseResponseBody"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid height."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting block."
-          }
-        },
-        "summary": "Block Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/{height_or_hash}/miner": {
-      "get": {
-        "description": "Returns metadata about the miner for a specific block.\nIncludes name, known addresses, icon, and associated tags.\nUseful for research or visual analytics on pool distribution.",
-        "parameters": [
-          {
-            "description": "Block height or hash.",
-            "in": "path",
-            "name": "height_or_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BlockMinerResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting block miner."
-          }
-        },
-        "summary": "Block Miner Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/{height_or_hash}/volume": {
-      "get": {
-        "description": "Returns total transaction output volume (in satoshis) for a block.\nThis provides insight into economic activity, not just block size.",
-        "parameters": [
-          {
-            "description": "Block height or hash.",
-            "in": "path",
-            "name": "height_or_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BlockVolumeResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting block volume."
-          }
-        },
-        "summary": "Block Volume",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/general/info": {
-      "get": {
-        "description": "Returns global node and chain info: block count, difficulty, pruning, fork status, etc.\nUseful for diagnostics, UI status panels, or infrastructure monitoring.",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BlockchainInfoResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                }
-              }
-            },
-            "description": "Node RPC error."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting blockchain info."
-          }
-        },
-        "summary": "Blockchain Info",
-        "tags": [
-          "General"
-        ]
-      }
-    },
-    "/mempool/info": {
-      "get": {
-        "description": "Returns size, memory usage, fee thresholds, and Replace-By-Fee (RBF) state.\nUseful for gauging current congestion and planning fees accordingly.",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.MempoolInfoResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                }
-              }
-            },
-            "description": "Node RPC error."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting mempool info."
-          }
-        },
-        "summary": "Mempool Info",
-        "tags": [
-          "Mempool"
-        ]
-      }
-    },
-    "/mempool/transactions": {
-      "get": {
-        "description": "Returns a list of transaction IDs currently in the mempool.",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.MempoolTxsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting mempool transactions."
-          }
-        },
-        "summary": "Mempool Transactions",
-        "tags": [
-          "Mempool"
-        ]
-      }
-    },
-    "/mempool/transactions/{tx_hash}": {
-      "get": {
-        "description": "Returns full information for a mempool transaction: fees, inputs, Replace-By-Fee (RBF) flags, unconfirmed descendants, etc.\nUseful for inspecting transactions or verifying status.",
-        "parameters": [
-          {
-            "description": "Transaction hash.",
-            "in": "path",
-            "name": "tx_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.MempoolTxDetailsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting mempool transaction info."
-          }
-        },
-        "summary": "Mempool Transaction Info",
-        "tags": [
-          "Mempool"
-        ]
-      }
-    },
-    "/mempool/transactions/{tx_hash}/ancestors": {
-      "get": {
-        "description": "Lists ancestor TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
-        "parameters": [
-          {
-            "description": "Transaction hash.",
-            "in": "path",
-            "name": "tx_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.MempoolTxAncestorsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting mempool transaction ancestors."
-          }
-        },
-        "summary": "Mempool Transaction Ancestors",
-        "tags": [
-          "Mempool"
-        ]
-      }
-    },
-    "/mempool/transactions/{tx_hash}/descendants": {
-      "get": {
-        "description": "Lists descendant TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
-        "parameters": [
-          {
-            "description": "Transaction hash.",
-            "in": "path",
-            "name": "tx_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.MempoolTxDescendantsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Error getting mempool transaction descendants."
-          }
-        },
-        "summary": "Mempool Transaction Descendants",
-        "tags": [
-          "Mempool"
-        ]
-      }
-    },
-    "/transaction/batch": {
-      "post": {
-        "description": "Takes up to 50 TX hashes and returns verbose TX data in a single call. Useful for dashboards or syncing nodes without hitting rate limits.",
-        "parameters": [
-          {
-            "description": "Verbose.",
-            "example": false,
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_bitcoin.BatchTxsRequest"
-              }
-            }
-          },
-          "description": "Transaction hash array.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionsBatchResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request: too many transactions."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction response."
-          }
-        },
-        "summary": "Transaction Info Batch",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/decode": {
-      "post": {
-        "description": "Takes a raw TX hex and returns structured JSON.\nUseful when building or validating raw transactions.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "description": "Raw Transaction Hex.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinDecodedTransactionResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction response."
-          }
-        },
-        "summary": "Decode Transaction",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/estimatefee/{blocks}": {
-      "get": {
-        "description": "Estimate approximate fee per kilobyte (kB) needed for a transaction.\nUseful for setting dynamic fee rates in wallets or broadcast tools.",
-        "parameters": [
-          {
-            "description": "Confirmation target in blocks.",
-            "example": 50,
-            "in": "path",
-            "name": "blocks",
-            "required": true,
-            "schema": {
-              "default": 1,
-              "maximum": 1008,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Whether to return a more conservative estimate which also satisfies a longer history. A conservative estimate potentially returns a higher feerate and is more likely to be sufficient for the desired target, but is not as responsive to short term drops in the prevailing fee market. Must be one of: 'unset' 'economical' 'conservative'.",
-            "example": "economical",
-            "in": "query",
-            "name": "mode",
-            "schema": {
-              "default": "conservative",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.EstimateSmartFeeResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request. Ensure one of the following estimate modes is used: conservative, economical, unset."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing fee estimate response."
-          }
-        },
-        "summary": "Estimate Fee",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/hex": {
-      "post": {
-        "description": "Same as `/transaction/decode` in that it takes a raw TX hex and returns structured JSON, but it also fetches blockchain metadata such as confirmations and block height.",
-        "parameters": [
-          {
-            "description": "Verbose.",
-            "example": false,
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "description": "Transaction hex.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerboseResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction response."
-          }
-        },
-        "summary": "Transaction Info Hex",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/psbt/decode": {
-      "post": {
-        "description": "Takes a signed PSBT hex and returns the internal structure. Covers UTXO metadata, BIP32 deriv paths, inputs/outputs, etc.\nUseful for hardware wallet or multisig integrations.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "description": "Signed PSBT Hex.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.PSBTResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                }
-              }
-            },
-            "description": "Node RPC error."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.APIError"
-                }
-              }
-            },
-            "description": "Internal server error."
-          }
-        },
-        "summary": "Decode PSBT",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/recent": {
-      "get": {
-        "description": "Returns a list of recent on-chain transactions.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
-        "parameters": [
-          {
-            "description": "Page number.",
-            "example": 1,
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Number of blocks.",
-            "example": 50,
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 100,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order of transactions.",
-            "example": "desc",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Verbose.",
-            "example": false,
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionsVerboseResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "204": {
-            "description": "No transactions in the last 10 blocks."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transactions response."
-          }
-        },
-        "summary": "Recent Transactions",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/recent/{count}": {
-      "get": {
-        "description": "Returns a list of recent on-chain transactions, specified by count.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
-        "parameters": [
-          {
-            "description": "Number of transactions.",
-            "example": 5,
-            "in": "path",
-            "name": "count",
-            "required": true,
-            "schema": {
-              "default": 3,
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order transactions by descending (desc) or ascending (asc).",
-            "example": "desc",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Verbose.",
-            "example": false,
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionsVerboseResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "204": {
-            "description": "No transactions in the last 10 blocks."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transactions response."
-          }
-        },
-        "summary": "Recent Transactions Count",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/submit": {
-      "post": {
-        "description": "Pushes a signed raw transaction to the network.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "description": "Signed Tx Hex.",
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction response."
-          }
-        },
-        "summary": "Send Transaction",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/{tx_hash}": {
-      "get": {
-        "description": "This endpoint returns detailed information for a specific Bitcoin transaction, by its unique transaction hash.",
-        "parameters": [
-          {
-            "description": "Transaction hash.",
-            "in": "path",
-            "name": "tx_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Verbose.",
-            "example": false,
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_bitcoin.BitcoinTransactionVerboseResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction response."
-          }
-        },
-        "summary": "Transaction Info",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    }
-  },
-  "openapi": "3.1.0",
-  "servers": [
-    {
-      "description": "Bitcoin Mainnet",
-      "url": "https://xbt-mainnet.gomaestro-api.org/v0/rpc"
-    }
-  ],
-  "security": [
-    {
-      "api-key": []
-    }
-  ]
+    "openapi": "3.1.0",
+    "servers": [
+        {
+            "description": "Bitcoin Mainnet",
+            "url": "https://xbt-mainnet.gomaestro-api.org/v0/rpc"
+        }
+    ]
 }
