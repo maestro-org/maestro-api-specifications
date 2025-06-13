@@ -1,2222 +1,2197 @@
 {
-  "components": {
-    "schemas": {
-      "api_arch.APIError": {
-        "properties": {
-          "error": {
-            "description": "Error returned from the API request",
-            "example": "Bad Request",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountAddressResponseBody": {
-        "properties": {
-          "data": {
-            "type": "string"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountFilter": {
-        "properties": {
-          "DataContent": {
-            "$ref": "#/components/schemas/api_arch.DataContent"
-          },
-          "DataSize": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountInfoHexEncodedResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.AccountInfoResultHexEncoded"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountInfoResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.AccountInfoResult"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountInfoResult": {
-        "properties": {
-          "data": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "is_executable": {
-            "type": "boolean"
-          },
-          "owner": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "utxo": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountInfoResultHexEncoded": {
-        "properties": {
-          "data": {
-            "type": "string"
-          },
-          "is_executable": {
-            "type": "boolean"
-          },
-          "owner": {
-            "type": "string"
-          },
-          "utxo": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountMeta": {
-        "properties": {
-          "is_signer": {
-            "type": "boolean"
-          },
-          "is_writable": {
-            "type": "boolean"
-          },
-          "pubkey": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.AccountMetaHexEncoded": {
-        "properties": {
-          "is_signer": {
-            "type": "boolean"
-          },
-          "is_writable": {
-            "type": "boolean"
-          },
-          "pubkey": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockLatestHashResponseBody": {
-        "properties": {
-          "data": {
-            "type": "string"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.ArchBlockWithHeight"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockResponseVerboseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.ArchBlockVerbose"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockResponseVerboseHexEncodedBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.ArchBlockVerboseHexEncoded"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockVerbose": {
-        "properties": {
-          "bitcoin_block_height": {
-            "type": "integer"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "merkle_root": {
-            "type": "string"
-          },
-          "previous_block_hash": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer"
-          },
-          "transaction_count": {
-            "type": "integer"
-          },
-          "transactions": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchTransaction"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockVerboseHexEncoded": {
-        "properties": {
-          "bitcoin_block_height": {
-            "type": "integer"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "merkle_root": {
-            "type": "string"
-          },
-          "previous_block_hash": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer"
-          },
-          "transaction_count": {
-            "type": "integer"
-          },
-          "transactions": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockWithHeight": {
-        "properties": {
-          "bitcoin_block_height": {
-            "type": "integer"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "merkle_root": {
-            "type": "string"
-          },
-          "previous_block_hash": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer"
-          },
-          "transaction_count": {
-            "type": "integer"
-          },
-          "transactions": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockWithHeightResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.ArchBlockWithHeight"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockWithHeightVerbose": {
-        "properties": {
-          "bitcoin_block_height": {
-            "type": "integer"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "merkle_root": {
-            "type": "string"
-          },
-          "previous_block_hash": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer"
-          },
-          "transaction_count": {
-            "type": "integer"
-          },
-          "transactions": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchTransaction"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlockWithHeightVerboseHexEncoded": {
-        "properties": {
-          "bitcoin_block_height": {
-            "type": "integer"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "height": {
-            "type": "integer"
-          },
-          "merkle_root": {
-            "type": "string"
-          },
-          "previous_block_hash": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer"
-          },
-          "transaction_count": {
-            "type": "integer"
-          },
-          "transactions": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlocksWithHeightResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchBlockWithHeight"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlocksWithHeightVerboseHexEncodedResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchBlockWithHeightVerboseHexEncoded"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchBlocksWithHeightVerboseResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchBlockWithHeightVerbose"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransaction": {
-        "properties": {
-          "accounts_tags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "bitcoin_mined_time": {
-            "type": "integer"
-          },
-          "bitcoin_txid": {
-            "type": "string"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "runtime_transaction": {
-            "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
-          },
-          "status": {}
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransactionHexEncoded": {
-        "properties": {
-          "accounts_tags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "bitcoin_mined_time": {
-            "type": "integer"
-          },
-          "bitcoin_txid": {
-            "type": "string"
-          },
-          "hash": {
-            "type": "string"
-          },
-          "runtime_transaction": {
-            "$ref": "#/components/schemas/api_arch.RuntimeTransactionHexEncoded"
-          },
-          "status": {}
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransactionHexResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransactionResponseBody": {
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/api_arch.ArchTransaction"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransactionSendResponseBody": {
-        "properties": {
-          "data": {
-            "type": "string"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransactionsHexResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransactionsResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ArchTransaction"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ArchTransactionsSendResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.BlockCountResponseBody": {
-        "properties": {
-          "data": {
-            "type": "integer"
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.DataContent": {
-        "properties": {
-          "bytes": {
-            "description": "hex-encoded bytes",
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "offset": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.Instruction": {
-        "properties": {
-          "accounts": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.AccountMeta"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "data": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "program_id": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.InstructionHexEncoded": {
-        "properties": {
-          "accounts": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.AccountMetaHexEncoded"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "data": {
-            "type": "string"
-          },
-          "program_id": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.LastUpdatedBlock": {
-        "properties": {
-          "block_hash": {
-            "type": "string"
-          },
-          "block_height": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.Message": {
-        "properties": {
-          "instructions": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.Instruction"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "signers": {
-            "items": {
-              "items": {
-                "type": "integer"
-              },
-              "type": "array"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.MessageHexEncoded": {
-        "properties": {
-          "instructions": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.InstructionHexEncoded"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "signers": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.NodeRPCError": {
-        "properties": {
-          "code": {
-            "description": "Error code returned from the API request",
-            "example": 0,
-            "type": "integer"
-          },
-          "node rpc error": {
-            "description": "Error returned from the API request",
-            "example": "node rpc error",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ProgramAccount": {
-        "properties": {
-          "account": {
-            "$ref": "#/components/schemas/api_arch.AccountInfoResult"
-          },
-          "pubkey": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ProgramAccountsRequestBody": {
-        "properties": {
-          "filters": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.AccountFilter"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "program_id": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "uniqueItems": false
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.ProgramAccountsResponseBody": {
-        "properties": {
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/api_arch.ProgramAccount"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "last_updated": {
-            "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.RuntimeTransaction": {
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/api_arch.Message"
-          },
-          "signatures": {
-            "items": {
-              "items": {
-                "type": "integer"
-              },
-              "type": "array"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "version": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "api_arch.RuntimeTransactionHexEncoded": {
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/api_arch.MessageHexEncoded"
-          },
-          "signatures": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": false
-          },
-          "version": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      }
-    },
-    "securitySchemes": {
-      "api-key": {
-        "description": "Project API Key",
-        "in": "header",
-        "name": "api-key",
-        "type": "apiKey"
-      }
-    }
-  },
-  "info": {
-    "description": "Node RPC API for Arch.",
-    "title": "Arch - Node RPC API",
-    "version": "0.1"
-  },
-  "externalDocs": {
-    "description": "",
-    "url": ""
-  },
-  "paths": {
-    "/account/address": {
-      "post": {
-        "description": "Account address hex by pubkey",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "items": {
-                  "type": "integer"
+    "components": {
+        "schemas": {
+            "api_arch.APIError": {
+                "properties": {
+                    "error": {
+                        "description": "Error returned from the API request",
+                        "example": "Bad Request",
+                        "type": "string"
+                    }
                 },
-                "type": "array"
-              }
-            }
-          },
-          "description": "Pubkey",
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.AccountAddressResponseBody"
-                }
-              }
+                "type": "object"
             },
-            "description": "Accepted"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
+            "api_arch.AccountAddressResponseBody": {
+                "properties": {
+                    "data": {
+                        "type": "string"
                     },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
                     }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request body."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Error getting account address."
-          }
-        },
-        "summary": "Account Address Hex by Pubkey",
-        "tags": [
-          "Accounts"
-        ]
-      }
-    },
-    "/account/info": {
-      "post": {
-        "description": "Account info by pubkey",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "items": {
-                  "type": "integer"
                 },
-                "type": "array"
-              }
-            }
-          },
-          "description": "Pubkey",
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.AccountInfoResponseBody"
-                }
-              }
+                "type": "object"
             },
-            "description": "Accepted"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Invalid request body."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Error getting account info."
-          }
-        },
-        "summary": "Account Info by Pubkey",
-        "tags": [
-          "Accounts"
-        ]
-      }
-    },
-    "/account/info/{address}": {
-      "get": {
-        "description": "Account info by address hex",
-        "parameters": [
-          {
-            "description": "Address",
-            "in": "path",
-            "name": "address",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.AccountInfoResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Invalid address hex."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Error getting account info."
-          }
-        },
-        "summary": "Account Info by Address Hex",
-        "tags": [
-          "Accounts"
-        ]
-      }
-    },
-    "/account/info/{address}/hex": {
-      "get": {
-        "description": "Account info hex by address hex",
-        "parameters": [
-          {
-            "description": "Address",
-            "in": "path",
-            "name": "address",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.AccountInfoHexEncodedResponseBody"
-                }
-              }
-            },
-            "description": "Accepted"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Invalid address hex."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Error getting account info."
-          }
-        },
-        "summary": "Account Info Hex by Address Hex",
-        "tags": [
-          "Accounts"
-        ]
-      }
-    },
-    "/block/count": {
-      "get": {
-        "description": "Block count",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.BlockCountResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Error getting block count."
-          }
-        },
-        "summary": "Block Count",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/latest": {
-      "get": {
-        "description": "Latest block info",
-        "parameters": [
-          {
-            "description": "Page number for block transactions.",
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Max number of block transactions per page.",
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 100,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Include transaction details.",
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          },
-          {
-            "description": "Hex encoded transactions.",
-            "in": "query",
-            "name": "hex",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlockWithHeightResponseBody"
+            "api_arch.AccountFilter": {
+                "properties": {
+                    "DataContent": {
+                        "$ref": "#/components/schemas/api_arch.DataContent"
                     },
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseHexEncodedBody"
+                    "DataSize": {
+                        "type": "integer"
                     }
-                  ]
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error getting block transactions."
-          }
-        },
-        "summary": "Latest Block Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/latest/hash": {
-      "get": {
-        "description": "Latest block hash",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchBlockLatestHashResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error getting block."
-          }
-        },
-        "summary": "Latest Block Hash",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/range/{start_height}/{end_height}": {
-      "get": {
-        "description": "Block range info by start and end height",
-        "parameters": [
-          {
-            "description": "Start height.",
-            "in": "path",
-            "name": "start_height",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "End height.",
-            "in": "path",
-            "name": "end_height",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Page number.",
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Number of blocks.",
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 100,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order of blocks.",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid height range."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing block response."
-          }
-        },
-        "summary": "Block Range Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/recent": {
-      "get": {
-        "description": "Recent block info",
-        "parameters": [
-          {
-            "description": "Page number.",
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Number of blocks.",
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 100,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order of blocks.",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "desc",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Include transaction details.",
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightResponseBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightVerboseResponseBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightVerboseHexEncodedResponseBody"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing block response."
-          }
-        },
-        "summary": "Recent Block Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/recent/{count}": {
-      "get": {
-        "description": "Recent block info by count",
-        "parameters": [
-          {
-            "description": "Number of recent blocks.",
-            "in": "path",
-            "name": "count",
-            "required": true,
-            "schema": {
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order of blocks.",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing block response."
-          }
-        },
-        "summary": "Recent Block Info Count",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/block/{height_or_hash}": {
-      "get": {
-        "description": "Block info by height or hash",
-        "parameters": [
-          {
-            "description": "Height or hash.",
-            "in": "path",
-            "name": "height_or_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Page number for block transactions.",
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Max number of block transactions per page.",
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "default": 100,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Include transaction details.",
-            "in": "query",
-            "name": "verbose",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          },
-          {
-            "description": "Hex encoded transactions.",
-            "in": "query",
-            "name": "hex",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseHexEncodedBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.ArchBlockResponseBody"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid height or hash."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error getting block transactions."
-          }
-        },
-        "summary": "Block Info",
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/program/accounts": {
-      "post": {
-        "description": "Program accounts",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_arch.ProgramAccountsRequestBody"
-              }
-            }
-          },
-          "description": "Program accounts request",
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ProgramAccountsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request body."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Error getting program accounts."
-          }
-        },
-        "summary": "Program Accounts",
-        "tags": [
-          "Programs"
-        ]
-      }
-    },
-    "/transaction/recent": {
-      "get": {
-        "description": "Recent transactions",
-        "parameters": [
-          {
-            "description": "Page number.",
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Number of transactions",
-            "in": "query",
-            "name": "count",
-            "required": true,
-            "schema": {
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order of transactions.",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transactions response."
-          }
-        },
-        "summary": "Recent Transactions",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/recent/hex": {
-      "get": {
-        "description": "Recent transactions hex",
-        "parameters": [
-          {
-            "description": "Page number.",
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "default": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Number of transactions",
-            "in": "query",
-            "name": "count",
-            "required": true,
-            "schema": {
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionsHexResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transactions response."
-          }
-        },
-        "summary": "Recent Transactions Hex",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/recent/{count}": {
-      "get": {
-        "description": "Recent transactions with count",
-        "parameters": [
-          {
-            "description": "Number of transactions",
-            "in": "path",
-            "name": "count",
-            "required": true,
-            "schema": {
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "Order of transactions.",
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "default": "asc",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transactions response."
-          }
-        },
-        "summary": "Recent Transactions Count",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/recent/{count}/hex": {
-      "get": {
-        "description": "Recent transactions hex",
-        "parameters": [
-          {
-            "description": "Number of transactions",
-            "in": "query",
-            "name": "count",
-            "required": true,
-            "schema": {
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionsHexResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid count number."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transactions response."
-          }
-        },
-        "summary": "Recent Transactions Hex",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/send": {
-      "post": {
-        "description": "Send transaction to the network",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
-              }
-            }
-          },
-          "description": "Runtime transaction",
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionSendResponseBody"
-                }
-              }
-            },
-            "description": "Accepted"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request body."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Error sending transaction."
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Unknown Arch failure."
-          }
-        },
-        "summary": "Send Transaction",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
-    "/transaction/send/batch": {
-      "post": {
-        "description": "Send multiple transactions to the network",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "items": {
-                  "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
                 },
-                "type": "array"
-              }
+                "type": "object"
+            },
+            "api_arch.AccountInfoHexEncodedResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.AccountInfoResultHexEncoded"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.AccountInfoResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.AccountInfoResult"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.AccountInfoResult": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "is_executable": {
+                        "type": "boolean"
+                    },
+                    "owner": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "utxo": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.AccountInfoResultHexEncoded": {
+                "properties": {
+                    "data": {
+                        "type": "string"
+                    },
+                    "is_executable": {
+                        "type": "boolean"
+                    },
+                    "owner": {
+                        "type": "string"
+                    },
+                    "utxo": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.AccountMeta": {
+                "properties": {
+                    "is_signer": {
+                        "type": "boolean"
+                    },
+                    "is_writable": {
+                        "type": "boolean"
+                    },
+                    "pubkey": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.AccountMetaHexEncoded": {
+                "properties": {
+                    "is_signer": {
+                        "type": "boolean"
+                    },
+                    "is_writable": {
+                        "type": "boolean"
+                    },
+                    "pubkey": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockLatestHashResponseBody": {
+                "properties": {
+                    "data": {
+                        "type": "string"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.ArchBlockWithHeight"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockResponseVerboseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.ArchBlockVerbose"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockResponseVerboseHexEncodedBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.ArchBlockVerboseHexEncoded"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockVerbose": {
+                "properties": {
+                    "bitcoin_block_height": {
+                        "type": "integer"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "merkle_root": {
+                        "type": "string"
+                    },
+                    "previous_block_hash": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    },
+                    "transaction_count": {
+                        "type": "integer"
+                    },
+                    "transactions": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchTransaction"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockVerboseHexEncoded": {
+                "properties": {
+                    "bitcoin_block_height": {
+                        "type": "integer"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "merkle_root": {
+                        "type": "string"
+                    },
+                    "previous_block_hash": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    },
+                    "transaction_count": {
+                        "type": "integer"
+                    },
+                    "transactions": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockWithHeight": {
+                "properties": {
+                    "bitcoin_block_height": {
+                        "type": "integer"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "merkle_root": {
+                        "type": "string"
+                    },
+                    "previous_block_hash": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    },
+                    "transaction_count": {
+                        "type": "integer"
+                    },
+                    "transactions": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockWithHeightResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.ArchBlockWithHeight"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockWithHeightVerbose": {
+                "properties": {
+                    "bitcoin_block_height": {
+                        "type": "integer"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "merkle_root": {
+                        "type": "string"
+                    },
+                    "previous_block_hash": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    },
+                    "transaction_count": {
+                        "type": "integer"
+                    },
+                    "transactions": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchTransaction"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlockWithHeightVerboseHexEncoded": {
+                "properties": {
+                    "bitcoin_block_height": {
+                        "type": "integer"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "merkle_root": {
+                        "type": "string"
+                    },
+                    "previous_block_hash": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    },
+                    "transaction_count": {
+                        "type": "integer"
+                    },
+                    "transactions": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlocksWithHeightResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchBlockWithHeight"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlocksWithHeightVerboseHexEncodedResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchBlockWithHeightVerboseHexEncoded"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchBlocksWithHeightVerboseResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchBlockWithHeightVerbose"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransaction": {
+                "properties": {
+                    "accounts_tags": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "bitcoin_mined_time": {
+                        "type": "integer"
+                    },
+                    "bitcoin_txid": {
+                        "type": "string"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "runtime_transaction": {
+                        "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
+                    },
+                    "status": {}
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransactionHexEncoded": {
+                "properties": {
+                    "accounts_tags": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "bitcoin_mined_time": {
+                        "type": "integer"
+                    },
+                    "bitcoin_txid": {
+                        "type": "string"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "runtime_transaction": {
+                        "$ref": "#/components/schemas/api_arch.RuntimeTransactionHexEncoded"
+                    },
+                    "status": {}
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransactionHexResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransactionResponseBody": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/api_arch.ArchTransaction"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransactionSendResponseBody": {
+                "properties": {
+                    "data": {
+                        "type": "string"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransactionsHexResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchTransactionHexEncoded"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransactionsResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ArchTransaction"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ArchTransactionsSendResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.BlockCountResponseBody": {
+                "properties": {
+                    "data": {
+                        "type": "integer"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.DataContent": {
+                "properties": {
+                    "bytes": {
+                        "description": "hex-encoded bytes",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "offset": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.Instruction": {
+                "properties": {
+                    "accounts": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.AccountMeta"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "data": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "program_id": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.InstructionHexEncoded": {
+                "properties": {
+                    "accounts": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.AccountMetaHexEncoded"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "program_id": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.LastUpdatedBlock": {
+                "properties": {
+                    "block_hash": {
+                        "type": "string"
+                    },
+                    "block_height": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.Message": {
+                "properties": {
+                    "instructions": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.Instruction"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "signers": {
+                        "items": {
+                            "items": {
+                                "type": "integer"
+                            },
+                            "type": "array"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.MessageHexEncoded": {
+                "properties": {
+                    "instructions": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.InstructionHexEncoded"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "signers": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.NodeRPCError": {
+                "properties": {
+                    "code": {
+                        "description": "Error code returned from the API request",
+                        "example": 0,
+                        "type": "integer"
+                    },
+                    "node rpc error": {
+                        "description": "Error returned from the API request",
+                        "example": "node rpc error",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ProgramAccount": {
+                "properties": {
+                    "account": {
+                        "$ref": "#/components/schemas/api_arch.AccountInfoResult"
+                    },
+                    "pubkey": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ProgramAccountsRequestBody": {
+                "properties": {
+                    "filters": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.AccountFilter"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "program_id": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.ProgramAccountsResponseBody": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/api_arch.ProgramAccount"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/api_arch.LastUpdatedBlock"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.RuntimeTransaction": {
+                "properties": {
+                    "message": {
+                        "$ref": "#/components/schemas/api_arch.Message"
+                    },
+                    "signatures": {
+                        "items": {
+                            "items": {
+                                "type": "integer"
+                            },
+                            "type": "array"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "version": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "api_arch.RuntimeTransactionHexEncoded": {
+                "properties": {
+                    "message": {
+                        "$ref": "#/components/schemas/api_arch.MessageHexEncoded"
+                    },
+                    "signatures": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    },
+                    "version": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
             }
-          },
-          "description": "Runtime transactions",
-          "required": true
         },
-        "responses": {
-          "202": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionsSendResponseBody"
-                }
-              }
-            },
-            "description": "Accepted"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request body."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction responses."
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.APIError"
-                }
-              }
-            },
-            "description": "Unknown Arch failure."
-          }
-        },
-        "summary": "Send Multiple Transactions",
-        "tags": [
-          "Transactions"
-        ]
-      }
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "description": "Project API Key",
+                "in": "header",
+                "name": "api-key",
+                "type": "apiKey"
+            }
+        }
     },
-    "/transaction/{tx_hash}": {
-      "get": {
-        "description": "Processed transaction info by hash",
-        "parameters": [
-          {
-            "description": "Transaction hash",
-            "in": "path",
-            "name": "tx_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction response."
-          }
-        },
-        "summary": "Processed Transaction Info by Hash",
-        "tags": [
-          "Transactions"
-        ]
-      }
+    "info": {
+        "description": "Node RPC API for Arch.",
+        "title": "Arch - Node RPC API",
+        "version": "0.1"
     },
-    "/transaction/{tx_hash}/hex": {
-      "get": {
-        "description": "Processed transaction info hex by transaction hash",
-        "parameters": [
-          {
-            "description": "Transaction hash",
-            "in": "path",
-            "name": "tx_hash",
-            "required": true,
-            "schema": {
-              "type": "string"
+    "externalDocs": {
+        "description": "",
+        "url": ""
+    },
+    "paths": {
+        "/account/address": {
+            "post": {
+                "description": "Account address hex by pubkey",
+                "operationId": "rpc_account_address_by_pubkey",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "items": {
+                                    "type": "integer"
+                                },
+                                "type": "array"
+                            }
+                        }
+                    },
+                    "description": "Pubkey",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.AccountAddressResponseBody"
+                                }
+                            }
+                        },
+                        "description": "Accepted"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request body."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting account address."
+                    }
+                },
+                "summary": "Account Address Hex by Pubkey",
+                "tags": ["Accounts"]
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_arch.ArchTransactionHexResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.NodeRPCError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Invalid request."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_arch.APIError"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Error processing transaction response."
-          }
         },
-        "summary": "Processed Transaction Info Hex by Transaction hash",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    }
-  },
-  "openapi": "3.1.0",
-  "servers": [
-    {
-      "description": "Arch Testnet",
-      "url": "https://arch-testnet.gomaestro-api.org/v0/rpc"
-    }
-  ],
-  "security": [
-    {
-      "api-key": []
-    }
-  ]
+        "/account/info": {
+            "post": {
+                "description": "Account info by pubkey",
+                "operationId": "rpc_account_info_by_pubkey",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "items": {
+                                    "type": "integer"
+                                },
+                                "type": "array"
+                            }
+                        }
+                    },
+                    "description": "Pubkey",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.AccountInfoResponseBody"
+                                }
+                            }
+                        },
+                        "description": "Accepted"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Invalid request body."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting account info."
+                    }
+                },
+                "summary": "Account Info by Pubkey",
+                "tags": ["Accounts"]
+            }
+        },
+        "/account/info/{address}": {
+            "get": {
+                "description": "Account info by address hex",
+                "operationId": "rpc_account_info_by_address",
+                "parameters": [
+                    {
+                        "description": "Address",
+                        "in": "path",
+                        "name": "address",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.AccountInfoResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Invalid address hex."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting account info."
+                    }
+                },
+                "summary": "Account Info by Address Hex",
+                "tags": ["Accounts"]
+            }
+        },
+        "/account/info/{address}/hex": {
+            "get": {
+                "description": "Account info hex by address hex",
+                "operationId": "rpc_account_info_by_address_hex",
+                "parameters": [
+                    {
+                        "description": "Address",
+                        "in": "path",
+                        "name": "address",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.AccountInfoHexEncodedResponseBody"
+                                }
+                            }
+                        },
+                        "description": "Accepted"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Invalid address hex."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting account info."
+                    }
+                },
+                "summary": "Account Info Hex by Address Hex",
+                "tags": ["Accounts"]
+            }
+        },
+        "/block/count": {
+            "get": {
+                "description": "Block count",
+                "operationId": "rpc_block_count",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.BlockCountResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting block count."
+                    }
+                },
+                "summary": "Block Count",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/latest": {
+            "get": {
+                "description": "Latest block info",
+                "operationId": "rpc_latest_block",
+                "parameters": [
+                    {
+                        "description": "Page number for block transactions.",
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Max number of block transactions per page.",
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 100,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Include transaction details.",
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "description": "Hex encoded transactions.",
+                        "in": "query",
+                        "name": "hex",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlockWithHeightResponseBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseHexEncodedBody"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error getting block transactions."
+                    }
+                },
+                "summary": "Latest Block Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/latest/hash": {
+            "get": {
+                "description": "Latest block hash",
+                "operationId": "rpc_latest_block_hash",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchBlockLatestHashResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error getting block."
+                    }
+                },
+                "summary": "Latest Block Hash",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/range/{start_height}/{end_height}": {
+            "get": {
+                "description": "Block range info by start and end height",
+                "operationId": "rpc_block_range_info",
+                "parameters": [
+                    {
+                        "description": "Start height.",
+                        "in": "path",
+                        "name": "start_height",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "End height.",
+                        "in": "path",
+                        "name": "end_height",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Page number.",
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Number of blocks.",
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 100,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order of blocks.",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid height range."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing block response."
+                    }
+                },
+                "summary": "Block Range Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/recent": {
+            "get": {
+                "description": "Recent block info",
+                "operationId": "rpc_recent_blocks_info",
+                "parameters": [
+                    {
+                        "description": "Page number.",
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Number of blocks.",
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 100,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order of blocks.",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "desc",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Include transaction details.",
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightResponseBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightVerboseResponseBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightVerboseHexEncodedResponseBody"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing block response."
+                    }
+                },
+                "summary": "Recent Block Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/recent/{count}": {
+            "get": {
+                "description": "Recent block info by count",
+                "operationId": "rpc_recent_blocks_info_count",
+                "parameters": [
+                    {
+                        "description": "Number of recent blocks.",
+                        "in": "path",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order of blocks.",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchBlocksWithHeightResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing block response."
+                    }
+                },
+                "summary": "Recent Block Info Count",
+                "tags": ["Blocks"]
+            }
+        },
+        "/block/{height_or_hash}": {
+            "get": {
+                "description": "Block info by height or hash",
+                "operationId": "rpc_block_info",
+                "parameters": [
+                    {
+                        "description": "Height or hash.",
+                        "in": "path",
+                        "name": "height_or_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Page number for block transactions.",
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Max number of block transactions per page.",
+                        "in": "query",
+                        "name": "count",
+                        "schema": {
+                            "default": 100,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Include transaction details.",
+                        "in": "query",
+                        "name": "verbose",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "description": "Hex encoded transactions.",
+                        "in": "query",
+                        "name": "hex",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlockResponseVerboseHexEncodedBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.ArchBlockResponseBody"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid height or hash."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error getting block transactions."
+                    }
+                },
+                "summary": "Block Info",
+                "tags": ["Blocks"]
+            }
+        },
+        "/program/accounts": {
+            "post": {
+                "description": "Program accounts",
+                "operationId": "rpc_program_accounts",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/api_arch.ProgramAccountsRequestBody"
+                            }
+                        }
+                    },
+                    "description": "Program accounts request",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ProgramAccountsResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request body."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error getting program accounts."
+                    }
+                },
+                "summary": "Program Accounts",
+                "tags": ["Programs"]
+            }
+        },
+        "/transaction/recent": {
+            "get": {
+                "description": "Recent transactions",
+                "operationId": "rpc_arch_transaction_recent",
+                "parameters": [
+                    {
+                        "description": "Page number.",
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Number of transactions",
+                        "in": "query",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order of transactions.",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionsResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transactions response."
+                    }
+                },
+                "summary": "Recent Transactions",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/recent/hex": {
+            "get": {
+                "description": "Recent transactions hex",
+                "operationId": "rpc_arch_transaction_recent_hex",
+                "parameters": [
+                    {
+                        "description": "Page number.",
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "default": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Number of transactions",
+                        "in": "query",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionsHexResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transactions response."
+                    }
+                },
+                "summary": "Recent Transactions Hex",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/recent/{count}": {
+            "get": {
+                "description": "Recent transactions with count",
+                "operationId": "rpc_arch_transaction_recent_count",
+                "parameters": [
+                    {
+                        "description": "Number of transactions",
+                        "in": "path",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Order of transactions.",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "default": "asc",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionsResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transactions response."
+                    }
+                },
+                "summary": "Recent Transactions Count",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/recent/{count}/hex": {
+            "get": {
+                "description": "Recent transactions hex",
+                "operationId": "rpc_arch_transaction_recent_hex_count",
+                "parameters": [
+                    {
+                        "description": "Number of transactions",
+                        "in": "query",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionsHexResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid count number."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transactions response."
+                    }
+                },
+                "summary": "Recent Transactions Hex",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/send": {
+            "post": {
+                "description": "Send transaction to the network",
+                "operationId": "rpc_arch_transaction_send",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
+                            }
+                        }
+                    },
+                    "description": "Runtime transaction",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionSendResponseBody"
+                                }
+                            }
+                        },
+                        "description": "Accepted"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request body."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Error sending transaction."
+                    },
+                    "503": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Unknown Arch failure."
+                    }
+                },
+                "summary": "Send Transaction",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/send/batch": {
+            "post": {
+                "description": "Send multiple transactions to the network",
+                "operationId": "rpc_arch_transactions_send",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "items": {
+                                    "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
+                                },
+                                "type": "array"
+                            }
+                        }
+                    },
+                    "description": "Runtime transactions",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionsSendResponseBody"
+                                }
+                            }
+                        },
+                        "description": "Accepted"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request body."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction responses."
+                    },
+                    "503": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.APIError"
+                                }
+                            }
+                        },
+                        "description": "Unknown Arch failure."
+                    }
+                },
+                "summary": "Send Multiple Transactions",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/{tx_hash}": {
+            "get": {
+                "description": "Processed transaction info by hash",
+                "operationId": "rpc_arch_transaction_info_by_hash",
+                "parameters": [
+                    {
+                        "description": "Transaction hash",
+                        "in": "path",
+                        "name": "tx_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction response."
+                    }
+                },
+                "summary": "Processed Transaction Info by Hash",
+                "tags": ["Transactions"]
+            }
+        },
+        "/transaction/{tx_hash}/hex": {
+            "get": {
+                "description": "Processed transaction info hex by transaction hash",
+                "operationId": "rpc_arch_transaction_hex_info_by_hash",
+                "parameters": [
+                    {
+                        "description": "Transaction hash",
+                        "in": "path",
+                        "name": "tx_hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api_arch.ArchTransactionHexResponseBody"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.NodeRPCError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/api_arch.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Error processing transaction response."
+                    }
+                },
+                "summary": "Processed Transaction Info Hex by Transaction hash",
+                "tags": ["Transactions"]
+            }
+        }
+    },
+    "openapi": "3.1.0",
+    "servers": [
+        {
+            "description": "Arch Testnet",
+            "url": "https://arch-testnet.gomaestro-api.org/v0/rpc"
+        }
+    ]
 }
