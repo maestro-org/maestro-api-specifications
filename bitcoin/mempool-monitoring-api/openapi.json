@@ -484,6 +484,48 @@
                 }
             }
         },
+        "/mempool/transactions/{tx_hash}/metaprotocols": {
+            "get": {
+                "tags": ["Transactions"],
+                "summary": "Transaction Info with Metaprotocols (Mempool-aware)",
+                "description": "Returns an enhanced view of the transaction, including info about metaprotocols in both inputs and outputs. Useful for deep inspection tools.\n\nIn addition to confirmed transactions, mempool endpoints return data which reflects pending transactions in some number of \"estimated\" blocks - predicted blocks containing transactions which have been propagated around the network but not yet included in a mined block, with transactions with a higher sat/vB value being prioritised. The response details how many of these estimated blocks were considered when fetching the data.",
+                "operationId": "tx_info_with_metaprotocols",
+                "parameters": [
+                    {
+                        "name": "tx_hash",
+                        "in": "path",
+                        "description": "Transaction hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1b07f02356aed6ddca37db8226c6292f2953d55ea741d7f58d44427976e7d4ee"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MempoolTimestampedTxInfoMetaprotocols"
+                                },
+                                "example": "{\n    \"data\": {\n        \"height\": 900962,\n        \"volume\": \"3666788\",\n        \"fees\": \"508\",\n        \"sats_per_vb\": 2,\n        \"metaprotocols\": [\n          \"runes\"\n        ],\n        \"inputs\": [{\n            \"txid\": \"ed6273c6ff9259ec6a68dff0b21ddc4499e2e6d9837981f8c5089ac4935f6cf5\",\n            \"vout\": 0,\n            \"address\": \"bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8\",\n            \"script_pubkey\": \"00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910\",\n            \"satoshis\": \"3666696\",\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"txid\": \"a115a1818805fa06a80eaa57287c0c3f57d5993c1f0d3f771523b4d11711d31f\",\n            \"vout\": 1,\n            \"address\": \"bc1pn2w92qyh7mwpf9rzmnvjnc0whswft243n0ntj50lurpnsjwwfy9sjur75v\",\n            \"script_pubkey\": \"51209a9c550097f6dc149462dcd929e1eebc1c95aab19be6b951ffe0c33849ce490b\",\n            \"satoshis\": \"600\",\n            \"inscriptions\": [],\n            \"runes\": []\n        }],\n        \"outputs\": [{\n            \"address\": null,\n            \"script_pubkey\": \"6a5d0b00c0a23303ffbedbb50201\",\n            \"satoshis\": \"0\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1pdruptufwh9awfepzq506kh03392lk074n4a5cy3v8zu0ma0sjvtqhwdu85\",\n            \"script_pubkey\": \"512068f815f12eb97ae4e422051fab5df18955fb3fd59d7b4c122c38b8fdf5f09316\",\n            \"satoshis\": \"546\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8\",\n            \"script_pubkey\": \"00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910\",\n            \"satoshis\": \"3641305\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qp8j9sx6609h7llqufurxjgrwsqwt020tqzn0gs\",\n            \"script_pubkey\": \"001409e4581b5a796feffc1c4f0669206e801cb7a9eb\",\n            \"satoshis\": \"580\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qqx7h6wrl52hxwqnp8v8k072ahnr3sq8huzynww\",\n            \"script_pubkey\": \"001401bd7d387fa2ae6702613b0f67f95dbcc71800f7\",\n            \"satoshis\": \"24357\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n        }]\n    },\n    \"indexer_info\": {\n    \"chain_tip\": {\n        \"block_hash\": \"0000000000000000000148c7dbf4f8721db8912485cc6860e5b22f9b62e09870\",\n        \"block_height\": 900961\n    },\n    \"mempool_timestamp\": \"2025-06-12 17:27:29\",\n    \"estimated_blocks\": [{\n        \"block_height\": 900962,\n        \"sats_per_vb\": {\n            \"min\": 2,\n            \"median\": 4,\n            \"max\": 101\n        }\n    }]\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/mempool/transactions/{tx_hash}/outputs/{output_index}": {
             "get": {
                 "tags": ["Transactions"],
@@ -735,6 +777,18 @@
                     }
                 }
             },
+            "MempoolTimestampedTxInfoMetaprotocols": {
+                "type": "object",
+                "required": ["data", "indexer_info"],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/MempoolTxInfoMetaprotocols"
+                    },
+                    "indexer_info": {
+                        "$ref": "#/components/schemas/MempoolLastUpdated"
+                    }
+                }
+            },
             "MempoolTimestampedTxOutMetaprotocols": {
                 "type": "object",
                 "required": ["data", "indexer_info"],
@@ -744,6 +798,65 @@
                     },
                     "indexer_info": {
                         "$ref": "#/components/schemas/MempoolLastUpdated"
+                    }
+                }
+            },
+            "MempoolTxInfoMetaprotocols": {
+                "type": "object",
+                "required": [
+                    "height",
+                    "volume",
+                    "fees",
+                    "sats_per_vb",
+                    "metaprotocols",
+                    "inputs",
+                    "outputs"
+                ],
+                "properties": {
+                    "fees": {
+                        "type": "string",
+                        "description": "Fees paid to the miner.",
+                        "example": "2504"
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Block height.",
+                        "example": 875075,
+                        "minimum": 0
+                    },
+                    "inputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TxInMetaprotocols"
+                        },
+                        "description": "List of inputs, in the same order as the transaction."
+                    },
+                    "metaprotocols": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Metaprotocol"
+                        },
+                        "description": "Whether any of the transactions in the block involved metaprotocols."
+                    },
+                    "outputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TxOutMetaprotocols"
+                        },
+                        "description": "List of outputs, in the same order as the transaction."
+                    },
+                    "sats_per_vb": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "sats per vB of the transaction.",
+                        "example": 15,
+                        "minimum": 0
+                    },
+                    "volume": {
+                        "type": "string",
+                        "description": "Total number of satoshis that went through this transaction, minus fees.",
+                        "example": "12345678"
                     }
                 }
             },
@@ -799,6 +912,10 @@
                         "minimum": 0
                     }
                 }
+            },
+            "Metaprotocol": {
+                "type": "string",
+                "enum": ["inscriptions", "runes", "brc20"]
             },
             "OrderBy": {
                 "type": "string",
@@ -874,6 +991,61 @@
                     "vout": {
                         "type": "integer",
                         "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "TxInMetaprotocols": {
+                "type": "object",
+                "required": [
+                    "txid",
+                    "vout",
+                    "script_pubkey",
+                    "satoshis",
+                    "inscriptions",
+                    "runes"
+                ],
+                "properties": {
+                    "address": {
+                        "type": "string",
+                        "description": "Address-encoding of the script pubkey at which the input resides.",
+                        "example": "bc1p5u4y8vdhn46adxhfv5scfv4c8myykw6r5uyzlavm42k4wgjewktq7xqcyr",
+                        "nullable": true
+                    },
+                    "inscriptions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/InscriptionAndOffset"
+                        },
+                        "description": "List of inscription IDs and their offsets in this input."
+                    },
+                    "runes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RuneAndAmount"
+                        },
+                        "description": "List of rune IDs and their amount in this input."
+                    },
+                    "satoshis": {
+                        "type": "string",
+                        "description": "Total number of satoshis in the UTxO.",
+                        "example": "1234567"
+                    },
+                    "script_pubkey": {
+                        "type": "string",
+                        "description": "Script pubkey at which the input resides.",
+                        "example": "5120a72a43b1b79d75d69ae9652184b2b83ec84b3b43a7082ff59baaad5722597596"
+                    },
+                    "txid": {
+                        "type": "string",
+                        "description": "Transaction hash of the UTxO.",
+                        "example": "2ca28d42583fc5bace84fe024d3697969e06dd1cf769a2141286825b81773fd5"
+                    },
+                    "vout": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Output index of the UTxO.",
+                        "example": 0,
                         "minimum": 0
                     }
                 }

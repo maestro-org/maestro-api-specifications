@@ -200,6 +200,124 @@
                 }
             }
         },
+        "/addresses/{address}/balance/historical": {
+            "get": {
+                "tags": ["Addresses"],
+                "summary": "Historical Satoshi Balance by Address",
+                "description": "Returns the historical satoshi balances, itemized by block and including USD price.",
+                "operationId": "historical_satoshi_balance_by_address",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Bitcoin address or hex encoded script pubkey",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "The order in which the results are sorted. Supported values: asc, desc",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "string",
+                                    "default": "asc",
+                                    "enum": ["asc", "desc"]
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "The max number of results per page",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "integer",
+                                    "default": 100,
+                                    "minimum": 0
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Return only blocks included on or after a specific height or timestamps. If this parameter is not provided, the starting point will be the first block where the address has seen its balance increase or decrease.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Return only blocks included on or before a specific height or timestamp",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "height_params",
+                        "in": "query",
+                        "description": "Whether the from and to integer query params should be read as timestamps or as block heights. True (the default) means from and to params should be read as block heights.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedHistoricalSatBalanceByAddress"
+                                },
+                                "example": "{\n    \"data\": [{\n        \"height\": 899903,\n        \"confirmations\": 932,\n        \"unix_timestamp\": 1749126863,\n        \"timestamp\": \"2025-06-05 12:34:23\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899904,\n        \"confirmations\": 931,\n        \"unix_timestamp\": 1749126892,\n        \"timestamp\": \"2025-06-05 12:34:52\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899905,\n        \"confirmations\": 930,\n        \"unix_timestamp\": 1749126924,\n        \"timestamp\": \"2025-06-05 12:35:24\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.56\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000014ba9b2d30d9c737423c753c5b6a27989815ed50afe04\",\n        \"block_height\": 900834\n    },\n    \"next_cursor\": null\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/addresses/{address}/brc20": {
             "get": {
                 "tags": ["Addresses"],
@@ -964,6 +1082,45 @@
                 "deprecated": true
             }
         },
+        "/addresses/{address}/statistics": {
+            "get": {
+                "tags": ["Addresses"],
+                "summary": "Address Statistics",
+                "description": "Returns all current statistics of the address: total txs the address was involved in, total unspent outputs controlled by the address, and current satoshi, rune and inscription balance.",
+                "operationId": "address_statistics",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Bitcoin address or hex encoded script pubkey",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TimestampedAddressStatistics"
+                                },
+                                "example": "{\n    \"data\": {\n        total_txs: 50,\n        total_utxos: 25,\n        runes: true,\n        total_inscriptions: 6100,\n        sat_balance: 12345678\n    },\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83\",\n        \"block_height\": 884991\n    }\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/addresses/{address}/txs": {
             "get": {
                 "tags": ["Addresses"],
@@ -1469,6 +1626,45 @@
                                     "$ref": "#/components/schemas/TimestampedCollectionMetadataBySymbol"
                                 },
                                 "example": "{\n    \"data\": {\n        \"symbol\": \"twick\",\n        \"name\": \"1/1 ART BY TWICK\",\n        \"imageURI\": \"https://creator-hub-prod.s3.us-east-2.amazonaws.com/ord-twick_pfp_1705357607896.jpeg\",\n        \"chain\": \"btc\",\n        \"inscriptionIcon\": \"736d7692fb2b405f7efdd05b57787a10bb0385b7dd394aa67654d62119e9d825i0\",\n        \"description\": \"A collection of 1/1 art inscribed forever on the Bitcoin Blockchain. All 1/1s are inscribed on special sats.\",\n        \"supply\": 10,\n        \"twitterLink\": \"https://twitter.com/Twickert_\",\n        \"discordLink\": \"\",\n        \"websiteLink\": \"https://www.artbytwick.com/\",\n        \"min_inscription_number\": \"31921195\",\n        \"max_inscription_number\": \"63111093\",\n        \"createdAt\": \"Sun, 17 Sep 2023 06:38:15 GMT\",\n        \"labels\": []\n    },\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000001998e2059bcbb25f76fd0ef39db8ddfc5c31c5ea95f1f\",\n        \"block_height\": 876644\n    }\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/assets/collections/{collection_symbol}/stats": {
+            "get": {
+                "tags": ["Inscriptions"],
+                "summary": "Collection Stats by Collection Symbol",
+                "description": "Provides stats for a given inscription: total volume (in sats), floor price (in sats), and total listed. This is useful for rendering collection summaries or for display in marketplaces and aggregators.",
+                "operationId": "collection_stats_by_collection_symbol",
+                "parameters": [
+                    {
+                        "name": "collection_symbol",
+                        "in": "path",
+                        "description": "Collection symbol (UTF-8)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "twick"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TimestampedCollectionStatsBySymbol"
+                                },
+                                "example": "{\n    \"data\": {\n        \"totalVolume\": \"123456789\",\n        \"owners\": \"42\",\n        \"supply\": \"1000\",\n        \"floorPrice\": \"0.05\",\n        \"totalListed\": \"150\",\n        \"pendingTransactions\": \"3\",\n        \"inscriptionNumberMin\": \"100000\",\n        \"inscriptionNumberMax\": \"200000\",\n        \"symbol\": \"twick\"\n    },\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000001998e2059bcbb25f76fd0ef39db8ddfc5c31c5ea95f1f\",\n        \"block_height\": 876644\n    }\n}"
                             }
                         }
                     },
@@ -2968,6 +3164,48 @@
                 }
             }
         },
+        "/mempool/transactions/{tx_hash}/metaprotocols": {
+            "get": {
+                "tags": ["Transactions"],
+                "summary": "Transaction Info with Metaprotocols (Mempool-aware)",
+                "description": "Returns an enhanced view of the transaction, including info about metaprotocols in both inputs and outputs. Useful for deep inspection tools.\n\nIn addition to confirmed transactions, mempool endpoints return data which reflects pending transactions in some number of \"estimated\" blocks - predicted blocks containing transactions which have been propagated around the network but not yet included in a mined block, with transactions with a higher sat/vB value being prioritised. The response details how many of these estimated blocks were considered when fetching the data.",
+                "operationId": "tx_info_with_metaprotocols1",
+                "parameters": [
+                    {
+                        "name": "tx_hash",
+                        "in": "path",
+                        "description": "Transaction hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1b07f02356aed6ddca37db8226c6292f2953d55ea741d7f58d44427976e7d4ee"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MempoolTimestampedTxInfoMetaprotocols"
+                                },
+                                "example": "{\n    \"data\": {\n        \"height\": 900962,\n        \"volume\": \"3666788\",\n        \"fees\": \"508\",\n        \"sats_per_vb\": 2,\n        \"metaprotocols\": [\n          \"runes\"\n        ],\n        \"inputs\": [{\n            \"txid\": \"ed6273c6ff9259ec6a68dff0b21ddc4499e2e6d9837981f8c5089ac4935f6cf5\",\n            \"vout\": 0,\n            \"address\": \"bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8\",\n            \"script_pubkey\": \"00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910\",\n            \"satoshis\": \"3666696\",\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"txid\": \"a115a1818805fa06a80eaa57287c0c3f57d5993c1f0d3f771523b4d11711d31f\",\n            \"vout\": 1,\n            \"address\": \"bc1pn2w92qyh7mwpf9rzmnvjnc0whswft243n0ntj50lurpnsjwwfy9sjur75v\",\n            \"script_pubkey\": \"51209a9c550097f6dc149462dcd929e1eebc1c95aab19be6b951ffe0c33849ce490b\",\n            \"satoshis\": \"600\",\n            \"inscriptions\": [],\n            \"runes\": []\n        }],\n        \"outputs\": [{\n            \"address\": null,\n            \"script_pubkey\": \"6a5d0b00c0a23303ffbedbb50201\",\n            \"satoshis\": \"0\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1pdruptufwh9awfepzq506kh03392lk074n4a5cy3v8zu0ma0sjvtqhwdu85\",\n            \"script_pubkey\": \"512068f815f12eb97ae4e422051fab5df18955fb3fd59d7b4c122c38b8fdf5f09316\",\n            \"satoshis\": \"546\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8\",\n            \"script_pubkey\": \"00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910\",\n            \"satoshis\": \"3641305\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qp8j9sx6609h7llqufurxjgrwsqwt020tqzn0gs\",\n            \"script_pubkey\": \"001409e4581b5a796feffc1c4f0669206e801cb7a9eb\",\n            \"satoshis\": \"580\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qqx7h6wrl52hxwqnp8v8k072ahnr3sq8huzynww\",\n            \"script_pubkey\": \"001401bd7d387fa2ae6702613b0f67f95dbcc71800f7\",\n            \"satoshis\": \"24357\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n        }]\n    },\n    \"indexer_info\": {\n    \"chain_tip\": {\n        \"block_hash\": \"0000000000000000000148c7dbf4f8721db8912485cc6860e5b22f9b62e09870\",\n        \"block_height\": 900961\n    },\n    \"mempool_timestamp\": \"2025-06-12 17:27:29\",\n    \"estimated_blocks\": [{\n        \"block_height\": 900962,\n        \"sats_per_vb\": {\n            \"min\": 2,\n            \"median\": 4,\n            \"max\": 101\n        }\n    }]\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/mempool/transactions/{tx_hash}/outputs/{output_index}": {
             "get": {
                 "tags": ["Transactions"],
@@ -3537,6 +3775,7 @@
         "/rpc/block/latest": {
             "get": {
                 "description": "Returns the most recent block on the Bitcoin blockchain.\nUseful for syncing frontends, indexing latest chain state, or watching for new block activity. Set `verbose=true` for full TX data without need for separate calls.",
+                "operationId": "rpc_latest_block",
                 "parameters": [
                     {
                         "description": "Page number for block transactions.",
@@ -3605,6 +3844,7 @@
         "/rpc/block/range/{start_height}/{end_height}": {
             "get": {
                 "description": "Fetches basic info for a contiguous block range (start and end height).",
+                "operationId": "rpc_block_range_info",
                 "parameters": [
                     {
                         "description": "Start height.",
@@ -3694,6 +3934,7 @@
         "/rpc/block/recent": {
             "get": {
                 "description": "Returns the most recent blocks from the tip going backward. Useful to view or stream recent blockchain activity.",
+                "operationId": "rpc_recent_blocks_info",
                 "parameters": [
                     {
                         "description": "Page number.",
@@ -3772,6 +4013,7 @@
         "/rpc/block/recent/{count}": {
             "get": {
                 "description": "Returns a list of the most recently mined blocks, limited by count. It provides a snapshot of the latest blockchain activity, starting from the current chain tip and going backward.",
+                "operationId": "rpc_recent_blocks_info_count",
                 "parameters": [
                     {
                         "description": "Number of blocks.",
@@ -3843,6 +4085,7 @@
         "/rpc/block/{height_or_hash}": {
             "get": {
                 "description": "Retrieve full or summary information for a specific block.\nUseful for analyzing individual blocks or resolving TX data inline.",
+                "operationId": "rpc_block_info",
                 "parameters": [
                     {
                         "description": "Block height or hash.",
@@ -3937,6 +4180,7 @@
         "/rpc/block/{height_or_hash}/miner": {
             "get": {
                 "description": "Returns metadata about the miner for a specific block.\nIncludes name, known addresses, icon, and associated tags.\nUseful for research or visual analytics on pool distribution.",
+                "operationId": "rpc_block_miner_info",
                 "parameters": [
                     {
                         "description": "Block height or hash.",
@@ -3977,6 +4221,7 @@
         "/rpc/block/{height_or_hash}/volume": {
             "get": {
                 "description": "Returns total transaction output volume (in satoshis) for a block.\nThis provides insight into economic activity, not just block size.",
+                "operationId": "rpc_block_volume",
                 "parameters": [
                     {
                         "description": "Block height or hash.",
@@ -4017,6 +4262,7 @@
         "/rpc/general/info": {
             "get": {
                 "description": "Returns global node and chain info: block count, difficulty, pruning, fork status, etc.\nUseful for diagnostics, UI status panels, or infrastructure monitoring.",
+                "operationId": "rpc_chain_info",
                 "responses": {
                     "200": {
                         "content": {
@@ -4056,6 +4302,7 @@
         "/rpc/mempool/info": {
             "get": {
                 "description": "Returns size, memory usage, fee thresholds, and Replace-By-Fee (RBF) state.\nUseful for gauging current congestion and planning fees accordingly.",
+                "operationId": "rpc_mempool_info",
                 "responses": {
                     "200": {
                         "content": {
@@ -4095,6 +4342,7 @@
         "/rpc/mempool/transactions": {
             "get": {
                 "description": "Returns a list of transaction IDs currently in the mempool.",
+                "operationId": "rpc_mempool_transactions",
                 "responses": {
                     "200": {
                         "content": {
@@ -4141,6 +4389,7 @@
         "/rpc/mempool/transactions/{tx_hash}": {
             "get": {
                 "description": "Returns full information for a mempool transaction: fees, inputs, Replace-By-Fee (RBF) flags, unconfirmed descendants, etc.\nUseful for inspecting transactions or verifying status.",
+                "operationId": "rpc_mempool_transaction_details",
                 "parameters": [
                     {
                         "description": "Transaction hash.",
@@ -4198,6 +4447,7 @@
         "/rpc/mempool/transactions/{tx_hash}/ancestors": {
             "get": {
                 "description": "Lists ancestor TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
+                "operationId": "rpc_mempool_transaction_ancestors",
                 "parameters": [
                     {
                         "description": "Transaction hash.",
@@ -4255,6 +4505,7 @@
         "/rpc/mempool/transactions/{tx_hash}/descendants": {
             "get": {
                 "description": "Lists descendant TXs for a mempool TX, by a TX hash.\nUseful for evaluating chains of unconfirmed transactions and replacability via Replace-By-Fee (RBF).",
+                "operationId": "rpc_mempool_transaction_descendants",
                 "parameters": [
                     {
                         "description": "Transaction hash.",
@@ -4312,6 +4563,7 @@
         "/rpc/transaction/batch": {
             "post": {
                 "description": "Takes up to 50 TX hashes and returns verbose TX data in a single call. Useful for dashboards or syncing nodes without hitting rate limits.",
+                "operationId": "rpc_transaction_info_batch",
                 "parameters": [
                     {
                         "description": "Verbose.",
@@ -4391,6 +4643,7 @@
         "/rpc/transaction/decode": {
             "post": {
                 "description": "Takes a raw TX hex and returns structured JSON.\nUseful when building or validating raw transactions.",
+                "operationId": "rpc_transaction_decode",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -4455,6 +4708,7 @@
         "/rpc/transaction/estimatefee/{blocks}": {
             "get": {
                 "description": "Estimate approximate fee per kilobyte (kB) needed for a transaction.\nUseful for setting dynamic fee rates in wallets or broadcast tools.",
+                "operationId": "rpc_estimate_smart_fee",
                 "parameters": [
                     {
                         "description": "Confirmation target in blocks.",
@@ -4536,6 +4790,7 @@
         "/rpc/transaction/hex": {
             "post": {
                 "description": "Same as `/transaction/decode` in that it takes a raw TX hex and returns structured JSON, but it also fetches blockchain metadata such as confirmations and block height.",
+                "operationId": "rpc_transaction_info_hex",
                 "parameters": [
                     {
                         "description": "Verbose.",
@@ -4612,6 +4867,7 @@
         "/rpc/transaction/psbt/decode": {
             "post": {
                 "description": "Takes a signed PSBT hex and returns the internal structure. Covers UTXO metadata, BIP32 deriv paths, inputs/outputs, etc.\nUseful for hardware wallet or multisig integrations.",
+                "operationId": "rpc_psbt_decode",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -4662,6 +4918,7 @@
         "/rpc/transaction/recent": {
             "get": {
                 "description": "Returns a list of recent on-chain transactions.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
+                "operationId": "rpc_transaction_recent",
                 "parameters": [
                     {
                         "description": "Page number.",
@@ -4763,6 +5020,7 @@
         "/rpc/transaction/recent/{count}": {
             "get": {
                 "description": "Returns a list of recent on-chain transactions, specified by count.\nUseful for retrieving lastest transactions or monitoring new, on-chain activity by block height.",
+                "operationId": "rpc_transaction_recent_count",
                 "parameters": [
                     {
                         "description": "Number of transactions.",
@@ -4857,6 +5115,7 @@
         "/rpc/transaction/submit": {
             "post": {
                 "description": "Pushes a signed raw transaction to the network.",
+                "operationId": "rpc_submit_transaction",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -4921,6 +5180,7 @@
         "/rpc/transaction/{tx_hash}": {
             "get": {
                 "description": "This endpoint returns detailed information for a specific Bitcoin transaction, by its unique transaction hash.",
+                "operationId": "rpc_transaction_info",
                 "parameters": [
                     {
                         "description": "Transaction hash.",
@@ -5045,6 +5305,46 @@
                     "script_pubkey": {
                         "type": "string",
                         "description": "Script pubkey."
+                    }
+                }
+            },
+            "AddressStatistics": {
+                "type": "object",
+                "required": [
+                    "total_txs",
+                    "total_utxos",
+                    "runes",
+                    "total_inscriptions",
+                    "sat_balance"
+                ],
+                "properties": {
+                    "runes": {
+                        "type": "boolean",
+                        "description": "Existence of runes controlled by the address."
+                    },
+                    "sat_balance": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Current satoshi balance controlled by the address.",
+                        "minimum": 0
+                    },
+                    "total_inscriptions": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of inscriptions currently controlled by the address.",
+                        "minimum": 0
+                    },
+                    "total_txs": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of transactions where the address controlled at least an input or an output.",
+                        "minimum": 0
+                    },
+                    "total_utxos": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of UTxOs (unspent outputs) controlled by the address.",
+                        "minimum": 0
                     }
                 }
             },
@@ -5375,6 +5675,49 @@
                     "script_pubkey": {
                         "type": "string",
                         "description": "Script pubkey at which the input containing the inscription resides."
+                    }
+                }
+            },
+            "HistoricalSatBalanceByAddress": {
+                "type": "object",
+                "required": [
+                    "height",
+                    "confirmations",
+                    "unix_timestamp",
+                    "timestamp",
+                    "sat_balance",
+                    "usd_balance"
+                ],
+                "properties": {
+                    "confirmations": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of confirmation blocks.",
+                        "minimum": 0
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Block height.",
+                        "minimum": 0
+                    },
+                    "sat_balance": {
+                        "type": "string",
+                        "description": "Satoshi balance of the address at the end of this block."
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "description": "The timestamp of the block, as claimed by the miner, in UTC format."
+                    },
+                    "unix_timestamp": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The timestamp of the block, as claimed by the miner, in UNIX format.",
+                        "minimum": 0
+                    },
+                    "usd_balance": {
+                        "type": "string",
+                        "description": "USD balance when exchanging satoshis at the exchange rate between USD and BTC during the mining of the block."
                     }
                 }
             },
@@ -6199,6 +6542,25 @@
                     }
                 }
             },
+            "PaginatedHistoricalSatBalanceByAddress": {
+                "type": "object",
+                "required": ["data", "last_updated"],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HistoricalSatBalanceByAddress"
+                        }
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/ChainTip"
+                    },
+                    "next_cursor": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
             "PaginatedInscriptionActivityByAddress": {
                 "type": "object",
                 "required": ["data", "last_updated"],
@@ -6839,6 +7201,18 @@
                     "start_offset": {
                         "type": "string",
                         "nullable": true
+                    }
+                }
+            },
+            "TimestampedAddressStatistics": {
+                "type": "object",
+                "required": ["data", "last_updated"],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/AddressStatistics"
+                    },
+                    "last_updated": {
+                        "$ref": "#/components/schemas/ChainTip"
                     }
                 }
             },
@@ -7973,6 +8347,18 @@
                     }
                 }
             },
+            "MempoolTimestampedTxInfoMetaprotocols": {
+                "type": "object",
+                "required": ["data", "indexer_info"],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/MempoolTxInfoMetaprotocols"
+                    },
+                    "indexer_info": {
+                        "$ref": "#/components/schemas/MempoolLastUpdated"
+                    }
+                }
+            },
             "MempoolTimestampedTxOutMetaprotocols": {
                 "type": "object",
                 "required": ["data", "indexer_info"],
@@ -7982,6 +8368,65 @@
                     },
                     "indexer_info": {
                         "$ref": "#/components/schemas/MempoolLastUpdated"
+                    }
+                }
+            },
+            "MempoolTxInfoMetaprotocols": {
+                "type": "object",
+                "required": [
+                    "height",
+                    "volume",
+                    "fees",
+                    "sats_per_vb",
+                    "metaprotocols",
+                    "inputs",
+                    "outputs"
+                ],
+                "properties": {
+                    "fees": {
+                        "type": "string",
+                        "description": "Fees paid to the miner.",
+                        "example": "2504"
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Block height.",
+                        "example": 875075,
+                        "minimum": 0
+                    },
+                    "inputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TxInMetaprotocols"
+                        },
+                        "description": "List of inputs, in the same order as the transaction."
+                    },
+                    "metaprotocols": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Metaprotocol"
+                        },
+                        "description": "Whether any of the transactions in the block involved metaprotocols."
+                    },
+                    "outputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TxOutMetaprotocols"
+                        },
+                        "description": "List of outputs, in the same order as the transaction."
+                    },
+                    "sats_per_vb": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "sats per vB of the transaction.",
+                        "example": 15,
+                        "minimum": 0
+                    },
+                    "volume": {
+                        "type": "string",
+                        "description": "Total number of satoshis that went through this transaction, minus fees.",
+                        "example": "12345678"
                     }
                 }
             },
