@@ -6,6 +6,13 @@
         {
             "inputFile": "../node-rpc-api/openapi.json",
             "pathModification": { "prepend": "/rpc" }
+        },
+        {
+            "inputFile": "../event-manager-api/openapi.json"
+        },
+        {
+            "inputFile": "../market-price-api/openapi.json",
+            "pathModification": { "prepend": "/markets" }
         }
     ],
     "output": "./openapi-merged.json"
