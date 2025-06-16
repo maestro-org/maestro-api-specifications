@@ -25,7 +25,7 @@
                 "tags": ["Addresses"],
                 "summary": "Satoshi Activity by Address",
                 "description": "Returns all transactions for a given address or script pubkey, allowing insight into when the balance increased, decreased, or remained the same. This endpoint supports customization to narrow results by time, transaction type, or ordering, enabling tailored historical views.",
-                "operationId": "satoshi_activity_by_address",
+                "operationId": "wallet_satoshi_activity_by_address",
                 "parameters": [
                     {
                         "name": "address",
@@ -154,7 +154,7 @@
                 "tags": ["Addresses"],
                 "summary": "Metaprotocol Activity by Address",
                 "description": "Return all transactions where the specified address has satoshi and/or metaprotocols activity. Supported metaprotocols: runes, inscriptions.",
-                "operationId": "metaprotocol_activity_by_address",
+                "operationId": "wallet_metaprotocol_activity_by_address",
                 "parameters": [
                     {
                         "name": "address",
@@ -259,7 +259,7 @@
                 "tags": ["Addresses"],
                 "summary": "Historical Satoshi Balance by Address",
                 "description": "Returns the historical satoshi balances, itemized by block and including USD price.",
-                "operationId": "historical_satoshi_balance_by_address",
+                "operationId": "wallet_historical_satoshi_balance_by_address",
                 "parameters": [
                     {
                         "name": "address",
@@ -377,7 +377,7 @@
                 "tags": ["Addresses"],
                 "summary": "Inscription Activity by Address",
                 "description": "Returns all inscription-related transactions involving a specific address. Can be filtered by activity type (send, receive, self-transfer), narrowed to a specific inscription, and sorted chronologically. Useful for building dashboards, tracking user behavior, or filtering unwanted spam activity.",
-                "operationId": "inscription_activity_by_address",
+                "operationId": "wallet_inscription_activity_by_address",
                 "parameters": [
                     {
                         "name": "address",
@@ -517,7 +517,7 @@
                 "tags": ["Addresses"],
                 "summary": "Rune Activity by Address",
                 "description": "Return all transactions where the specified address has rune activity, with the option to filter by a specific rune kind.",
-                "operationId": "rune_activity_by_address",
+                "operationId": "wallet_rune_activity_by_address",
                 "parameters": [
                     {
                         "name": "address",
@@ -657,7 +657,7 @@
                 "tags": ["Addresses"],
                 "summary": "Address Statistics",
                 "description": "Returns all current statistics of the address: total txs the address was involved in, total unspent outputs controlled by the address, and current satoshi, rune and inscription balance.",
-                "operationId": "address_statistics",
+                "operationId": "wallet_address_statistics",
                 "parameters": [
                     {
                         "name": "address",
