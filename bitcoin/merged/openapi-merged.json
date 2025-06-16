@@ -28,6 +28,11 @@
             "api-key": []
         }
     ],
+    "tags": [
+        {
+            "name": "event_manager.v1.EventManagerService"
+        }
+    ],
     "paths": {
         "/addresses/{address}/activity": {
             "get": {
@@ -3492,6 +3497,124 @@
                 }
             }
         },
+        "/wallet/addresses/{address}/balance/historical": {
+            "get": {
+                "tags": ["Addresses"],
+                "summary": "Historical Satoshi Balance by Address",
+                "description": "Returns the historical satoshi balances, itemized by block and including USD price.",
+                "operationId": "historical_satoshi_balance_by_address1",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Bitcoin address or hex encoded script pubkey",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "The order in which the results are sorted. Supported values: asc, desc",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "string",
+                                    "default": "asc",
+                                    "enum": ["asc", "desc"]
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "The max number of results per page",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "integer",
+                                    "default": 100,
+                                    "minimum": 0
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Return only blocks included on or after a specific height or timestamps. If this parameter is not provided, the starting point will be the first block where the address has seen its balance increase or decrease.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Return only blocks included on or before a specific height or timestamp",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "height_params",
+                        "in": "query",
+                        "description": "Whether the from and to integer query params should be read as timestamps or as block heights. True (the default) means from and to params should be read as block heights.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedHistoricalSatBalanceByAddress"
+                                },
+                                "example": "{\n    \"data\": [{\n        \"height\": 899903,\n        \"confirmations\": 932,\n        \"unix_timestamp\": 1749126863,\n        \"timestamp\": \"2025-06-05 12:34:23\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899904,\n        \"confirmations\": 931,\n        \"unix_timestamp\": 1749126892,\n        \"timestamp\": \"2025-06-05 12:34:52\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899905,\n        \"confirmations\": 930,\n        \"unix_timestamp\": 1749126924,\n        \"timestamp\": \"2025-06-05 12:35:24\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.56\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000014ba9b2d30d9c737423c753c5b6a27989815ed50afe04\",\n        \"block_height\": 900834\n    },\n    \"next_cursor\": null\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/wallet/addresses/{address}/inscriptions/activity": {
             "get": {
                 "tags": ["Addresses"],
@@ -3760,6 +3883,45 @@
                                     "$ref": "#/components/schemas/PaginatedRuneActivityByAddress"
                                 },
                                 "example": "{\n    \"data\": [{\n        \"height\": 875944,\n        \"confirmations\": 21684,\n        \"tx_hash\": \"6a4237d43719e0766a8333eb8531b3bae9b20e7484e6962a731773b883315da1\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [],\n        \"increased_balances\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"1453573\"\n        }],\n        \"decreased_balances\": []\n    }, {\n        \"height\": 876070,\n        \"confirmations\": 21558,\n        \"tx_hash\": \"1c2c45980432108fda7b4eb2a390bd1cae7aac62b9309f5ef3911960e50b8501\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"1453573\"\n        }],\n        \"increased_balances\": [],\n        \"decreased_balances\": []\n    }, {\n        \"height\": 876103,\n        \"confirmations\": 21525,\n        \"tx_hash\": \"cbcbac069d142c303b062dda88635e4939d69120f66d89a9da17ebd0ff806a1f\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [],\n        \"increased_balances\": [],\n        \"decreased_balances\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"207654\"\n        }]\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000119bd8dffd7d8285a69744011aa98f0d9091b0555ca46\",\n        \"block_height\": 897627\n    },\n    \"next_cursor\": null\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/wallet/addresses/{address}/statistics": {
+            "get": {
+                "tags": ["Addresses"],
+                "summary": "Address Statistics",
+                "description": "Returns all current statistics of the address: total txs the address was involved in, total unspent outputs controlled by the address, and current satoshi, rune and inscription balance.",
+                "operationId": "address_statistics1",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Bitcoin address or hex encoded script pubkey",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TimestampedAddressStatistics"
+                                },
+                                "example": "{\n    \"data\": {\n        total_txs: 50,\n        total_utxos: 25,\n        runes: true,\n        total_inscriptions: 6100,\n        sat_balance: 12345678\n    },\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83\",\n        \"block_height\": 884991\n    }\n}"
                             }
                         }
                     },
@@ -5250,6 +5412,1106 @@
                 },
                 "summary": "Transaction Info",
                 "tags": ["Transactions"]
+            }
+        },
+        "/eventmanager/healthcheck": {
+            "get": {
+                "tags": ["Health"],
+                "summary": "Healthcheck",
+                "description": "Healthcheck",
+                "operationId": "event_manager.v1.EventManagerService.Healthcheck",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.HealthcheckResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eventmanager/managers": {
+            "get": {
+                "tags": ["Managers"],
+                "summary": "ListManagers",
+                "description": "List all event managers\n\n Returns a list of all event managers associated with the API key. These represent configured webhook listeners for blockchain events.",
+                "operationId": "event_manager.v1.EventManagerService.ListManagers",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.ListManagersResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Managers"],
+                "summary": "CreateManager",
+                "description": "Create a new event manager\n\n Creates a new event manager that defines a webhook URL and related triggers.",
+                "operationId": "event_manager.v1.EventManagerService.CreateManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/event_manager.v1.CreateManagerRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.CreateManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eventmanager/managers/{id}": {
+            "get": {
+                "tags": ["Managers"],
+                "summary": "GetManager",
+                "description": "Fetch a specific event manager\n\n Retrieves the configuration of a specific manager identified by its unique `id`.",
+                "operationId": "event_manager.v1.EventManagerService.GetManager",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.GetManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Managers"],
+                "summary": "UpdateManager",
+                "description": "Update an existing event manager\n\n Updates an event manager’s metadata, webhook, or attached triggers identified by its unique `id`.",
+                "operationId": "event_manager.v1.EventManagerService.UpdateManager",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "eventManager": {
+                                        "title": "event_manager",
+                                        "$ref": "#/components/schemas/event_manager.v1.Manager"
+                                    }
+                                },
+                                "title": "UpdateManagerRequest",
+                                "additionalProperties": false
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.UpdateManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Managers"],
+                "summary": "DeleteManager",
+                "description": "Delete an event manager\n\n Removes the manager and all associated triggers identified by its unique `id`.",
+                "operationId": "event_manager.v1.EventManagerService.DeleteManager",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.DeleteManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eventmanager/triggers": {
+            "get": {
+                "tags": ["Triggers"],
+                "summary": "ListTriggers",
+                "description": "List all triggers\n\n Returns all individual triggers associated with your event managers.",
+                "operationId": "event_manager.v1.EventManagerService.ListTriggers",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.ListTriggersResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Triggers"],
+                "summary": "CreateTrigger",
+                "description": "Create a new trigger\n\n Adds a trigger to a manager to listen for specific blockchain activity.",
+                "operationId": "event_manager.v1.EventManagerService.CreateTrigger",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/event_manager.v1.CreateTriggerRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.CreateTriggerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eventmanager/triggers/{id}": {
+            "get": {
+                "tags": ["Triggers"],
+                "summary": "GetTrigger",
+                "description": "Fetch trigger details\n\n Returns metadata and configuration for a specific trigger identified by its unique `id`.",
+                "operationId": "event_manager.v1.EventManagerService.GetTrigger",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.GetTriggerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Triggers"],
+                "summary": "UpdateTrigger",
+                "description": "Update a trigger\n\n Allows modification of a trigger's properties identified by its unique `id`.",
+                "operationId": "event_manager.v1.EventManagerService.UpdateTrigger",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "trigger": {
+                                        "title": "trigger",
+                                        "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                                    }
+                                },
+                                "title": "UpdateTriggerRequest",
+                                "additionalProperties": false
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.UpdateTriggerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Triggers"],
+                "summary": "DeleteTrigger",
+                "description": "Remove a trigger\n\n Deletes a specific trigger identified by its unique `id`, leaving the event manager intact.",
+                "operationId": "event_manager.v1.EventManagerService.DeleteTrigger",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.DeleteTriggerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eventmanager/logs/{id}": {
+            "get": {
+                "tags": ["Logs"],
+                "summary": "GetEventLog",
+                "description": "Fetch a single event log by ID\n\n Returns the payload, status, and response of a specific event log identified by its unique `id`.",
+                "operationId": "event_manager.v1.EventManagerService.GetEventLog",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.GetEventLogResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eventmanager/logs": {
+            "get": {
+                "tags": ["Logs"],
+                "summary": "ListEventLogs",
+                "description": "Fetch all event logs\n\n Returns a list of event logs that have been generated from event manager triggers. Each log captures a payload, response status, and other metadata.",
+                "operationId": "event_manager.v1.EventManagerService.ListEventLogs",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.ListEventLogsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eventmanager/picklist_options/{name}": {
+            "get": {
+                "tags": ["Metadata"],
+                "summary": "GetPicklistOptions",
+                "description": "Fetch picklist options by name\n\n Returns a list of picklist options identified by its unique `name`.",
+                "operationId": "event_manager.v1.EventManagerService.GetPicklistOptions",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.GetPicklistOptionsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/_internal/daily_credits": {
+            "post": {
+                "tags": ["Internal"],
+                "summary": "ListDailyComputeCredits",
+                "description": "Fetch daily compute credits\n \n Fetches the compute credits available (calculation for previous day).",
+                "operationId": "event_manager.v1.EventManagerService.ListDailyComputeCredits",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/event_manager.v1.ListDailyComputeCreditsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/event_manager.v1.ListDailyComputeCreditsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/connect.error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/btc/prices/batch": {
+            "post": {
+                "description": "Returns BTC-USD prices for the provided list of UTC timestamps. Timestamps are matched against minute-aligned entries in the database.",
+                "operationId": "mkt-btc-prices-by-timestamps",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/bitcoin_api.PricesByTimestampsParams"
+                            }
+                        }
+                    },
+                    "description": "Array of UTC timestamps",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/models.BTCPrice"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Server Error"
+                    }
+                },
+                "summary": "BTC prices by timestamp",
+                "tags": ["DEX"]
+            }
+        },
+        "/markets/btc/prices/{timestamp}": {
+            "get": {
+                "description": "Returns BTC-USD price for the provided UTC timestamp.",
+                "operationId": "mkt-btc-price-by-timestamp",
+                "parameters": [
+                    {
+                        "description": "Unix timestamp in seconds",
+                        "in": "path",
+                        "name": "timestamp",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/models.BTCPrice"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Invalid timestamp"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Server Error"
+                    }
+                },
+                "summary": "BTC price by timestamp",
+                "tags": ["DEX"]
+            }
+        },
+        "/markets/dexs": {
+            "get": {
+                "description": "Retrieves a list of all decentralized exchanges (DEXs) currently indexed and supported by the API. This serves as the discovery endpoint for clients to programmatically identify valid DEX identifiers used in other endpoints like trades or OHLC queries.",
+                "operationId": "mkt-dexs",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/models.SupportedDexList"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Server Error"
+                    }
+                },
+                "summary": "Supported DEXs",
+                "tags": ["DEX"]
+            }
+        },
+        "/markets/dexs/ohlc/{dex}/{symbol}": {
+            "get": {
+                "description": "Returns candlestick-formatted market data (Open, High, Low, Close, Volume) for a specific DEX and Rune pair, segmented by time intervals. This is ideal for price charting, trend analysis, and historical performance. Data is sourced from both confirmed blocks and optionally from the mempool, depending on configuration.",
+                "operationId": "mkt-dex-ohlc",
+                "parameters": [
+                    {
+                        "description": "Name of the DEX",
+                        "example": "magiceden",
+                        "in": "path",
+                        "name": "dex",
+                        "required": true,
+                        "schema": {
+                            "default": "magiceden",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Symbol of the Rune asset trading pair (BTC-Rune ID)",
+                        "example": "BTC-840000:28",
+                        "in": "path",
+                        "name": "symbol",
+                        "required": true,
+                        "schema": {
+                            "default": "BTC-840000:28",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Mempool mode",
+                        "example": "included",
+                        "in": "query",
+                        "name": "mempool",
+                        "schema": {
+                            "default": "excluded",
+                            "enum": ["included", "excluded", "only"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Time resolution (1m, 5m, 15m, 30m, 1h, 4h, 1d, 1w, 1M)",
+                        "example": "1h",
+                        "in": "query",
+                        "name": "resolution",
+                        "required": true,
+                        "schema": {
+                            "default": "1h",
+                            "enum": [
+                                "1m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "1h",
+                                "4h",
+                                "1d",
+                                "1w",
+                                "1M"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Start timestamp in Unix",
+                        "example": "1735689600",
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "default": "1735689600",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "End timestamp in Unix",
+                        "example": "1742428800",
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "default": "1742428800",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limit number of Runes returned (min: 1, max: 50000)",
+                        "example": 10000,
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "default": 5000,
+                            "maximum": 50000,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Sort by descending (desc) or ascending (asc)",
+                        "example": "asc",
+                        "in": "query",
+                        "name": "sort",
+                        "schema": {
+                            "default": "desc",
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Fill candles with no trades with synthetic data (OHLC filled with previous closing price, volume=0)",
+                        "example": false,
+                        "in": "query",
+                        "name": "carry",
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/models.CandleList"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Server Error"
+                    }
+                },
+                "summary": "Rune OHLC data",
+                "tags": ["DEX"]
+            }
+        },
+        "/markets/dexs/trades/{dex}/{symbol}": {
+            "get": {
+                "description": "Provides a time-series list of individual trades for a specified Rune pair on a given DEX, including granular data such as trade price (in satoshis), volume, block height, and buy/sell direction. Especially useful for high-frequency strategies or price feed services.",
+                "operationId": "mkt-dex-trades",
+                "parameters": [
+                    {
+                        "description": "Name of the DEX",
+                        "example": "magiceden",
+                        "in": "path",
+                        "name": "dex",
+                        "required": true,
+                        "schema": {
+                            "default": "magiceden",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Symbol of the Rune asset trading pair (BTC-Rune ID)",
+                        "example": "BTC-840000:28",
+                        "in": "path",
+                        "name": "symbol",
+                        "required": true,
+                        "schema": {
+                            "default": "BTC-840000:28",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Mempool mode",
+                        "example": "included",
+                        "in": "query",
+                        "name": "mempool",
+                        "schema": {
+                            "default": "excluded",
+                            "enum": ["included", "excluded", "only"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Start timestamp in Unix",
+                        "example": "1735689600",
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "default": "1735689600",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "End timestamp in Unix",
+                        "example": "1742428800",
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "default": "1742428800",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limit number of Runes returned (min: 1, max: 50000)",
+                        "example": 10000,
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "default": 5000,
+                            "maximum": 50000,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Sort by descending (desc) or ascending (asc)",
+                        "example": "desc",
+                        "in": "query",
+                        "name": "sort",
+                        "schema": {
+                            "default": "desc",
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/models.TradeList"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Server Error"
+                    }
+                },
+                "summary": "Rune Trades for DEX",
+                "tags": ["DEX"]
+            }
+        },
+        "/markets/runes": {
+            "get": {
+                "description": "Returns metadata for Rune assets registered and etched into the Bitcoin blockchain. This includes human-readable name, symbol, divisibility (decimals), and genesis transaction. Filtering by `rune_id` narrows the query to a specific asset.",
+                "operationId": "mkt-dex",
+                "parameters": [
+                    {
+                        "description": "Bitcoin Rune ID",
+                        "example": "840000:28",
+                        "in": "query",
+                        "name": "rune_id",
+                        "schema": {
+                            "default": "840000:28",
+                            "maxLength": 16,
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limit number of Runes returned (min: 1, max: 50000)",
+                        "example": 10000,
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "default": 5000,
+                            "maximum": 50000,
+                            "minimum": 1,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Sort by descending (desc) or ascending (asc)",
+                        "example": "desc",
+                        "in": "query",
+                        "name": "sort",
+                        "schema": {
+                            "default": "desc",
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/models.RuneRegistryList"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bitcoin_api.APIError"
+                                }
+                            }
+                        },
+                        "description": "Server Error"
+                    }
+                },
+                "summary": "Rune Registry",
+                "tags": ["DEX"]
             }
         }
     },
@@ -9791,6 +11053,871 @@
                     },
                     "value": {
                         "type": "number"
+                    }
+                },
+                "type": "object"
+            },
+            "event_manager.v1.Chain": {
+                "type": "string",
+                "title": "Chain",
+                "enum": ["CHAIN_UNSPECIFIED", "CHAIN_BITCOIN"]
+            },
+            "event_manager.v1.Network": {
+                "type": "string",
+                "title": "Network",
+                "enum": [
+                    "NETWORK_UNSPECIFIED",
+                    "NETWORK_MAINNET",
+                    "NETWORK_TESTNET"
+                ]
+            },
+            "event_manager.v1.TriggerType": {
+                "type": "string",
+                "title": "TriggerType",
+                "enum": [
+                    "TRIGGER_TYPE_UNSPECIFIED",
+                    "TRIGGER_TYPE_TRANSACTION",
+                    "TRIGGER_TYPE_SENDER",
+                    "TRIGGER_TYPE_RECEIVER",
+                    "TRIGGER_TYPE_SENDER_OR_RECEIVER"
+                ]
+            },
+            "event_manager.v1.CreateManagerRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "name"
+                    },
+                    "chain": {
+                        "title": "chain",
+                        "$ref": "#/components/schemas/event_manager.v1.Chain"
+                    },
+                    "network": {
+                        "title": "network",
+                        "$ref": "#/components/schemas/event_manager.v1.Network"
+                    },
+                    "webhookUrl": {
+                        "type": "string",
+                        "title": "webhook_url"
+                    },
+                    "triggers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.CreateTriggerRequest"
+                        },
+                        "title": "triggers"
+                    }
+                },
+                "title": "CreateManagerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.CreateManagerResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.Manager"
+                    }
+                },
+                "title": "CreateManagerResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.CreateTriggerRequest": {
+                "type": "object",
+                "properties": {
+                    "eventManagerId": {
+                        "type": "string",
+                        "title": "event_manager_id"
+                    },
+                    "triggerType": {
+                        "title": "trigger_type",
+                        "$ref": "#/components/schemas/event_manager.v1.TriggerType"
+                    },
+                    "trackedId": {
+                        "type": "string",
+                        "title": "tracked_id"
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.Filter"
+                        },
+                        "title": "filters"
+                    }
+                },
+                "title": "CreateTriggerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.CreateTriggerResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                    }
+                },
+                "title": "CreateTriggerResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.DeleteManagerRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    }
+                },
+                "title": "DeleteManagerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.DeleteManagerResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.Manager"
+                    }
+                },
+                "title": "DeleteManagerResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.DeleteTriggerRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    }
+                },
+                "title": "DeleteTriggerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.DeleteTriggerResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                    }
+                },
+                "title": "DeleteTriggerResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.EventLog": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    },
+                    "eventManagerId": {
+                        "type": "string",
+                        "title": "event_manager_id"
+                    },
+                    "triggerId": {
+                        "type": "string",
+                        "title": "trigger_id"
+                    },
+                    "payload": {
+                        "type": "string",
+                        "title": "payload"
+                    },
+                    "responseStatus": {
+                        "type": "string",
+                        "title": "response_status"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "status"
+                    }
+                },
+                "title": "EventLog",
+                "additionalProperties": false
+            },
+            "event_manager.v1.Filter": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "title": "key"
+                    },
+                    "operator": {
+                        "type": "string",
+                        "title": "operator"
+                    },
+                    "value": {
+                        "type": "string",
+                        "title": "value"
+                    }
+                },
+                "title": "Filter",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetEventLogRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    }
+                },
+                "title": "GetEventLogRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetEventLogResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.EventLog"
+                    }
+                },
+                "title": "GetEventLogResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetManagerRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    }
+                },
+                "title": "GetManagerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetManagerResponse": {
+                "type": "object",
+                "properties": {
+                    "eventManager": {
+                        "title": "event_manager",
+                        "$ref": "#/components/schemas/event_manager.v1.Manager"
+                    }
+                },
+                "title": "GetManagerResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetPicklistOptionsRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "name"
+                    }
+                },
+                "title": "GetPicklistOptionsRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetPicklistOptionsResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.PicklistOption"
+                        },
+                        "title": "data"
+                    }
+                },
+                "title": "GetPicklistOptionsResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetTriggerRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    }
+                },
+                "title": "GetTriggerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.GetTriggerResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                    }
+                },
+                "title": "GetTriggerResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.HealthcheckRequest": {
+                "type": "object",
+                "title": "HealthcheckRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.HealthcheckResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "title": "status"
+                    }
+                },
+                "title": "HealthcheckResponse",
+                "additionalProperties": false,
+                "description": "Healthcheck message"
+            },
+            "event_manager.v1.ListDailyComputeCreditsRequest": {
+                "type": "object",
+                "properties": {
+                    "ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "ids"
+                    },
+                    "date": {
+                        "title": "date",
+                        "$ref": "#/components/schemas/google.protobuf.Timestamp"
+                    }
+                },
+                "title": "ListDailyComputeCreditsRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListDailyComputeCreditsResponse": {
+                "type": "object",
+                "properties": {
+                    "counts": {
+                        "type": "object",
+                        "title": "counts",
+                        "additionalProperties": {
+                            "type": ["integer", "string"],
+                            "title": "value",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "title": "ListDailyComputeCreditsResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListDailyComputeCreditsResponse.CountsEntry": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "title": "key"
+                    },
+                    "value": {
+                        "type": ["integer", "string"],
+                        "title": "value",
+                        "format": "int64"
+                    }
+                },
+                "title": "CountsEntry",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListEventLogsRequest": {
+                "type": "object",
+                "title": "ListEventLogsRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListEventLogsResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.EventLog"
+                        },
+                        "title": "data"
+                    }
+                },
+                "title": "ListEventLogsResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListManagersRequest": {
+                "type": "object",
+                "title": "ListManagersRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListManagersResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.Manager"
+                        },
+                        "title": "data"
+                    }
+                },
+                "title": "ListManagersResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListTriggersRequest": {
+                "type": "object",
+                "title": "ListTriggersRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.ListTriggersResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                        },
+                        "title": "data"
+                    }
+                },
+                "title": "ListTriggersResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.Manager": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "name"
+                    },
+                    "chain": {
+                        "title": "chain",
+                        "$ref": "#/components/schemas/event_manager.v1.Chain"
+                    },
+                    "network": {
+                        "title": "network",
+                        "$ref": "#/components/schemas/event_manager.v1.Network"
+                    },
+                    "webhookUrl": {
+                        "type": "string",
+                        "title": "webhook_url"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "status"
+                    },
+                    "triggers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                        },
+                        "title": "triggers"
+                    }
+                },
+                "title": "Manager",
+                "additionalProperties": false
+            },
+            "event_manager.v1.PicklistOption": {
+                "type": "object",
+                "properties": {
+                    "listName": {
+                        "type": "string",
+                        "title": "list_name"
+                    },
+                    "nestedListName": {
+                        "type": "string",
+                        "title": "nested_list_name"
+                    },
+                    "options": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.PicklistOption"
+                        },
+                        "title": "options"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "title": "display_name"
+                    },
+                    "value": {
+                        "type": "string",
+                        "title": "value"
+                    },
+                    "sortOrder": {
+                        "type": "integer",
+                        "title": "sort_order",
+                        "format": "int32"
+                    }
+                },
+                "title": "PicklistOption",
+                "additionalProperties": false
+            },
+            "event_manager.v1.Trigger": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    },
+                    "eventManagerId": {
+                        "type": "string",
+                        "title": "event_manager_id"
+                    },
+                    "triggerType": {
+                        "title": "trigger_type",
+                        "$ref": "#/components/schemas/event_manager.v1.TriggerType"
+                    },
+                    "trackedId": {
+                        "type": "string",
+                        "title": "tracked_id"
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/event_manager.v1.Filter"
+                        },
+                        "title": "filters"
+                    }
+                },
+                "title": "Trigger",
+                "additionalProperties": false
+            },
+            "event_manager.v1.UpdateManagerRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    },
+                    "eventManager": {
+                        "title": "event_manager",
+                        "$ref": "#/components/schemas/event_manager.v1.Manager"
+                    }
+                },
+                "title": "UpdateManagerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.UpdateManagerResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.Manager"
+                    }
+                },
+                "title": "UpdateManagerResponse",
+                "additionalProperties": false
+            },
+            "event_manager.v1.UpdateTriggerRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "id"
+                    },
+                    "trigger": {
+                        "title": "trigger",
+                        "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                    }
+                },
+                "title": "UpdateTriggerRequest",
+                "additionalProperties": false
+            },
+            "event_manager.v1.UpdateTriggerResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "$ref": "#/components/schemas/event_manager.v1.Trigger"
+                    }
+                },
+                "title": "UpdateTriggerResponse",
+                "additionalProperties": false
+            },
+            "google.protobuf.Timestamp": {
+                "type": "string",
+                "examples": ["1s", "1.000340012s"],
+                "format": "date-time",
+                "description": "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+            },
+            "connect-protocol-version": {
+                "type": "number",
+                "title": "Connect-Protocol-Version",
+                "enum": [1],
+                "description": "Define the version of the Connect protocol",
+                "const": 1
+            },
+            "connect-timeout-header": {
+                "type": "number",
+                "title": "Connect-Timeout-Ms",
+                "description": "Define the timeout, in ms"
+            },
+            "connect.error": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "examples": ["not_found"],
+                        "enum": [
+                            "canceled",
+                            "unknown",
+                            "invalid_argument",
+                            "deadline_exceeded",
+                            "not_found",
+                            "already_exists",
+                            "permission_denied",
+                            "resource_exhausted",
+                            "failed_precondition",
+                            "aborted",
+                            "out_of_range",
+                            "unimplemented",
+                            "internal",
+                            "unavailable",
+                            "data_loss",
+                            "unauthenticated"
+                        ],
+                        "description": "The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]."
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client."
+                    },
+                    "detail": {
+                        "$ref": "#/components/schemas/google.protobuf.Any"
+                    }
+                },
+                "title": "Connect Error",
+                "additionalProperties": true,
+                "description": "Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation"
+            },
+            "google.protobuf.Any": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "debug": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                },
+                "additionalProperties": true,
+                "description": "Contains an arbitrary serialized message along with a @type that describes the type of the serialized message."
+            },
+            "bitcoin_api.APIError": {
+                "properties": {
+                    "error": {
+                        "description": "Error returned from the API request",
+                        "example": "Bad Request",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "bitcoin_api.PricesByTimestampsParams": {
+                "properties": {
+                    "timestamps": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "maxItems": 100,
+                        "minItems": 1,
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "required": ["timestamps"],
+                "type": "object"
+            },
+            "models.BTCPrice": {
+                "properties": {
+                    "price": {
+                        "type": "number"
+                    },
+                    "timestamp": {
+                        "$ref": "#/components/schemas/models.CustomTime"
+                    }
+                },
+                "type": "object"
+            },
+            "models.Candle": {
+                "properties": {
+                    "bucket": {
+                        "description": "Start time of the candle interval",
+                        "example": "2024-03-25T14:00:00Z",
+                        "type": "string"
+                    },
+                    "close": {
+                        "description": "Price at the end of the interval (in satoshis)",
+                        "example": 19.75,
+                        "type": "number"
+                    },
+                    "high": {
+                        "description": "Highest price during the interval (in satoshis)",
+                        "example": 20,
+                        "type": "number"
+                    },
+                    "low": {
+                        "description": "Lowest price during the interval (in satoshis)",
+                        "example": 19.25,
+                        "type": "number"
+                    },
+                    "open": {
+                        "description": "Price at the start of the interval (in satoshis)",
+                        "example": 19.5,
+                        "type": "number"
+                    },
+                    "symbol": {
+                        "description": "Symbol of the Rune asset trading pair (BTC-Rune ID)",
+                        "example": "BTC-840000:28",
+                        "type": "string"
+                    },
+                    "volume": {
+                        "description": "Total traded amount during the interval. Volume=0 for backfilled, synthetic candles (queried with carry=true)",
+                        "example": 3780,
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            },
+            "models.CandleList": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/models.Candle"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "models.CustomTime": {
+                "properties": {
+                    "time.Time": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "models.RuneRegistry": {
+                "properties": {
+                    "divisibility": {
+                        "description": "Number of decimal places supported",
+                        "example": 8,
+                        "type": "integer"
+                    },
+                    "etched_tx_hash": {
+                        "description": "Transaction hash where the Rune was etched",
+                        "example": "2bebfc71ac93f02de19b28a8b438ed40413676f4c4c2609401a9a08ea508fd58",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Human-readable name of the Rune",
+                        "example": "DOGGOTOTHEMOON",
+                        "type": "string"
+                    },
+                    "rune_id": {
+                        "description": "Symbol of the Rune asset trading pair (BTC-Rune ID)",
+                        "example": "BTC-840000:28",
+                        "type": "string"
+                    },
+                    "spacer": {
+                        "description": "Spacer value associated with the Rune",
+                        "example": 0,
+                        "type": "integer"
+                    },
+                    "symbol": {
+                        "description": "Ticker symbol of the Rune",
+                        "example": "DOGGO",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "models.RuneRegistryList": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/models.RuneRegistry"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "models.SupportedDexList": {
+                "properties": {
+                    "data": {
+                        "example": ["magiceden"],
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
+                    }
+                },
+                "type": "object"
+            },
+            "models.Trade": {
+                "properties": {
+                    "amount": {
+                        "description": "Amount of the asset traded",
+                        "example": 3780,
+                        "type": "number"
+                    },
+                    "block": {
+                        "description": "Block height where the trade was included",
+                        "example": 840000,
+                        "type": "integer"
+                    },
+                    "dex": {
+                        "description": "Name of the DEX",
+                        "example": "magiceden",
+                        "type": "string"
+                    },
+                    "mempool": {
+                        "description": "Mempool status of the trade",
+                        "example": false,
+                        "type": "boolean"
+                    },
+                    "price": {
+                        "description": "Price of the asset (in satoshis)",
+                        "example": 19.75,
+                        "type": "number"
+                    },
+                    "side": {
+                        "description": "Trade direction: buy or sell",
+                        "enum": ["buy", "sell"],
+                        "example": "buy",
+                        "type": "string"
+                    },
+                    "symbol": {
+                        "description": "Symbol of the Rune asset trading pair (BTC-Rune ID)",
+                        "example": "BTC-840000:28",
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "description": "Time of the block in which trade occurred",
+                        "example": "2024-05-03T15:04:05Z",
+                        "type": "string"
+                    },
+                    "tx_hash": {
+                        "description": "Transaction hash of the trade",
+                        "example": "2bebfc71ac93f02de19b28a8b438ed40413676f4c4c2609401a9a08ea508fd58",
+                        "type": "string"
+                    },
+                    "tx_index": {
+                        "description": "Index of the trade within the block, 0-based (first trade is 0, second trade is 1, not transaction index)",
+                        "example": 1,
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "models.TradeList": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/models.Trade"
+                        },
+                        "type": "array",
+                        "uniqueItems": false
                     }
                 },
                 "type": "object"
