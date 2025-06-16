@@ -20,124 +20,6 @@
         }
     ],
     "paths": {
-        "/addresses/{address}/balance/historical": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "Historical Satoshi Balance by Address",
-                "description": "Returns the historical satoshi balances, itemized by block and including USD price.",
-                "operationId": "historical_satoshi_balance_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Bitcoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "description": "The order in which the results are sorted. Supported values: asc, desc",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "string",
-                                    "default": "asc",
-                                    "enum": ["asc", "desc"]
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "Return only blocks included on or after a specific height or timestamps. If this parameter is not provided, the starting point will be the first block where the address has seen its balance increase or decrease.",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "Return only blocks included on or before a specific height or timestamp",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "height_params",
-                        "in": "query",
-                        "description": "Whether the from and to integer query params should be read as timestamps or as block heights. True (the default) means from and to params should be read as block heights.",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedHistoricalSatBalanceByAddress"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"height\": 899903,\n        \"confirmations\": 932,\n        \"unix_timestamp\": 1749126863,\n        \"timestamp\": \"2025-06-05 12:34:23\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899904,\n        \"confirmations\": 931,\n        \"unix_timestamp\": 1749126892,\n        \"timestamp\": \"2025-06-05 12:34:52\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899905,\n        \"confirmations\": 930,\n        \"unix_timestamp\": 1749126924,\n        \"timestamp\": \"2025-06-05 12:35:24\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.56\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000014ba9b2d30d9c737423c753c5b6a27989815ed50afe04\",\n        \"block_height\": 900834\n    },\n    \"next_cursor\": null\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "404": {
-                        "description": "Requested entity not found on-chain"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
         "/wallet/addresses/{address}/activity": {
             "get": {
                 "tags": ["Addresses"],
@@ -365,6 +247,124 @@
                     },
                     "400": {
                         "description": "Malformed query parameters"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/wallet/addresses/{address}/balance/historical": {
+            "get": {
+                "tags": ["Addresses"],
+                "summary": "Historical Satoshi Balance by Address",
+                "description": "Returns the historical satoshi balances, itemized by block and including USD price.",
+                "operationId": "historical_satoshi_balance_by_address",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Bitcoin address or hex encoded script pubkey",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "The order in which the results are sorted. Supported values: asc, desc",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "string",
+                                    "default": "asc",
+                                    "enum": ["asc", "desc"]
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "The max number of results per page",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "integer",
+                                    "default": 100,
+                                    "minimum": 0
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Return only blocks included on or after a specific height or timestamps. If this parameter is not provided, the starting point will be the first block where the address has seen its balance increase or decrease.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Return only blocks included on or before a specific height or timestamp",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "height_params",
+                        "in": "query",
+                        "description": "Whether the from and to integer query params should be read as timestamps or as block heights. True (the default) means from and to params should be read as block heights.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Requested data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedHistoricalSatBalanceByAddress"
+                                },
+                                "example": "{\n    \"data\": [{\n        \"height\": 899903,\n        \"confirmations\": 932,\n        \"unix_timestamp\": 1749126863,\n        \"timestamp\": \"2025-06-05 12:34:23\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899904,\n        \"confirmations\": 931,\n        \"unix_timestamp\": 1749126892,\n        \"timestamp\": \"2025-06-05 12:34:52\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.59\"\n    }, {\n        \"height\": 899905,\n        \"confirmations\": 930,\n        \"unix_timestamp\": 1749126924,\n        \"timestamp\": \"2025-06-05 12:35:24\",\n        \"sat_balance\": \"155191\",\n        \"usd_balance\": \"163.56\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000014ba9b2d30d9c737423c753c5b6a27989815ed50afe04\",\n        \"block_height\": 900834\n    },\n    \"next_cursor\": null\n}"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
                     },
                     "500": {
                         "description": "Internal server error"
