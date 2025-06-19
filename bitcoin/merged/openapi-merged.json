@@ -1,13 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Bitcoin - Blockchain Indexer API",
-    "description": "This API provides core indexer endpoints with support for Bitcoin metaprotocols by delivering real-time, rollback-protected access to Bitcoin's UTXO data, enabling developers to build responsive and reliable blockchain applications without managing complex infrastructure.\n\n#### Key Features:\n- **Real-Time Data with Rollback Protection:** Ensures data accuracy by handling chain reorganizations gracefully, providing live data without sacrificing integrity.\n- **Comprehensive UTXO Indexing:** Specialized pipelines extract, match, and process on-chain information, including handling rollbacks, to provide accurate and up-to-date data.\n\n#### Key Benefits for Developers:\nBy abstracting the complexities of blockchain data retrieval and processing, Maestro's Bitcoin Indexer API empowers developers to focus on building innovative applications with confidence in fast and reliable access to historical chain data.",
-    "license": {
-      "name": "Apache 2.0",
-      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
-    },
-    "version": "v0.2.0"
+    "title": "Bitcoin - Merged Services API",
+    "version": "1.0.0",
+    "description": "Maestro's Bitcoin Merged Service API is a unified OpenAPI specification that combines multiple Bitcoin-related services into one comprehensive spec. It integrates endpoints from the following core services:\n\n - **Blockchain Indexer API:** Core Bitcoin endpoints with support for Bitcoin metaprotocols indexed for real-time, rollback-protected access to UTXO data such as transaction activity, address balances and block data.\n - **Event Manager API:** Programmable webhook infrastructure for tracking Bitcoin events like transactions, address activity, and related state changes via configurable triggers.\n - **Market Price API:** Real-time, rollback-protected DEX pricing data with deep network-level indexing for BTC and Rune assets.\n - **Mempool Monitoring API:** Core Bitcoin endpoints indexed with mempool awareness, providing real-time visibility into unconfirmed transactions and fees.\n - **Node RPC API:** Interaction with Bitcoin nodes for low-level operations like sending transactions and querying blockchain state.\n - **Wallet API:** Granular address-level visibility across native Bitcoin and metaprotocol assets like inscriptions and runes, enabling detailed tracking of balance changes, token activity, and historical balance changes with USD-denominated valuation over time."
   },
   "servers": [
     {
