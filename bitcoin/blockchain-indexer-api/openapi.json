@@ -1077,7 +1077,7 @@
             "get": {
                 "tags": ["Addresses"],
                 "summary": "Address Statistics",
-                "description": "Returns all current statistics of the address: total txs the address was involved in, total unspent outputs controlled by the address, and current satoshi, rune and inscription balance.",
+                "description": "Returns all current statistics of the address: total txs the address was involved in, total unspent outputs controlled by the address, current satoshi, control of any runes and inscription balance.",
                 "operationId": "address_statistics",
                 "parameters": [
                     {
@@ -1099,7 +1099,7 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/TimestampedAddressStatistics"
                                 },
-                                "example": "{\n    \"data\": {\n        total_txs: 50,\n        total_utxos: 25,\n        runes: true,\n        total_inscriptions: 6100,\n        sat_balance: 12345678\n    },\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83\",\n        \"block_height\": 884991\n    }\n}"
+                                "example": "{\n    \"data\": {\n        total_txs: 50,\n        total_utxos: 25,\n        runes: true,\n        total_inscriptions: 6100,\n        sat_balance: \"12345678\"\n    },\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83\",\n        \"block_height\": 884991\n    }\n}"
                             }
                         }
                     },
@@ -2762,10 +2762,8 @@
                         "description": "Existence of runes controlled by the address."
                     },
                     "sat_balance": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Current satoshi balance controlled by the address.",
-                        "minimum": 0
+                        "type": "string",
+                        "description": "Current satoshi balance controlled by the address."
                     },
                     "total_inscriptions": {
                         "type": "integer",
@@ -3156,7 +3154,7 @@
                     },
                     "usd_balance": {
                         "type": "string",
-                        "description": "USD balance when exchanging satoshis at the exchange rate between USD and BTC during the mining of the block."
+                        "description": "USD balance if sat balance was exchanged. The exchange rate is that between USD and BTC at the time the block was mined."
                     }
                 }
             },
@@ -3872,6 +3870,27 @@
                     },
                     "value": {
                         "type": "string"
+                    }
+                }
+            },
+            "MempoolLastUpdated": {
+                "type": "object",
+                "required": ["chain_tip", "estimated_blocks"],
+                "properties": {
+                    "chain_tip": {
+                        "$ref": "#/components/schemas/ChainTip"
+                    },
+                    "estimated_blocks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EstimatedBlock"
+                        },
+                        "description": "Information about any estimated blocks from the mempool that were indexed in addition to the mainchain"
+                    },
+                    "mempool_timestamp": {
+                        "type": "string",
+                        "description": "Timestamp of the indexed mempool snapshot, if any estimated blocks from the mempool have been indexed",
+                        "nullable": true
                     }
                 }
             },
