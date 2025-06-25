@@ -1795,7 +1795,7 @@
             "get": {
                 "tags": ["Inscriptions"],
                 "summary": "Collection Metadata by Inscription",
-                "description": "Returns a complete list of all inscription IDs associated with a specific collection, identified by its symbol. This endpoint is ideal for indexing collection contents or powering gallery views. Pagination support allows for handling large collections efficiently.",
+                "description": "Returns metadata of a collection for a given inscription ID, including its name, image, supply and external links.",
                 "operationId": "collection_metadata_by_inscription",
                 "parameters": [
                     {
