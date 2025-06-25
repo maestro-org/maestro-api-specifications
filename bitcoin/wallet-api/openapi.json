@@ -23,8 +23,8 @@
         "/wallet/addresses/{address}/activity": {
             "get": {
                 "tags": ["Addresses"],
-                "summary": "Satoshi Activity by Address",
-                "description": "Returns all transactions for a given address or script pubkey, allowing insight into when the balance increased, decreased, or remained the same. This endpoint supports customization to narrow results by time, transaction type, or ordering, enabling tailored historical views.",
+                "summary": "Wallet Satoshi Activity by Address (Mempool-aware)",
+                "description": "Returns all transactions for a given address or script pubkey, allowing insight into when the balance increased, decreased, or remained the same. Mempool data is included by default. This endpoint supports customization to narrow results by time, transaction type, or ordering, enabling tailored historical views.",
                 "operationId": "wallet_satoshi_activity_by_address",
                 "parameters": [
                     {
@@ -126,6 +126,16 @@
                             "type": "boolean",
                             "nullable": true
                         }
+                    },
+                    {
+                        "name": "mempool",
+                        "in": "query",
+                        "description": "Include mempool data. Default: true.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
                     }
                 ],
                 "responses": {
@@ -134,9 +144,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedActivityByAddress"
+                                    "$ref": "#/components/schemas/MempoolWalletPaginatedActivityByAddress"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"height\": 892671,\n        \"confirmations\": 48,\n        \"tx_hash\": \"9f2d17f672ebb9962940aba94daef140cc876f32edba5e9325c18ca17534120e\",\n        \"kind\": \"increase\",\n        \"amount\": \"4456732\"\n    }, {\n        \"height\": 892676,\n        \"confirmations\": 43,\n        \"tx_hash\": \"2c34dbe0d8dcbf4faba291e50cda1d9b6f70cccdbb2fcd23a9341d2791845998\",\n        \"kind\": \"decrease\",\n        \"amount\": \"4456732\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000c7f19aca70cdeab9d7f04a79d1c8283b66dce78796e8\",\n        \"block_height\": 892719\n    },\n    \"next_cursor\": null\n}"
+                                "example": "{\n    \"data\": [{\n        \"height\": 901937,\n        \"confirmations\": 1,\n        \"mempool\": false,\n        \"tx_hash\": \"7032180634bc691471b92099250b9370e07a0c8c8ca1420e518806404c7b6cf3\",\n        \"sat_activity\": {\n            \"kind\": \"increase\",\n            \"amount\": \"603733\",\n            \"usd_amount\": \"629.17\"\n        }\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000001ae26ce7b25ef2bd13f4c0069b634a233b1472f0c0a17\",\n            \"block_height\": 901937\n        },\n        \"mempool_timestamp\": \"2025-06-19 19:57:37\",\n        \"estimated_blocks\": [{\n            \"block_height\": 901938,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 4,\n                \"max\": 99\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
                             }
                         }
                     },
@@ -231,6 +241,16 @@
                             "type": "string",
                             "nullable": true
                         }
+                    },
+                    {
+                        "name": "mempool",
+                        "in": "query",
+                        "description": "Include mempool data. Default: true.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
                     }
                 ],
                 "responses": {
@@ -239,9 +259,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedActivityByAddressWithMetaprotocols"
+                                    "$ref": "#/components/schemas/MempoolWalletPaginatedActivityByAddressWithMetaprotocols"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"height\": 840000,\n        \"confirmations\": 19,\n        \"tx_hash\": \"152b928e97bb9e874da1bd4abdf766ae0cdc7a2f260dad5542967cb414c58489\",\n        \"sat_activity\": {\n            \"kind\": \"increase\",\n            \"amount\": \"1100\"\n        },\n        \"inscription_activity\": {\n            \"self_transferred\": [],\n            \"sent\": [],\n            \"received\": [{\n                \"inscription_id\": \"152b928e97bb9e874da1bd4abdf766ae0cdc7a2f260dad5542967cb414c58489i0\",\n                \"from\": null,\n                \"to\": {\n                    \"address\": \"bc1pkhvq2h62093jtewlxjx6y6qmchjrx70wl7zu6yjhm5zcv5phkhusnasyrp\",\n                    \"script_pubkey\": \"5120b5d8055f4a796325e5df348da2681bc5e43379eeff85cd1257dd05865037b5f9\",\n                    \"output_vout\": 0,\n                    \"sat_offset\": 0\n                }\n            }]\n        },\n        \"rune_activity\": {\n            \"etched_rune\": {\n                \"rune_id\": \"840000:2\",\n                \"premined_amount\": \"21000000000.00\"\n            },\n            \"minted\": null,\n            \"self_transfers\": [],\n            \"increased_balances\": [{\n                \"rune_id\": \"840000:2\",\n                \"amount\": \"21000000000.00\"\n            }],\n            \"decreased_balances\": []\n        }\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000ecce02d6c785d726bf8f7cfa93b10af3ba7ca69617fb\",\n        \"block_height\": 840018\n    },\n    \"next_cursor\": null\n}"
+                                "example": "{\n    \"data\": [{\n        \"height\": 902042,\n        \"confirmations\": 11,\n        \"mempool\": false,\n        \"tx_hash\": \"fc3038613cf290a7a015f0aa1d09ebac83309f2311a56ec27e36f6252bc2c691\",\n        \"sat_activity\": {\n            \"kind\": \"increase\",\n            \"amount\": \"24609392\",\n            \"usd_amount\": \"26087.92\"\n        },\n        \"inscription_activity\": null,\n        \"rune_activity\": null\n    }, {\n        \"height\": 902046,\n        \"confirmations\": 7,\n        \"mempool\": false,\n        \"tx_hash\": \"c61f87fb686dde38a7b002a2cf1577d9ae652e95580ee586a2c8cfac67201351\",\n        \"sat_activity\": {\n            \"kind\": \"decrease\",\n            \"amount\": \"24609392\",\n            \"usd_amount\": \"26109.83\"\n        },\n        \"inscription_activity\": null,\n        \"rune_activity\": null\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000001e6fd78ccfda2ab7a9d5a67558714b982e735c3eed525\",\n            \"block_height\": 902052\n        },\n        \"mempool_timestamp\": \"2025-06-20 13:41:40\",\n        \"estimated_blocks\": [{\n            \"block_height\": 902053,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 3,\n                \"max\": 40\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
                             }
                         }
                     },
@@ -375,8 +395,8 @@
         "/wallet/addresses/{address}/inscriptions/activity": {
             "get": {
                 "tags": ["Addresses"],
-                "summary": "Inscription Activity by Address",
-                "description": "Returns all inscription-related transactions involving a specific address. Can be filtered by activity type (send, receive, self-transfer), narrowed to a specific inscription, and sorted chronologically. Useful for building dashboards, tracking user behavior, or filtering unwanted spam activity.",
+                "summary": "Inscription Activity by Address (Mempool-aware)",
+                "description": "Returns all inscription-related transactions involving a specific address. Can be filtered by activity type (send, receive, self-transfer), narrowed to a specific inscription, and sorted chronologically. Mempool data is included by default. Useful for building dashboards, tracking user behavior, or filtering unwanted spam activity.",
                 "operationId": "wallet_inscription_activity_by_address",
                 "parameters": [
                     {
@@ -489,6 +509,16 @@
                             "type": "boolean",
                             "nullable": true
                         }
+                    },
+                    {
+                        "name": "mempool",
+                        "in": "query",
+                        "description": "Include mempool data. Default: true.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
                     }
                 ],
                 "responses": {
@@ -497,9 +527,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedInscriptionActivityByAddress"
+                                    "$ref": "#/components/schemas/MempoolWalletPaginatedInscriptionActivityByAddress"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"height\": 836717,\n        \"confirmations\": 60911,\n        \"tx_hash\": \"a977a36055ba3d26203c82e6ee585539cadd12c3d17b236ffb67c051320b8991\",\n        \"self_transferred\": [],\n        \"sent\": [],\n        \"received\": [{\n          \"inscription_id\": \"696936486c96124784d46dec66dd9e806280a182d1addf9763ff4bb92d0bc918i64\",\n          \"from\": {\n            \"address\": \"bc1p4at29alvmmtunc5ffcpm9n5e4rvz63hlrjcrgd2zh7d7jy24xgns2g7rw7\",\n            \"script_pubkey\": \"5120af56a2f7ecded7c9e2894e03b2ce99a8d82d46ff1cb0343542bf9be911553227\",\n            \"input_index\": 0,\n            \"sat_offset\": 0\n          },\n          \"to\": {\n            \"address\": \"bc1p27j3fa2mr3d50m3uaavr0ntyzr0v2a27n48lc9gxpkzd4xye6dgs2tzx6p\",\n            \"script_pubkey\": \"512057a514f55b1c5b47ee3cef5837cd6410dec5755e9d4ffc15060d84da9899d351\",\n            \"output_vout\": 0,\n            \"sat_offset\": 0,\n            \"output_txid\": \"a977a36055ba3d26203c82e6ee585539cadd12c3d17b236ffb67c051320b8991\"\n          }\n        }]\n    }, {\n        \"height\": 836718,\n        \"confirmations\": 60910,\n        \"tx_hash\": \"7647d53756d6f03b5191baaca26d84dbe2715406912eb2543c9d19c892a29c73\",\n        \"self_transferred\": [],\n        \"sent\": [{\n            \"inscription_id\": \"696936486c96124784d46dec66dd9e806280a182d1addf9763ff4bb92d0bc918i64\",\n            \"from\": {\n                \"address\": \"bc1pjuewj3dd4kpjen4zaqxd354jnwdjunewu7ncuaqqgsr0xa4cczzseg9066\",\n                \"script_pubkey\": \"51209732e945adad832ccea2e80cd8d2b29b9b2e4f2ee7a78e74004406f376b8c085\",\n                \"input_index\": 2,\n                \"sat_offset\": 0\n            },\n            \"to\": {\n                \"address\": \"bc1pjuewj3dd4kpjen4zaqxd354jnwdjunewu7ncuaqqgsr0xa4cczzseg9066\",\n                \"script_pubkey\": \"51209732e945adad832ccea2e80cd8d2b29b9b2e4f2ee7a78e74004406f376b8c085\",\n                \"output_vout\": 1,\n                \"sat_offset\": 0,\n                \"output_txid\": \"7647d53756d6f03b5191baaca26d84dbe2715406912eb2543c9d19c892a29c73\"\n            }\n        }],\n        \"received\": []\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000119bd8dffd7d8285a69744011aa98f0d9091b0555ca46\",\n        \"block_height\": 897627\n    },\n    \"next_cursor\": null\n}"
+                                "example": "{\n    \"data\": [{\n        \"height\": 901787,\n        \"confirmations\": 0,\n        \"mempool\": true,\n        \"tx_hash\": \"cf5caab63c40314fdd2f421b19541f9b25926d2a6318845ad8bc3266b4b8a8be\",\n        \"inscription_activity\": {\n            \"self_transferred\": [],\n            \"sent\": [],\n            \"received\": [{\n                \"inscription_id\": \"1e6f91f13fe9a4359e1b9d6e7723cacb815d250337dab921f7b90fca62913e73i577\",\n                \"from\": {\n                    \"address\": \"bc1q8jtuypcd0p9v7eu8zq9uhd42tvy6gwh89zuchh\",\n                    \"script_pubkey\": \"00143c97c2070d784acf6787100bcbb6aa5b09a43ae7\",\n                    \"input_index\": 0,\n                    \"sat_offset\": 0\n                },\n                \"to\": {\n                    \"address\": \"bc1pck742mdgmrd473upp553jj5x2w62q6mzd3enxjdegrxx2sc7rcmqnndp86\",\n                    \"script_pubkey\": \"5120c5bd556da8d8db5f47810d29194a8653b4a06b626c733349b940cc65431e1e36\",\n                    \"output_vout\": 0,\n                    \"sat_offset\": 0,\n                    \"output_txid\": \"cf5caab63c40314fdd2f421b19541f9b25926d2a6318845ad8bc3266b4b8a8be\"\n                }\n            }]\n        }\n    }, {\n        \"height\": 901780,\n        \"confirmations\": 7,\n        \"mempool\": false,\n        \"tx_hash\": \"09b6730e0f11f87c31f8d4977785292e9c741b16834d59a0b2f352ee01a43e91\",\n        \"inscription_activity\": {\n            \"self_transferred\": [],\n            \"sent\": [],\n            \"received\": [{\n                \"inscription_id\": \"a8a3f114d24e0e270a4d66457ff1ca1d11eb21d4daa02ffcd1b643a1c6731a2ci1388\",\n                \"from\": {\n                    \"address\": \"bc1p7jwyezderr5qxepw57fepw9dmdetn9pqkj2e3m7ufffthspdj5aqdxsdw5\",\n                    \"script_pubkey\": \"5120f49c4c89b918e803642ea79390b8addb72b99420b49598efdc4a52bbc02d953a\",\n                    \"input_index\": 0,\n                    \"sat_offset\": 0\n                },\n                \"to\": {\n                    \"address\": \"bc1pck742mdgmrd473upp553jj5x2w62q6mzd3enxjdegrxx2sc7rcmqnndp86\",\n                    \"script_pubkey\": \"5120c5bd556da8d8db5f47810d29194a8653b4a06b626c733349b940cc65431e1e36\",\n                    \"output_vout\": 0,\n                    \"sat_offset\": 0,\n                    \"output_txid\": \"09b6730e0f11f87c31f8d4977785292e9c741b16834d59a0b2f352ee01a43e91\"\n                }\n            }]\n        }\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000000d7398966d32c809e5acad484574547150c97d39eea91\",\n            \"block_height\": 901786\n        },\n        \"mempool_timestamp\": \"2025-06-18 16:28:43\",\n        \"estimated_blocks\": [{\n            \"block_height\": 901787,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 5,\n                \"max\": 991\n            }\n        }]\n    },\n    \"next_cursor\": \"Aw3ClAEBkT6kAe5S87KgWU2DFht0nC4phXeX1PgxfPgRDw5ztgk\"\n}"
                             }
                         }
                     },
@@ -515,8 +545,8 @@
         "/wallet/addresses/{address}/runes/activity": {
             "get": {
                 "tags": ["Addresses"],
-                "summary": "Rune Activity by Address",
-                "description": "Return all transactions where the specified address has rune activity, with the option to filter by a specific rune kind.",
+                "summary": "Rune Activity by Address (Mempool-aware)",
+                "description": "Return all transactions where the specified address has rune activity, with the option to filter by a specific rune kind. Mempool data is included by default.",
                 "operationId": "wallet_rune_activity_by_address",
                 "parameters": [
                     {
@@ -629,6 +659,16 @@
                             "type": "boolean",
                             "nullable": true
                         }
+                    },
+                    {
+                        "name": "mempool",
+                        "in": "query",
+                        "description": "Include mempool data. Default: true.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
                     }
                 ],
                 "responses": {
@@ -637,9 +677,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedRuneActivityByAddress"
+                                    "$ref": "#/components/schemas/MempoolWalletPaginatedRuneActivityByAddress"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"height\": 875944,\n        \"confirmations\": 21684,\n        \"tx_hash\": \"6a4237d43719e0766a8333eb8531b3bae9b20e7484e6962a731773b883315da1\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [],\n        \"increased_balances\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"1453573\"\n        }],\n        \"decreased_balances\": []\n    }, {\n        \"height\": 876070,\n        \"confirmations\": 21558,\n        \"tx_hash\": \"1c2c45980432108fda7b4eb2a390bd1cae7aac62b9309f5ef3911960e50b8501\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"1453573\"\n        }],\n        \"increased_balances\": [],\n        \"decreased_balances\": []\n    }, {\n        \"height\": 876103,\n        \"confirmations\": 21525,\n        \"tx_hash\": \"cbcbac069d142c303b062dda88635e4939d69120f66d89a9da17ebd0ff806a1f\",\n        \"etched_rune\": null,\n        \"minted\": null,\n        \"self_transfers\": [],\n        \"increased_balances\": [],\n        \"decreased_balances\": [{\n            \"rune_id\": \"840000:28\",\n            \"amount\": \"207654\"\n        }]\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000119bd8dffd7d8285a69744011aa98f0d9091b0555ca46\",\n        \"block_height\": 897627\n    },\n    \"next_cursor\": null\n}"
+                                "example": "{\n    \"data\": [{\n        \"height\": 901674,\n        \"confirmations\": 0,\n        \"mempool\": true,\n        \"tx_hash\": \"2264aa2f8ec653067a98f35c7e762cff248410dbb13408629ce0ed4ca6444dd1\",\n        \"rune_activity\": {\n            \"etched_rune\": null,\n            \"minted\": null,\n            \"self_transfers\": [],\n            \"increased_balances\": [],\n            \"decreased_balances\": [{\n                \"rune_id\": \"845764:84\",\n                \"amount\": \"20000\"\n            }]\n        }\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000000a30d9d5025c11b17b2c44b176de0e284c84f59dacebb\",\n            \"block_height\": 901673\n        },\n        \"mempool_timestamp\": \"2025-06-17 21:38:09\",\n        \"estimated_blocks\": [{\n            \"block_height\": 901674,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 4,\n                \"max\": 300\n            }\n        }]\n    },\n    \"next_cursor\": \"Aw3CKgEl0U1Epkzt4JxiCDSx2xCEJP8sdn5c85h6BlPGji-qZCI\"\n}"
                             }
                         }
                     },
@@ -655,8 +695,8 @@
         "/wallet/addresses/{address}/statistics": {
             "get": {
                 "tags": ["Addresses"],
-                "summary": "Address Statistics",
-                "description": "Returns all current statistics of the address: total txs the address was involved in, total unspent outputs controlled by the address, and current satoshi, rune and inscription balance.",
+                "summary": "Address Statistics (Mempool-aware)",
+                "description": "Returns all current statistics of the address: total txs the address was involved in, total unspent outputs controlled by the address, current satoshi, control of any runes and inscription balance, distinguishing between confirmed and pending (still in the mempool) data.",
                 "operationId": "wallet_address_statistics",
                 "parameters": [
                     {
@@ -676,9 +716,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TimestampedAddressStatistics"
+                                    "$ref": "#/components/schemas/MempoolWalletTimestampedAddressStatistics"
                                 },
-                                "example": "{\n    \"data\": {\n        total_txs: 50,\n        total_utxos: 25,\n        runes: true,\n        total_inscriptions: 6100,\n        sat_balance: 12345678\n    },\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83\",\n        \"block_height\": 884991\n    }\n}"
+                                "example": "{\n    \"data\": {\n        \"total_txs\": 1,\n        \"total_utxos\": 1,\n        \"runes\": false,\n        \"total_inscriptions\": 0,\n        \"sat_balance\": \"1881005\",\n        \"usd_balance\": \"1931.60\",\n        \"pending\": {\n            \"txs\": 1,\n            \"utxos\": 0,\n            \"sat_balance\": \"-97099\",\n            \"usd_balance\": \"-99.71\"\n        }\n    },\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000000470ac91070a0b8f710552c62901d14ca8735140f45fc\",\n            \"block_height\": 902075\n        },\n        \"mempool_timestamp\": \"2025-06-20 17:47:30\",\n        \"estimated_blocks\": [{\n            \"block_height\": 902076,\n            \"sats_per_vb\": {\n              \"min\": 1,\n              \"median\": 4,\n              \"max\": 199\n            }\n        }]\n    }\n}"
                             }
                         }
                     },
@@ -694,122 +734,34 @@
     },
     "components": {
         "schemas": {
-            "ActivityByAddress": {
-                "type": "object",
-                "required": [
-                    "height",
-                    "confirmations",
-                    "tx_hash",
-                    "sat_activity"
-                ],
-                "properties": {
-                    "confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of confirmation blocks.",
-                        "minimum": 0
-                    },
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Height of block containing the satoshi activity.",
-                        "minimum": 0
-                    },
-                    "sat_activity": {
-                        "$ref": "#/components/schemas/SatActivity"
-                    },
-                    "tx_hash": {
-                        "type": "string",
-                        "description": "Hash of transaction containing the satoshi activity."
-                    }
-                }
-            },
-            "ActivityByAddressWithMetaprotocols": {
-                "type": "object",
-                "required": [
-                    "height",
-                    "confirmations",
-                    "tx_hash",
-                    "sat_activity"
-                ],
-                "properties": {
-                    "confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of confirmation blocks.",
-                        "minimum": 0
-                    },
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Height of block containing the satoshi activity.",
-                        "minimum": 0
-                    },
-                    "inscription_activity": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/InscriptionActivity"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "rune_activity": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/RuneActivity"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "sat_activity": {
-                        "$ref": "#/components/schemas/SatActivity"
-                    },
-                    "tx_hash": {
-                        "type": "string",
-                        "description": "Hash of transaction containing the satoshi activity."
-                    }
-                }
-            },
             "ActivityKindByAddress": {
                 "type": "string",
                 "enum": ["self_transfer", "increase", "decrease"]
             },
-            "AddressStatistics": {
+            "BlockSatsPerVb": {
                 "type": "object",
-                "required": [
-                    "total_txs",
-                    "total_utxos",
-                    "runes",
-                    "total_inscriptions",
-                    "sat_balance"
-                ],
+                "description": "For transactions within a block, these are the lowest, median and highest\nsatoshis per virtual-byte values.",
+                "required": ["min", "median", "max"],
                 "properties": {
-                    "runes": {
-                        "type": "boolean",
-                        "description": "Existence of runes controlled by the address."
-                    },
-                    "sat_balance": {
+                    "max": {
                         "type": "integer",
                         "format": "int64",
-                        "description": "Current satoshi balance controlled by the address.",
+                        "description": "Highest sat/vB value of the transactions within the block",
+                        "example": 255,
                         "minimum": 0
                     },
-                    "total_inscriptions": {
+                    "median": {
                         "type": "integer",
                         "format": "int64",
-                        "description": "Total number of inscriptions currently controlled by the address.",
+                        "description": "Median sat/vB value of the transactions within the block",
+                        "example": 15,
                         "minimum": 0
                     },
-                    "total_txs": {
+                    "min": {
                         "type": "integer",
                         "format": "int64",
-                        "description": "Total number of transactions where the address controlled at least an input or an output.",
-                        "minimum": 0
-                    },
-                    "total_utxos": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Total number of UTxOs (unspent outputs) controlled by the address.",
+                        "description": "Lowest sat/vB value of the transactions within the block",
+                        "example": 11,
                         "minimum": 0
                     }
                 }
@@ -829,6 +781,22 @@
                         "description": "The height of the block in the blockchain",
                         "example": 707000,
                         "minimum": 0
+                    }
+                }
+            },
+            "EstimatedBlock": {
+                "type": "object",
+                "required": ["block_height", "sats_per_vb"],
+                "properties": {
+                    "block_height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Height of the estimated block",
+                        "example": "707001",
+                        "minimum": 0
+                    },
+                    "sats_per_vb": {
+                        "$ref": "#/components/schemas/BlockSatsPerVb"
                     }
                 }
             },
@@ -913,7 +881,7 @@
                     },
                     "usd_balance": {
                         "type": "string",
-                        "description": "USD balance when exchanging satoshis at the exchange rate between USD and BTC during the mining of the block."
+                        "description": "USD balance if sat balance was exchanged. The exchange rate is that between USD and BTC at the time the block was mined."
                     }
                 }
             },
@@ -1013,18 +981,39 @@
                     }
                 }
             },
-            "PaginatedActivityByAddress": {
+            "MempoolLastUpdated": {
                 "type": "object",
-                "required": ["data", "last_updated"],
+                "required": ["chain_tip", "estimated_blocks"],
+                "properties": {
+                    "chain_tip": {
+                        "$ref": "#/components/schemas/ChainTip"
+                    },
+                    "estimated_blocks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EstimatedBlock"
+                        },
+                        "description": "Information about any estimated blocks from the mempool that were indexed in addition to the mainchain"
+                    },
+                    "mempool_timestamp": {
+                        "type": "string",
+                        "description": "Timestamp of the indexed mempool snapshot, if any estimated blocks from the mempool have been indexed",
+                        "nullable": true
+                    }
+                }
+            },
+            "MempoolWalletPaginatedActivityByAddress": {
+                "type": "object",
+                "required": ["data", "indexer_info"],
                 "properties": {
                     "data": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ActivityByAddress"
+                            "$ref": "#/components/schemas/WalletActivityByAddress"
                         }
                     },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/ChainTip"
+                    "indexer_info": {
+                        "$ref": "#/components/schemas/MempoolLastUpdated"
                     },
                     "next_cursor": {
                         "type": "string",
@@ -1032,22 +1021,72 @@
                     }
                 }
             },
-            "PaginatedActivityByAddressWithMetaprotocols": {
+            "MempoolWalletPaginatedActivityByAddressWithMetaprotocols": {
                 "type": "object",
-                "required": ["data", "last_updated"],
+                "required": ["data", "indexer_info"],
                 "properties": {
                     "data": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ActivityByAddressWithMetaprotocols"
+                            "$ref": "#/components/schemas/WalletActivityByAddressWithMetaprotocols"
                         }
                     },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/ChainTip"
+                    "indexer_info": {
+                        "$ref": "#/components/schemas/MempoolLastUpdated"
                     },
                     "next_cursor": {
                         "type": "string",
                         "nullable": true
+                    }
+                }
+            },
+            "MempoolWalletPaginatedInscriptionActivityByAddress": {
+                "type": "object",
+                "required": ["data", "indexer_info"],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WalletInscriptionActivityByAddress"
+                        }
+                    },
+                    "indexer_info": {
+                        "$ref": "#/components/schemas/MempoolLastUpdated"
+                    },
+                    "next_cursor": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "MempoolWalletPaginatedRuneActivityByAddress": {
+                "type": "object",
+                "required": ["data", "indexer_info"],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WalletRuneActivityByAddress"
+                        }
+                    },
+                    "indexer_info": {
+                        "$ref": "#/components/schemas/MempoolLastUpdated"
+                    },
+                    "next_cursor": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "MempoolWalletTimestampedAddressStatistics": {
+                "type": "object",
+                "required": ["data", "indexer_info"],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/WalletAddressStatistics"
+                    },
+                    "indexer_info": {
+                        "$ref": "#/components/schemas/MempoolLastUpdated"
                     }
                 }
             },
@@ -1070,41 +1109,28 @@
                     }
                 }
             },
-            "PaginatedInscriptionActivityByAddress": {
+            "PendingAddressStatistics": {
                 "type": "object",
-                "required": ["data", "last_updated"],
+                "required": ["txs", "utxos", "sat_balance", "usd_balance"],
                 "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/InscriptionActivityByAddress"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/ChainTip"
-                    },
-                    "next_cursor": {
+                    "sat_balance": {
                         "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedRuneActivityByAddress": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RuneActivityByAddress"
-                        }
+                        "description": "Estimated difference in sat balance between mempool and confirmed data."
                     },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/ChainTip"
+                    "txs": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Estimated number of new txs from the mempool where the address controls at least an input or an output.",
+                        "minimum": 0
                     },
-                    "next_cursor": {
+                    "usd_balance": {
                         "type": "string",
-                        "nullable": true
+                        "description": "Estimated USD balance difference if sat balance was exchanged. The exchange rate is that between USD and BTC at the time the block at the tip of the chain was mined."
+                    },
+                    "utxos": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Estimated difference in number of UTxOs between mempool and confirmed data."
                     }
                 }
             },
@@ -1155,36 +1181,6 @@
                     }
                 }
             },
-            "RuneActivityByAddress": {
-                "type": "object",
-                "required": [
-                    "height",
-                    "confirmations",
-                    "tx_hash",
-                    "rune_activity"
-                ],
-                "properties": {
-                    "confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of confirmation blocks.",
-                        "minimum": 0
-                    },
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Height of block containing the rune activity.",
-                        "minimum": 0
-                    },
-                    "rune_activity": {
-                        "$ref": "#/components/schemas/RuneActivity"
-                    },
-                    "tx_hash": {
-                        "type": "string",
-                        "description": "Hash of transaction containing the rune activity."
-                    }
-                }
-            },
             "RuneActivityKindByAddress": {
                 "type": "string",
                 "enum": ["self_transfer", "increase", "decrease"]
@@ -1198,31 +1194,6 @@
                     },
                     "rune_id": {
                         "type": "string"
-                    }
-                }
-            },
-            "SatActivity": {
-                "type": "object",
-                "required": ["kind", "amount"],
-                "properties": {
-                    "amount": {
-                        "type": "string",
-                        "description": "Amount of satoshis involved in the activity."
-                    },
-                    "kind": {
-                        "$ref": "#/components/schemas/ActivityKindByAddress"
-                    }
-                }
-            },
-            "TimestampedAddressStatistics": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "$ref": "#/components/schemas/AddressStatistics"
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/ChainTip"
                     }
                 }
             },
@@ -1259,6 +1230,226 @@
                     "script_pubkey": {
                         "type": "string",
                         "description": "Script pubkey at which the output containing the inscription resides."
+                    }
+                }
+            },
+            "WalletActivityByAddress": {
+                "type": "object",
+                "required": [
+                    "height",
+                    "confirmations",
+                    "mempool",
+                    "tx_hash",
+                    "sat_activity"
+                ],
+                "properties": {
+                    "confirmations": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of confirmation blocks.",
+                        "minimum": 0
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Height of block containing the satoshi activity.",
+                        "minimum": 0
+                    },
+                    "mempool": {
+                        "type": "boolean",
+                        "description": "Whether the data is pending (true) or confirmed (false)."
+                    },
+                    "sat_activity": {
+                        "$ref": "#/components/schemas/WalletSatActivity"
+                    },
+                    "tx_hash": {
+                        "type": "string",
+                        "description": "Hash of transaction containing the satoshi activity."
+                    }
+                }
+            },
+            "WalletActivityByAddressWithMetaprotocols": {
+                "type": "object",
+                "required": [
+                    "height",
+                    "confirmations",
+                    "mempool",
+                    "tx_hash",
+                    "sat_activity"
+                ],
+                "properties": {
+                    "confirmations": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of confirmation blocks.",
+                        "minimum": 0
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Height of block containing the satoshi activity.",
+                        "minimum": 0
+                    },
+                    "inscription_activity": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/InscriptionActivity"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "mempool": {
+                        "type": "boolean",
+                        "description": "Whether the data is pending (true) or confirmed (false)."
+                    },
+                    "rune_activity": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RuneActivity"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "sat_activity": {
+                        "$ref": "#/components/schemas/WalletSatActivity"
+                    },
+                    "tx_hash": {
+                        "type": "string",
+                        "description": "Hash of transaction containing the satoshi activity."
+                    }
+                }
+            },
+            "WalletAddressStatistics": {
+                "type": "object",
+                "required": [
+                    "total_txs",
+                    "total_utxos",
+                    "runes",
+                    "total_inscriptions",
+                    "sat_balance",
+                    "usd_balance",
+                    "pending"
+                ],
+                "properties": {
+                    "pending": {
+                        "$ref": "#/components/schemas/PendingAddressStatistics"
+                    },
+                    "runes": {
+                        "type": "boolean",
+                        "description": "Existence of runes controlled by the address."
+                    },
+                    "sat_balance": {
+                        "type": "string",
+                        "description": "Current satoshi balance controlled by the address."
+                    },
+                    "total_inscriptions": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of inscriptions currently controlled by the address.",
+                        "minimum": 0
+                    },
+                    "total_txs": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of transactions where the address controlled at least an input or an output.",
+                        "minimum": 0
+                    },
+                    "total_utxos": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of UTxOs (unspent outputs) controlled by the address.",
+                        "minimum": 0
+                    },
+                    "usd_balance": {
+                        "type": "string",
+                        "description": "USD balance if sat balance was exchanged. The exchange rate is that between USD and BTC at the time the block at the tip of the chain was mined."
+                    }
+                }
+            },
+            "WalletInscriptionActivityByAddress": {
+                "type": "object",
+                "required": [
+                    "height",
+                    "confirmations",
+                    "mempool",
+                    "tx_hash",
+                    "inscription_activity"
+                ],
+                "properties": {
+                    "confirmations": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of confirmation blocks.",
+                        "minimum": 0
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Height of block containing the inscription activity.",
+                        "minimum": 0
+                    },
+                    "inscription_activity": {
+                        "$ref": "#/components/schemas/InscriptionActivity"
+                    },
+                    "mempool": {
+                        "type": "boolean",
+                        "description": "Whether the data is pending (true) or confirmed (false)."
+                    },
+                    "tx_hash": {
+                        "type": "string",
+                        "description": "Hash of transaction containing the inscription activity."
+                    }
+                }
+            },
+            "WalletRuneActivityByAddress": {
+                "type": "object",
+                "required": [
+                    "height",
+                    "confirmations",
+                    "mempool",
+                    "tx_hash",
+                    "rune_activity"
+                ],
+                "properties": {
+                    "confirmations": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of confirmation blocks.",
+                        "minimum": 0
+                    },
+                    "height": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Height of block containing the rune activity.",
+                        "minimum": 0
+                    },
+                    "mempool": {
+                        "type": "boolean",
+                        "description": "Whether the data is pending (true) or confirmed (false)."
+                    },
+                    "rune_activity": {
+                        "$ref": "#/components/schemas/RuneActivity"
+                    },
+                    "tx_hash": {
+                        "type": "string",
+                        "description": "Hash of transaction containing the rune activity."
+                    }
+                }
+            },
+            "WalletSatActivity": {
+                "type": "object",
+                "required": ["kind", "amount", "usd_amount"],
+                "properties": {
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount of satoshis involved in the activity."
+                    },
+                    "kind": {
+                        "$ref": "#/components/schemas/ActivityKindByAddress"
+                    },
+                    "usd_amount": {
+                        "type": "string",
+                        "description": "USD amount if sat amount was exchanged to USD. If the block is confirmed, the exchange rate is that between USD and BTC at the time the block was mined. If the block is pending (mempool transaction), then the exchange rate is that between USD and BTC at the time the block at the tip of the chain was mined."
                     }
                 }
             }
