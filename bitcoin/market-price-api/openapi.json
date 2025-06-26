@@ -220,8 +220,13 @@
                         "type": "boolean"
                     },
                     "price": {
-                        "description": "Price of the asset (in satoshis)",
+                        "description": "Price of the asset in satoshis",
                         "example": 19.75,
+                        "type": "number"
+                    },
+                    "price_usd": {
+                        "description": "Price of the asset in usd",
+                        "example": 0.0575,
                         "type": "number"
                     },
                     "side": {

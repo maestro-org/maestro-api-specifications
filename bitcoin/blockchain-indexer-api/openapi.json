@@ -164,7 +164,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     }
                 ],
                 "responses": {
@@ -324,7 +324,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     }
                 ],
                 "responses": {
@@ -663,7 +663,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     }
                 ],
                 "responses": {
@@ -1127,7 +1127,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     },
                     {
                         "name": "count",
@@ -1244,7 +1244,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     },
                     {
                         "name": "filter_dust",
@@ -1353,7 +1353,7 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/PaginatedUtxo"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"txid\": \"cb9532641412a6fa6f329e8728a8f7554dcaa6cdaec1355bd2bd2903cd61c6eb\",\n        \"vout\": 1,\n        \"address\": \"tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc\",\n        \"script_pubkey\": \"00140df0d276eacd58b09a74d5e0288756e8505787f5\",\n        \"satoshis\": \"546\",\n        \"confirmations\": 23,\n        \"height\": 2815497,\n        \"runes\": [],\n        \"inscriptions\": []\n    }, {\n        \"txid\": \"6312095baa2a42dec6aa41888c01fd74ecce2ab139c17a0a6d01d42a89b67953\",\n        \"vout\": 1,\n        \"address\": \"tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc\",\n        \"script_pubkey\": \"00140df0d276eacd58b09a74d5e0288756e8505787f5\",\n        \"satoshis\": \"546\",\n        \"confirmations\": 20,\n        \"height\": 2815500,\n        \"runes\": [{\n            \"rune_id\": \"840000:1\",\n            \"amount\": \"1.00\"\n        }],\n        \"inscriptions\": [{\n            \"offset\": 0,\n            \"inscription_id\": \"47bb5438d366863b25b4b1782af0d0cf0a89a922adce5da81253790d3e651501i0\"\n        }]\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"0000000088bee3b517745636443c8f11aff45209449300a5d8461c336e467925\",\n        \"block_height\": 2815520\n    },\n    \"next_cursor\": \"AAAAAAAq9gxgU3m2iSrUAW0KesE5sSrO7HT9AYyIQarG3kIqqlsJEmNgAAAAAQ\"\n}"
+                                "example": "{\n    \"data\": [{\n        \"txid\": \"cb9532641412a6fa6f329e8728a8f7554dcaa6cdaec1355bd2bd2903cd61c6eb\",\n        \"vout\": 1,\n        \"address\": \"bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8\",\n        \"script_pubkey\": \"00140df0d276eacd58b09a74d5e0288756e8505787f5\",\n        \"satoshis\": \"546\",\n        \"confirmations\": 23,\n        \"height\": 2815497,\n        \"runes\": [],\n        \"inscriptions\": []\n    }, {\n        \"txid\": \"6312095baa2a42dec6aa41888c01fd74ecce2ab139c17a0a6d01d42a89b67953\",\n        \"vout\": 1,\n        \"address\": \"bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8\",\n        \"script_pubkey\": \"00140df0d276eacd58b09a74d5e0288756e8505787f5\",\n        \"satoshis\": \"546\",\n        \"confirmations\": 20,\n        \"height\": 2815500,\n        \"runes\": [{\n            \"rune_id\": \"840000:1\",\n            \"amount\": \"1.00\"\n        }],\n        \"inscriptions\": [{\n            \"offset\": 0,\n            \"inscription_id\": \"47bb5438d366863b25b4b1782af0d0cf0a89a922adce5da81253790d3e651501i0\"\n        }]\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"0000000088bee3b517745636443c8f11aff45209449300a5d8461c336e467925\",\n        \"block_height\": 2815520\n    },\n    \"next_cursor\": \"AAAAAAAq9gxgU3m2iSrUAW0KesE5sSrO7HT9AYyIQarG3kIqqlsJEmNgAAAAAQ\"\n}"
                             }
                         }
                     },
