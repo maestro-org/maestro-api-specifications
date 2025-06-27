@@ -261,7 +261,7 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolWalletPaginatedActivityByAddressWithMetaprotocols"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"height\": 902042,\n        \"confirmations\": 11,\n        \"mempool\": false,\n        \"tx_hash\": \"fc3038613cf290a7a015f0aa1d09ebac83309f2311a56ec27e36f6252bc2c691\",\n        \"sat_activity\": {\n            \"kind\": \"increase\",\n            \"amount\": \"24609392\",\n            \"usd_amount\": \"26087.92\"\n        },\n        \"inscription_activity\": null,\n        \"rune_activity\": null\n    }, {\n        \"height\": 902046,\n        \"confirmations\": 7,\n        \"mempool\": false,\n        \"tx_hash\": \"c61f87fb686dde38a7b002a2cf1577d9ae652e95580ee586a2c8cfac67201351\",\n        \"sat_activity\": {\n            \"kind\": \"decrease\",\n            \"amount\": \"24609392\",\n            \"usd_amount\": \"26109.83\"\n        },\n        \"inscription_activity\": null,\n        \"rune_activity\": null\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000001e6fd78ccfda2ab7a9d5a67558714b982e735c3eed525\",\n            \"block_height\": 902052\n        },\n        \"mempool_timestamp\": \"2025-06-20 13:41:40\",\n        \"estimated_blocks\": [{\n            \"block_height\": 902053,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 3,\n                \"max\": 40\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
+                                "example": "{\n    \"data\": [{\n        \"height\": 902843,\n        \"confirmations\": 53,\n        \"mempool\": false,\n        \"tx_hash\": \"4717042047235b65fa7cf7d7a5fe2f0b9d51398f5c84676b65bde053edbac418\",\n        \"sat_activity\": {\n            \"kind\": \"decrease\",\n            \"amount\": \"546\",\n            \"usd_amount\": \"0.59\"\n        },\n        \"inscription_activity\": null,\n        \"rune_activity\": {\n            \"etched_rune\": null,\n            \"minted\": null,\n            \"self_transfers\": [],\n            \"increased_balances\": [],\n            \"decreased_balances\": [{\n                \"rune_id\": \"840000:3\",\n                \"amount\": \"209938.14943\",\n                \"usd_amount\": \"863.26\"\n            }]\n        }\n    }, {\n        \"height\": 902847,\n        \"confirmations\": 49,\n        \"mempool\": false,\n        \"tx_hash\": \"fe9cc01f0a2446da2bb71474652643d7b3d1d0c41fd05358373e0df921024575\",\n        \"sat_activity\": {\n            \"kind\": \"increase\",\n            \"amount\": \"546\",\n            \"usd_amount\": \"0.59\"\n        },\n        \"inscription_activity\": {\n            \"self_transferred\": [],\n            \"sent\": [],\n            \"received\": [{\n                \"inscription_id\": \"e484a11516b74a06f5d104a83b1974db8d26e7a38cbb495d29bf5ed6b1f4e156i277\",\n                \"from\": {\n                  \"address\": \"bc1pqqeyklpuh5kx6yg3zqwy0tn9ysxtg6un0y7dl0hp6wz5y5xwvsvs6due29\",\n                  \"script_pubkey\": \"512000324b7c3cbd2c6d1111101c47ae65240cb46b93793cdfbee1d3854250ce6419\",\n                  \"input_index\": 0,\n                  \"sat_offset\": 0\n                },\n                \"to\": {\n                  \"address\": \"bc1px7ff6446jwmh79uu9df6dejvqayn9d6tlvwe5tudehj4j0cz58xsfr0dw9\",\n                  \"script_pubkey\": \"512037929d56ba93b77f179c2b53a6e64c074932b74bfb1d9a2f8dcde5593f02a1cd\",\n                  \"output_vout\": 0,\n                  \"sat_offset\": 0,\n                  \"output_txid\": \"fe9cc01f0a2446da2bb71474652643d7b3d1d0c41fd05358373e0df921024575\"\n                }\n            }]\n        },\n        \"rune_activity\": null\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000001929ab2c8fa214ccb7f025c9b591514adfc39c8d18fdd\",\n            \"block_height\": 902895\n        },\n        \"mempool_timestamp\": null,\n        \"estimated_blocks\": []\n    },\n    \"next_cursor\": null\n}"
                             }
                         }
                     },
@@ -1305,7 +1305,7 @@
                     "rune_activity": {
                         "allOf": [
                             {
-                                "$ref": "#/components/schemas/RuneActivity"
+                                "$ref": "#/components/schemas/WalletRuneActivity"
                             }
                         ],
                         "nullable": true
@@ -1401,6 +1401,53 @@
                     }
                 }
             },
+            "WalletRuneActivity": {
+                "type": "object",
+                "required": [
+                    "self_transfers",
+                    "increased_balances",
+                    "decreased_balances"
+                ],
+                "properties": {
+                    "decreased_balances": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WalletRuneAndAmount"
+                        },
+                        "description": "List of runes and amounts, corresponding to decreased balances for this address."
+                    },
+                    "etched_rune": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/EtchAndPremine"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "increased_balances": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WalletRuneAndAmount"
+                        },
+                        "description": "List of runes and amounts, corresponding to increased balances for this address."
+                    },
+                    "minted": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/WalletRuneAndAmount"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "self_transfers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WalletRuneAndAmount"
+                        },
+                        "description": "List of runes that were self-transferred."
+                    }
+                }
+            },
             "WalletRuneActivityByAddress": {
                 "type": "object",
                 "required": [
@@ -1428,11 +1475,27 @@
                         "description": "Whether the data is pending (true) or confirmed (false)."
                     },
                     "rune_activity": {
-                        "$ref": "#/components/schemas/RuneActivity"
+                        "$ref": "#/components/schemas/WalletRuneActivity"
                     },
                     "tx_hash": {
                         "type": "string",
                         "description": "Hash of transaction containing the rune activity."
+                    }
+                }
+            },
+            "WalletRuneAndAmount": {
+                "type": "object",
+                "required": ["rune_id", "amount", "usd_amount"],
+                "properties": {
+                    "amount": {
+                        "type": "string"
+                    },
+                    "rune_id": {
+                        "type": "string"
+                    },
+                    "usd_amount": {
+                        "type": "string",
+                        "description": "USD price for amounts of runes at the time the block containing this activity was mined."
                     }
                 }
             },
