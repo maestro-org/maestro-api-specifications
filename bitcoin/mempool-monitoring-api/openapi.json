@@ -35,7 +35,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     }
                 ],
                 "responses": {
@@ -77,7 +77,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     },
                     {
                         "name": "mempool_blocks_limit",
@@ -258,7 +258,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "tb1qphcdyah2e4vtpxn56hsz3p6kapg90pl4x525kc"
+                        "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
                     },
                     {
                         "name": "filter_dust",
