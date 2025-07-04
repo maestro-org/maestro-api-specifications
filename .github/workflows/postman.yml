@@ -22,6 +22,11 @@ jobs:
                       dev_collection_id: "25680306-fe78d627-7965-4e0b-918e-dbe692199a15" # Arch - Node RPC API (DEV)
                       prod_collection_id: "25680306-7a02f047-cf8f-4d1d-aefe-fd0f3e950b4c" # Arch - Node RPC API (PROD)
                     - chain: "bitcoin"
+                      service: "esplora-api"
+                      filename: "openapi.json"
+                      dev_collection_id: "43394706-a2579b41-883b-4f19-bc53-b3adb43446f2" # Bitcoin - Esplora API (DEV)
+                      prod_collection_id: "43394706-2d36817a-7546-4e7f-a0ee-1b44930d3763" # Bitcoin - Esplora API (PROD)
+                    - chain: "bitcoin"
                       service: "blockchain-indexer-api"
                       filename: "openapi.json"
                       dev_collection_id: "25680306-2eb301f3-3699-4a6b-85ca-5074ace39abd" # Bitcoin - Blockchain Indexer API (DEV)
