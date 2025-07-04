@@ -6987,42 +6987,6 @@
         ]
       }
     },
-    "/esplora/v1/validate-address/{address}": {
-      "get": {
-        "summary": "Address Validation",
-        "description": "Returns whether an address is valid or not. Available fields: isvalid (boolean), address (string), scriptPubKey (string), isscript (boolean), iswitness (boolean), witness_version (numeric, optional), and witness_program (string, optional).",
-        "parameters": [
-          {
-            "name": "address",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
-            },
-            "description": "The Bitcoin address to validate."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Validation result",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddressValidation"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request or malformed address"
-          }
-        },
-        "tags": [
-          "Addresses"
-        ]
-      }
-    },
     "/esplora/block/{hash}": {
       "get": {
         "summary": "Block",
@@ -7052,42 +7016,6 @@
           },
           "404": {
             "description": "Block not found"
-          }
-        },
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/esplora/v1/block/{hash}": {
-      "get": {
-        "summary": "Block (v1)",
-        "description": "Returns details about a block using Mempool's Node.js backend.",
-        "parameters": [
-          {
-            "name": "hash",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
-            },
-            "description": "The block hash to query."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Block data retrieved successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Block"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Block not found."
           }
         },
         "tags": [
@@ -7390,41 +7318,6 @@
         ]
       }
     },
-    "/esplora/v1/blocks/{start_height}": {
-      "get": {
-        "summary": "Blocks (v1)",
-        "description": "Returns details on the past 15 blocks from Mempool's Node.js backend. Includes fee and mining details in an extras field. If :startHeight is specified, the past 15 blocks before (and including) :startHeight are returned.",
-        "parameters": [
-          {
-            "name": "start_height",
-            "in": "path",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "The block height to start from."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of recent blocks.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BlockV1"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
     "/esplora/block-height/{height}": {
       "get": {
         "summary": "Block Height",
@@ -7458,48 +7351,6 @@
           },
           "404": {
             "description": "Block not found for the given height."
-          }
-        },
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/esplora/v1/blocks-bulk/{minHeight}/{max_height}": {
-      "get": {
-        "summary": "Blocks (Bulk)",
-        "description": "Returns details on the range of blocks between :minHeight and :maxHeight, inclusive, up to 10 blocks. If :maxHeight is not specified, it defaults to the current tip.",
-        "parameters": [
-          {
-            "name": "min_height",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "max_height",
-            "in": "path",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detailed statistics on blocks in the requested height range.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BlockStatsArray"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid range or block limit exceeded"
           }
         },
         "tags": [
@@ -7541,42 +7392,6 @@
                 }
               }
             }
-          }
-        },
-        "tags": [
-          "Blocks"
-        ]
-      }
-    },
-    "/esplora/v1/block/{hash}/audit-summary": {
-      "get": {
-        "summary": "Block Audit Summary",
-        "description": "Returns the block audit summary for the specified :blockHash. Available fields: height, id, timestamp, template, missingTxs, addedTxs, freshTxs, sigopTxs, fullrbfTxs, acceleratedTxs, matchRate, expectedFees, and expectedWeight.",
-        "parameters": [
-          {
-            "name": "hash",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
-            },
-            "description": "Block hash to retrieve the audit summary for."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Audit data for the block.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BlockAuditSummary"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Block not found"
           }
         },
         "tags": [
@@ -7673,51 +7488,6 @@
         ]
       }
     },
-    "/esplora/v1/replacements": {
-      "get": {
-        "summary": "Mempool RBF Transactions",
-        "description": "Returns the list of mempool transactions that are part of a RBF chain.",
-        "responses": {
-          "200": {
-            "description": "RBF replacement metadata for the transaction",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RbfReplacementRoot"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found or not eligible for RBF data"
-          }
-        },
-        "tags": [
-          "Mempool"
-        ]
-      }
-    },
-    "/esplora/v1/fullrbf/replacements": {
-      "get": {
-        "summary": "Mempool Full RBF Transactions",
-        "description": "Returns the list of mempool transactions that are part of a Full-RBF chain.",
-        "responses": {
-          "200": {
-            "description": "Full-RBF statistics from the mempool.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FullRbfStats"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Mempool"
-        ]
-      }
-    },
     "/esplora/mempool/recent": {
       "get": {
         "summary": "Mempool Recent",
@@ -7751,84 +7521,6 @@
         },
         "tags": [
           "Mempool"
-        ]
-      }
-    },
-    "/esplora/v1/fees/mempool-blocks": {
-      "get": {
-        "summary": "Mempool Blocks Fees",
-        "description": "Returns current mempool as projected blocks.",
-        "responses": {
-          "200": {
-            "description": "A list of virtual blocks representing estimated mempool blocks.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MempoolBlocksFees"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Fees"
-        ]
-      }
-    },
-    "/esplora/v1/fees/recommended": {
-      "get": {
-        "summary": "Recommended Fees",
-        "description": "Returns our currently suggested fees for new transactions.",
-        "responses": {
-          "200": {
-            "description": "Recommended fee rates in sat/vB.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeeRecommendations"
-                },
-                "examples": {
-                  "example": {
-                    "value": {
-                      "fastestFee": 25,
-                      "halfHourFee": 20,
-                      "hourFee": 15
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Fees"
-        ]
-      }
-    },
-    "/esplora/v1/cpfp": {
-      "get": {
-        "summary": "Children Pay for Parent",
-        "description": "Returns the ancestors and the best descendant fees for a transaction.",
-        "responses": {
-          "200": {
-            "description": "CPFP recommendation data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CpfpRecommendation"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found or not eligible for CPFP."
-          }
-        },
-        "tags": [
-          "Transactions"
         ]
       }
     },
@@ -8264,30 +7956,6 @@
         "tags": [
           "Transactions"
         ]
-      }
-    },
-    "/esplora/v1/transaction-times": {
-      "get": {
-        "summary": "Transaction Times",
-        "description": "Returns the timestamps when a list of unconfirmed transactions was initially observed in the mempool. If a transaction is not found in the mempool or has been mined, the timestamp will be 0.",
-        "tags": [
-          "Transactions"
-        ],
-        "responses": {
-          "200": {
-            "description": "Transaction propagation timestamps.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionTimes"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found"
-          }
-        }
       }
     },
     "/esplora/tx": {
