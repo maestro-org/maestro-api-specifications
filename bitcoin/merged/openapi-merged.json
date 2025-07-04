@@ -24,11 +24,6 @@
       "api-key": []
     }
   ],
-  "tags": [
-    {
-      "name": "event_manager.v1.EventManagerService"
-    }
-  ],
   "paths": {
     "/addresses/{address}/activity": {
       "get": {
@@ -5653,31 +5648,29 @@
         ]
       }
     },
-    "/eventmanager/healthcheck": {
+    "/logs": {
       "get": {
         "tags": [
-          "Health"
+          "Logs"
         ],
-        "summary": "Healthcheck",
-        "description": "Healthcheck",
-        "operationId": "event_manager.v1.EventManagerService.Healthcheck",
+        "summary": "User event logs",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.HealthcheckResponse"
+                  "$ref": "#/components/schemas/eventLogList"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -5685,31 +5678,70 @@
         }
       }
     },
-    "/eventmanager/managers": {
+    "/logs/{id}": {
       "get": {
         "tags": [
-          "Managers"
+          "Logs"
         ],
-        "summary": "ListManagers",
-        "description": "List all event managers\n\n Returns a list of all event managers associated with the API key. These represent configured webhook listeners for blockchain events.",
-        "operationId": "event_manager.v1.EventManagerService.ListManagers",
+        "summary": "Event log info by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Event log ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListManagersResponse"
+                  "$ref": "#/components/schemas/eventLog"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/managers": {
+      "get": {
+        "tags": [
+          "Managers"
+        ],
+        "summary": "User event managers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/eventManagerList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -5720,14 +5752,12 @@
         "tags": [
           "Managers"
         ],
-        "summary": "CreateManager",
-        "description": "Create a new event manager\n\n Creates a new event manager that defines a webhook URL and related triggers.",
-        "operationId": "event_manager.v1.EventManagerService.CreateManager",
+        "summary": "Create event manager",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/event_manager.v1.CreateManagerRequest"
+                "$ref": "#/components/schemas/createEventManagerRequest"
               }
             }
           },
@@ -5735,21 +5765,21 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.CreateManagerResponse"
+                  "$ref": "#/components/schemas/eventManager"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -5757,101 +5787,39 @@
         }
       }
     },
-    "/eventmanager/managers/{id}": {
+    "/managers/{id}": {
       "get": {
         "tags": [
           "Managers"
         ],
-        "summary": "GetManager",
-        "description": "Fetch a specific event manager\n\n Retrieves the configuration of a specific manager identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.GetManager",
+        "summary": "Event manager info by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "id"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetManagerResponse"
+                  "$ref": "#/components/schemas/eventManager"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "UpdateManager",
-        "description": "Update an existing event manager\n\n Updates an event manager’s metadata, webhook, or attached triggers identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.UpdateManager",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "eventManager": {
-                    "title": "event_manager",
-                    "$ref": "#/components/schemas/event_manager.v1.Manager"
-                  }
-                },
-                "title": "UpdateManagerRequest",
-                "additionalProperties": false
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.UpdateManagerResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -5862,37 +5830,82 @@
         "tags": [
           "Managers"
         ],
-        "summary": "DeleteManager",
-        "description": "Delete an event manager\n\n Removes the manager and all associated triggers identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.DeleteManager",
+        "summary": "Delete event manager",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "id"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.DeleteManagerResponse"
+                  "$ref": "#/components/schemas/eventManager"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Managers"
+        ],
+        "summary": "Update event manager",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateEventManagerBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/eventManager"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -5900,31 +5913,29 @@
         }
       }
     },
-    "/eventmanager/triggers": {
+    "/triggers": {
       "get": {
         "tags": [
           "Triggers"
         ],
-        "summary": "ListTriggers",
-        "description": "List all triggers\n\n Returns all individual triggers associated with your event managers.",
-        "operationId": "event_manager.v1.EventManagerService.ListTriggers",
+        "summary": "User event manager triggers",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListTriggersResponse"
+                  "$ref": "#/components/schemas/triggerList"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -5935,14 +5946,12 @@
         "tags": [
           "Triggers"
         ],
-        "summary": "CreateTrigger",
-        "description": "Create a new trigger\n\n Adds a trigger to a manager to listen for specific blockchain activity.",
-        "operationId": "event_manager.v1.EventManagerService.CreateTrigger",
+        "summary": "Create event manager trigger",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/event_manager.v1.CreateTriggerRequest"
+                "$ref": "#/components/schemas/createTriggerRequest"
               }
             }
           },
@@ -5950,21 +5959,21 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.CreateTriggerResponse"
+                  "$ref": "#/components/schemas/trigger"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -5972,101 +5981,39 @@
         }
       }
     },
-    "/eventmanager/triggers/{id}": {
+    "/triggers/{id}": {
       "get": {
         "tags": [
           "Triggers"
         ],
-        "summary": "GetTrigger",
-        "description": "Fetch trigger details\n\n Returns metadata and configuration for a specific trigger identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.GetTrigger",
+        "summary": "Event trigger info by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "id"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetTriggerResponse"
+                  "$ref": "#/components/schemas/trigger"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Triggers"
-        ],
-        "summary": "UpdateTrigger",
-        "description": "Update a trigger\n\n Allows modification of a trigger's properties identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.UpdateTrigger",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "trigger": {
-                    "title": "trigger",
-                    "$ref": "#/components/schemas/event_manager.v1.Trigger"
-                  }
-                },
-                "title": "UpdateTriggerRequest",
-                "additionalProperties": false
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.UpdateTriggerResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -6077,175 +6024,60 @@
         "tags": [
           "Triggers"
         ],
-        "summary": "DeleteTrigger",
-        "description": "Remove a trigger\n\n Deletes a specific trigger identified by its unique `id`, leaving the event manager intact.",
-        "operationId": "event_manager.v1.EventManagerService.DeleteTrigger",
+        "summary": "Delete event manager trigger",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "id"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.DeleteTriggerResponse"
+                  "$ref": "#/components/schemas/trigger"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/eventmanager/logs/{id}": {
-      "get": {
+      },
+      "put": {
         "tags": [
-          "Logs"
+          "Triggers"
         ],
-        "summary": "GetEventLog",
-        "description": "Fetch a single event log by ID\n\n Returns the payload, status, and response of a specific event log identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.GetEventLog",
+        "summary": "Update event manager trigger",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "id"
+              "type": "string"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetEventLogResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/logs": {
-      "get": {
-        "tags": [
-          "Logs"
-        ],
-        "summary": "ListEventLogs",
-        "description": "Fetch all event logs\n\n Returns a list of event logs that have been generated from event manager triggers. Each log captures a payload, response status, and other metadata.",
-        "operationId": "event_manager.v1.EventManagerService.ListEventLogs",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListEventLogsResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/picklist_options/{name}": {
-      "get": {
-        "tags": [
-          "Metadata"
-        ],
-        "summary": "GetPicklistOptions",
-        "description": "Fetch picklist options by name\n\n Returns a list of picklist options identified by its unique `name`.",
-        "operationId": "event_manager.v1.EventManagerService.GetPicklistOptions",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "name"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetPicklistOptionsResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/_internal/daily_credits": {
-      "post": {
-        "tags": [
-          "Internal"
-        ],
-        "summary": "ListDailyComputeCredits",
-        "description": "Fetch daily compute credits\n \n Fetches the compute credits available (calculation for previous day).",
-        "operationId": "event_manager.v1.EventManagerService.ListDailyComputeCredits",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/event_manager.v1.ListDailyComputeCreditsRequest"
+                "$ref": "#/components/schemas/updateTriggerBody"
               }
             }
           },
@@ -6253,21 +6085,21 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "A successful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListDailyComputeCreditsResponse"
+                  "$ref": "#/components/schemas/trigger"
                 }
               }
             }
           },
           "default": {
-            "description": "Error",
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                  "$ref": "#/components/schemas/rpcStatus"
                 }
               }
             }
@@ -6948,6 +6780,1559 @@
         "summary": "Rune Registry",
         "tags": [
           "DEX"
+        ]
+      }
+    },
+    "/address/{address}": {
+      "get": {
+        "summary": "Address",
+        "description": "Returns details about an address. Available fields: address, chain_stats, and mempool_stats. chain_stats and mempool_stats each contain an object with tx_count, funded_txo_count, funded_txo_sum, spent_txo_count, and spent_txo_sum.",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+            },
+            "description": "Bitcoin address to query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Address information returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Address not found"
+          }
+        },
+        "tags": [
+          "Addresses"
+        ]
+      }
+    },
+    "/address/{address}/txs": {
+      "get": {
+        "summary": "Address Transactions",
+        "description": "Get transaction history for the specified address/scripthash, sorted with newest first. Returns up to 50 mempool transactions plus the first 25 confirmed transactions. You can request more confirmed transactions using an after_txid query parameter.",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+            },
+            "description": "The Bitcoin address to query."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of transactions related to the address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid address"
+          },
+          "404": {
+            "description": "Address not found"
+          }
+        },
+        "tags": [
+          "Addresses"
+        ]
+      }
+    },
+    "/address/{address}/txs/chain": {
+      "get": {
+        "summary": "Address Transactions Chain",
+        "description": "Get confirmed transaction history for the specified address/scripthash, sorted with newest first. Returns 25 transactions per page. More can be requested by specifying the last txid seen by the previous query.",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "description": "The Bitcoin address to query.",
+            "schema": {
+              "type": "string",
+              "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of confirmed transactions for the given address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid address or txid"
+          },
+          "404": {
+            "description": "Address not found"
+          }
+        },
+        "tags": [
+          "Addresses"
+        ]
+      }
+    },
+    "/address/{address}/txs/mempool": {
+      "get": {
+        "summary": "Address Transactions Mempool",
+        "description": "Get unconfirmed transaction history for the specified address/scripthash. Returns up to 50 transactions (no paging).",
+        "tags": [
+          "Addresses"
+        ],
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+            },
+            "description": "The Bitcoin address whose unconfirmed transactions should be retrieved."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of mempool transactions associated with the address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid address format."
+          },
+          "404": {
+            "description": "Address not found or no unconfirmed transactions."
+          }
+        }
+      }
+    },
+    "/address/{address}/utxo": {
+      "get": {
+        "summary": "Address UTXOs",
+        "description": "Get the list of unspent transaction outputs associated with the address/scripthash. Available fields: txid, vout, value, and status (with the status of the funding tx).",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "description": "The Bitcoin address to query.",
+            "schema": {
+              "type": "string",
+              "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of UTXOs for the address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Utxo1"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid address"
+          },
+          "404": {
+            "description": "Address not found"
+          }
+        },
+        "tags": [
+          "Addresses"
+        ]
+      }
+    },
+    "/v1/validate-address/{address}": {
+      "get": {
+        "summary": "Address Validation",
+        "description": "Returns whether an address is valid or not. Available fields: isvalid (boolean), address (string), scriptPubKey (string), isscript (boolean), iswitness (boolean), witness_version (numeric, optional), and witness_program (string, optional).",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
+            },
+            "description": "The Bitcoin address to validate."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressValidation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or malformed address"
+          }
+        },
+        "tags": [
+          "Addresses"
+        ]
+      }
+    },
+    "/block/{hash}": {
+      "get": {
+        "summary": "Block",
+        "description": "Returns details about a block.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            },
+            "description": "The block hash to retrieve information for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Block metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Block"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Block not found"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/v1/block/{hash}": {
+      "get": {
+        "summary": "Block (v1)",
+        "description": "Returns details about a block using Mempool's Node.js backend.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            },
+            "description": "The block hash to query."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Block data retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Block"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Block not found."
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/{hash}/header": {
+      "get": {
+        "summary": "Block Header",
+        "description": "Returns the hex-encoded block header.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            },
+            "description": "The hash of the block to retrieve the header for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw block header as hex",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockHeader",
+                  "type": "string",
+                  "example": "00000020e91f...2d1e4dbb65"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid block hash"
+          },
+          "404": {
+            "description": "Block not found"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/{hash}/status": {
+      "get": {
+        "summary": "Block Status",
+        "description": "Returns the confirmation status of a block. Available fields: in_best_chain (boolean, false for orphaned blocks), next_best (the hash of the next block, only available for blocks in the best chain).",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "description": "The block hash to query",
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Block status response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid block hash"
+          },
+          "404": {
+            "description": "Block not found"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/{hash}/txs/{start_index}": {
+      "get": {
+        "summary": "Get block transactions",
+        "description": "Returns a list of transactions in the block (up to 25 transactions beginning at start_index). Transactions returned here do not have the status field, since all the transactions share the same block and confirmation status.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "description": "The block hash.",
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            }
+          },
+          {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "description": "Index to start fetching transactions from (pagination).",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of transactions in the block.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Block not found"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/{hash}/txids": {
+      "get": {
+        "summary": "Block Transaction IDs",
+        "description": "Returns a list of all txids in the block.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            },
+            "description": "The hash of the block to query."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of transaction IDs in the block.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockTxids"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid block hash."
+          },
+          "404": {
+            "description": "Block not found."
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/{hash}/txid/{index}": {
+      "get": {
+        "summary": "Block Transaction ID",
+        "description": "Returns the transaction at index :index within the specified block.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "description": "The block hash.",
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            }
+          },
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "description": "The transaction index within the block.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction ID at the specified index",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid block hash or index"
+          },
+          "404": {
+            "description": "Block or transaction not found"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block/{hash}/raw": {
+      "get": {
+        "summary": "Block Raw",
+        "description": "Returns the raw block representation in binary.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "description": "The hash of the block",
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw block data in binary format",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid block hash"
+          },
+          "404": {
+            "description": "Block not found"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/blocks/{start_height}": {
+      "get": {
+        "summary": "Blocks",
+        "description": "Returns details on the past 10 blocks. If :startHeight is specified, the 10 blocks before (and including) :startHeight are returned.",
+        "parameters": [
+          {
+            "name": "start_height",
+            "in": "path",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The block height to start from."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of 10 blocks starting from the given height",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Block"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid block height"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/v1/blocks/{start_height}": {
+      "get": {
+        "summary": "Blocks (v1)",
+        "description": "Returns details on the past 15 blocks from Mempool's Node.js backend. Includes fee and mining details in an extras field. If :startHeight is specified, the past 15 blocks before (and including) :startHeight are returned.",
+        "parameters": [
+          {
+            "name": "start_height",
+            "in": "path",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The block height to start from."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of recent blocks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BlockV1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/block-height/{height}": {
+      "get": {
+        "summary": "Block Height",
+        "description": "Returns the hash of the block currently at :height.",
+        "parameters": [
+          {
+            "name": "height",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 804000
+            },
+            "description": "The height of the block."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Block hash as plain text.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid block height supplied."
+          },
+          "404": {
+            "description": "Block not found for the given height."
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/v1/blocks-bulk/{minHeight}/{max_height}": {
+      "get": {
+        "summary": "Blocks (Bulk)",
+        "description": "Returns details on the range of blocks between :minHeight and :maxHeight, inclusive, up to 10 blocks. If :maxHeight is not specified, it defaults to the current tip.",
+        "parameters": [
+          {
+            "name": "min_height",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "max_height",
+            "in": "path",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed statistics on blocks in the requested height range.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockStatsArray"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid range or block limit exceeded"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/blocks/tip/height": {
+      "get": {
+        "summary": "Block Tip Height",
+        "description": "Returns the height of the last block.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockHeight"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/blocks/tip/hash": {
+      "get": {
+        "summary": "Block Tip Hash",
+        "description": "Returns the hash of the last block.",
+        "responses": {
+          "200": {
+            "description": "Block hash string of the latest block",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockHash"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/v1/block/{hash}/audit-summary": {
+      "get": {
+        "summary": "Block Audit Summary",
+        "description": "Returns the block audit summary for the specified :blockHash. Available fields: height, id, timestamp, template, missingTxs, addedTxs, freshTxs, sigopTxs, fullrbfTxs, acceleratedTxs, matchRate, expectedFees, and expectedWeight.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
+            },
+            "description": "Block hash to retrieve the audit summary for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audit data for the block.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockAuditSummary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Block not found"
+          }
+        },
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
+    "/mempool": {
+      "get": {
+        "summary": "Mempool",
+        "description": "Returns current mempool backlog statistics.",
+        "responses": {
+          "200": {
+            "description": "Aggregated mempool data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MempoolStats"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "count": 8134,
+                      "vsize": 3444604,
+                      "total_fee": 29204625,
+                      "fee_histogram": [
+                        [
+                          53.01,
+                          102131
+                        ],
+                        [
+                          38.56,
+                          110990
+                        ],
+                        [
+                          34.12,
+                          138976
+                        ],
+                        [
+                          24.34,
+                          112619
+                        ],
+                        [
+                          3.16,
+                          246346
+                        ],
+                        [
+                          2.92,
+                          239701
+                        ],
+                        [
+                          1.1,
+                          775272
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/mempool/txids": {
+      "get": {
+        "summary": "Mempool Transaction IDs",
+        "description": "Get the full list of txids in the mempool as an array. The order of the txids is arbitrary and does not match bitcoind.",
+        "responses": {
+          "200": {
+            "description": "List of transaction IDs currently in the mempool.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MempoolTxids"
+                },
+                "examples": {
+                  "example": {
+                    "value": [
+                      "4d3c8f5b2378c9c1eaa228d594d2c693fae3e9f2b3e6b18344f973f1e5a3e13a",
+                      "5a76bcb30e10a7d5f6a8f37d7df12a89f4e171cf0ecfe5bd5d22b53f5cc9f6cf"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/v1/replacements": {
+      "get": {
+        "summary": "Mempool RBF Transactions",
+        "description": "Returns the list of mempool transactions that are part of a RBF chain.",
+        "responses": {
+          "200": {
+            "description": "RBF replacement metadata for the transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbfReplacementRoot"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found or not eligible for RBF data"
+          }
+        },
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/v1/fullrbf/replacements": {
+      "get": {
+        "summary": "Mempool Full RBF Transactions",
+        "description": "Returns the list of mempool transactions that are part of a Full-RBF chain.",
+        "responses": {
+          "200": {
+            "description": "Full-RBF statistics from the mempool.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullRbfStats"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/mempool/recent": {
+      "get": {
+        "summary": "Mempool Recent",
+        "description": "Get a list of the last 10 transactions to enter the mempool. Each transaction object contains simplified overview data, with the following fields: txid, fee, vsize, and value.",
+        "responses": {
+          "200": {
+            "description": "A list of recent mempool transactions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MempoolRecentTx"
+                  }
+                },
+                "examples": {
+                  "example": {
+                    "value": [
+                      {
+                        "txid": "f3c21f...",
+                        "fee": 426,
+                        "vsize": 141,
+                        "value": 12500
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mempool"
+        ]
+      }
+    },
+    "/v1/fees/mempool-blocks": {
+      "get": {
+        "summary": "Mempool Blocks Fees",
+        "description": "Returns current mempool as projected blocks.",
+        "responses": {
+          "200": {
+            "description": "A list of virtual blocks representing estimated mempool blocks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MempoolBlocksFees"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Fees"
+        ]
+      }
+    },
+    "/v1/fees/recommended": {
+      "get": {
+        "summary": "Recommended Fees",
+        "description": "Returns our currently suggested fees for new transactions.",
+        "responses": {
+          "200": {
+            "description": "Recommended fee rates in sat/vB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeRecommendations"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "fastestFee": 25,
+                      "halfHourFee": 20,
+                      "hourFee": 15
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Fees"
+        ]
+      }
+    },
+    "/v1/cpfp": {
+      "get": {
+        "summary": "Children Pay for Parent",
+        "description": "Returns the ancestors and the best descendant fees for a transaction.",
+        "responses": {
+          "200": {
+            "description": "CPFP recommendation data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpfpRecommendation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found or not eligible for CPFP."
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}": {
+      "get": {
+        "summary": "Transaction",
+        "description": "Returns details about a transaction. Available fields: txid, version, locktime, size, weight, fee, vin, vout, and status.",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            },
+            "description": "The transaction ID to look up."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction details retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}/hex": {
+      "get": {
+        "summary": "Transaction Hex",
+        "description": "Returns a transaction serialized as hex.",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "description": "Transaction ID of the transaction to fetch.",
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw transaction hex string.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionHex"
+                },
+                "example": "02000000000101ad0c...00000000"
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}/merkleblock-proof": {
+      "get": {
+        "summary": "Transaction Merkleblock Proof",
+        "description": "Returns a merkle inclusion proof for the transaction using bitcoind's merkleblock format.",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            },
+            "description": "The transaction ID to retrieve the merkleblock proof for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Merkleblock proof in binary format (as raw hex string)",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "Raw merkleblock proof binary data"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid txid format"
+          },
+          "404": {
+            "description": "Transaction not found or not confirmed"
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}/merkle-proof": {
+      "get": {
+        "summary": "Transaction Merkle Proof",
+        "description": "Returns a merkle inclusion proof for the transaction using Electrum's blockchain.transaction.get_merkle format.",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            },
+            "description": "The transaction ID to get the merkle proof for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Merkle inclusion proof data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MerkleProof"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "block_height": 776302,
+                      "merkle": [
+                        "4a5e1e4b...",
+                        "b5b4e9f0..."
+                      ],
+                      "pos": 142
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found or not confirmed."
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}/outspend/{vout}": {
+      "get": {
+        "summary": "Transaction Outspend",
+        "description": "Returns the spending status of a transaction output. Available fields: spent (boolean), txid (optional), vin (optional), and status (optional, the status of the spending tx).",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            },
+            "description": "Transaction ID of the parent transaction."
+          },
+          {
+            "name": "vout",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 0
+            },
+            "description": "The output index within the transaction."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Spending status of the transaction output.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TxOutspend"
+                },
+                "examples": {
+                  "spent": {
+                    "value": {
+                      "spent": true,
+                      "txid": "abcdef123456...",
+                      "vin": 1,
+                      "status": {
+                        "confirmed": true,
+                        "block_height": 786000,
+                        "block_hash": "0000000000000000000abc...",
+                        "block_time": 1700000000
+                      }
+                    }
+                  },
+                  "unspent": {
+                    "value": {
+                      "spent": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction or output not found."
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}/outspends": {
+      "get": {
+        "summary": "Transaction Outspends",
+        "description": "Returns the spending status of all transaction outputs.",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "description": "The transaction ID (txid) to query.",
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Spending status for each output in the transaction.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Outspend"
+                  }
+                },
+                "examples": {
+                  "example": {
+                    "value": [
+                      {
+                        "spent": true,
+                        "txid": "1a2b3c...",
+                        "vin": 0,
+                        "status": {
+                          "confirmed": true,
+                          "block_height": 776300,
+                          "block_hash": "0000000000000000000b4d0a...",
+                          "block_time": 1686300000
+                        }
+                      },
+                      {
+                        "spent": false
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found."
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}/raw": {
+      "get": {
+        "summary": "Transaction Raw",
+        "description": "Returns a transaction as binary data.",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            },
+            "description": "The transaction ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw transaction hex string.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "0200000000010124..."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tx/{txid}/rbf": {
+      "get": {
+        "summary": "Transaction RBF Timeline",
+        "description": "Returns the RBF tree timeline of a transaction.",
+        "tags": [
+          "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            },
+            "description": "The transaction ID to trace RBF replacements for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RBF replacement timeline for the transaction.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbfReplacementRoot"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "replacements": {
+                        "tx": {
+                          "txid": "2e95ff9094df9f3650e3f2abc189250760162be89a88f9f2f23301c7cb14b8b4",
+                          "fee": 1668,
+                          "vsize": 276.75,
+                          "value": 14849,
+                          "rate": 4.8242,
+                          "rbf": false,
+                          "fullRbf": true
+                        },
+                        "time": 1703240261,
+                        "fullRbf": true,
+                        "replaces": []
+                      },
+                      "replaces": [
+                        "3f4670463daadffed07d7a1060071b07f7e81a2566eca21d78bb513cbf21c82a",
+                        "92f9b4f719d0ffc9035d3a9767d80c940cecbc656df2243bafd33f52b583ee92"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found or no RBF history available"
+          }
+        }
+      }
+    },
+    "/tx/{txid}/status": {
+      "get": {
+        "summary": "Transaction Status",
+        "description": "Returns the confirmation status of a transaction. Available fields: confirmed (boolean), block_height (optional), and block_hash (optional).",
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "description": "Transaction ID to query.",
+            "schema": {
+              "type": "string",
+              "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction confirmation status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionStatus"
+                },
+                "examples": {
+                  "confirmed": {
+                    "value": {
+                      "confirmed": true,
+                      "block_height": 776402,
+                      "block_hash": "000000000000000000015fc7f9e5caa8b2e7cbfc7c8075c23f8c86f1aaed18e6"
+                    }
+                  },
+                  "unconfirmed": {
+                    "value": {
+                      "confirmed": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/v1/transaction-times": {
+      "get": {
+        "summary": "Transaction Times",
+        "description": "Returns the timestamps when a list of unconfirmed transactions was initially observed in the mempool. If a transaction is not found in the mempool or has been mined, the timestamp will be 0.",
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction propagation timestamps.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionTimes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        }
+      }
+    },
+    "/tx": {
+      "post": {
+        "summary": "Transaction",
+        "description": "Broadcast a raw transaction to the network. The transaction should be provided as hex in the request body. The txid will be returned on success.",
+        "requestBody": {
+          "description": "Hex-encoded raw transaction data.",
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": "02000000000101c3..."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the transaction ID (txid) if successfully broadcast.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BroadcastResponse"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "txid": "4d1b9a...."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction format or missing body."
+          },
+          "500": {
+            "description": "Internal server error while processing the transaction."
+          }
+        },
+        "tags": [
+          "Transactions"
         ]
       }
     }
@@ -12093,662 +13478,276 @@
         },
         "type": "object"
       },
-      "event_manager.v1.Chain": {
-        "type": "string",
-        "title": "Chain",
-        "enum": [
-          "CHAIN_UNSPECIFIED",
-          "CHAIN_BITCOIN"
-        ]
-      },
-      "event_manager.v1.Network": {
-        "type": "string",
-        "title": "Network",
-        "enum": [
-          "NETWORK_UNSPECIFIED",
-          "NETWORK_MAINNET",
-          "NETWORK_TESTNET"
-        ]
-      },
-      "event_manager.v1.TriggerType": {
-        "type": "string",
-        "title": "TriggerType",
-        "enum": [
-          "TRIGGER_TYPE_UNSPECIFIED",
-          "TRIGGER_TYPE_TRANSACTION",
-          "TRIGGER_TYPE_SENDER",
-          "TRIGGER_TYPE_RECEIVER",
-          "TRIGGER_TYPE_SENDER_OR_RECEIVER"
-        ]
-      },
-      "event_manager.v1.CreateManagerRequest": {
+      "updateEventManagerBody": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "title": "name"
+            "type": "string"
           },
           "chain": {
-            "title": "chain",
-            "$ref": "#/components/schemas/event_manager.v1.Chain"
+            "$ref": "#/components/schemas/chain"
           },
           "network": {
-            "title": "network",
-            "$ref": "#/components/schemas/event_manager.v1.Network"
+            "type": "string"
           },
           "webhookUrl": {
-            "type": "string",
-            "title": "webhook_url"
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
           },
           "triggers": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/event_manager.v1.CreateTriggerRequest"
-            },
-            "title": "triggers"
+              "type": "object",
+              "$ref": "#/components/schemas/trigger"
+            }
           }
-        },
-        "title": "CreateManagerRequest",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.CreateManagerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "CreateManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.CreateTriggerRequest": {
+      "updateTriggerBody": {
         "type": "object",
         "properties": {
           "eventManagerId": {
-            "type": "string",
-            "title": "event_manager_id"
+            "type": "string"
           },
           "triggerType": {
-            "title": "trigger_type",
-            "$ref": "#/components/schemas/event_manager.v1.TriggerType"
+            "$ref": "#/components/schemas/triggerType"
           },
           "trackedId": {
-            "type": "string",
-            "title": "tracked_id"
+            "type": "string"
+          }
+        }
+      },
+      "protobufAny": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {}
+      },
+      "rpcStatus": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
           },
-          "filters": {
+          "message": {
+            "type": "string"
+          },
+          "details": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Filter"
-            },
-            "title": "filters"
+              "type": "object",
+              "$ref": "#/components/schemas/protobufAny"
+            }
           }
-        },
-        "title": "CreateTriggerRequest",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.CreateTriggerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "CreateTriggerResponse",
-        "additionalProperties": false
+      "chain": {
+        "type": "string",
+        "enum": [
+          "chain_unknown",
+          "bitcoin"
+        ],
+        "default": "chain_unknown"
       },
-      "event_manager.v1.DeleteManagerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "DeleteManagerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.DeleteManagerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "DeleteManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.DeleteTriggerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "DeleteTriggerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.DeleteTriggerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "DeleteTriggerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.EventLog": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "eventManagerId": {
-            "type": "string",
-            "title": "event_manager_id"
-          },
-          "triggerId": {
-            "type": "string",
-            "title": "trigger_id"
-          },
-          "payload": {
-            "type": "string",
-            "title": "payload"
-          },
-          "responseStatus": {
-            "type": "string",
-            "title": "response_status"
-          },
-          "status": {
-            "type": "string",
-            "title": "status"
-          }
-        },
-        "title": "EventLog",
-        "additionalProperties": false
-      },
-      "event_manager.v1.Filter": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "title": "key"
-          },
-          "operator": {
-            "type": "string",
-            "title": "operator"
-          },
-          "value": {
-            "type": "string",
-            "title": "value"
-          }
-        },
-        "title": "Filter",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetEventLogRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "GetEventLogRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetEventLogResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.EventLog"
-          }
-        },
-        "title": "GetEventLogResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetManagerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "GetManagerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetManagerResponse": {
-        "type": "object",
-        "properties": {
-          "eventManager": {
-            "title": "event_manager",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "GetManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetPicklistOptionsRequest": {
+      "createEventManagerRequest": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "title": "name"
+            "type": "string"
+          },
+          "chain": {
+            "$ref": "#/components/schemas/chain"
+          },
+          "network": {
+            "type": "string"
+          },
+          "webhookUrl": {
+            "type": "string"
+          },
+          "triggers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/createTriggerRequest"
+            }
           }
         },
-        "title": "GetPicklistOptionsRequest",
-        "additionalProperties": false
+        "title": "createEventManagerRequest"
       },
-      "event_manager.v1.GetPicklistOptionsResponse": {
+      "createTriggerRequest": {
+        "type": "object",
+        "properties": {
+          "eventManagerId": {
+            "type": "string"
+          },
+          "triggerType": {
+            "$ref": "#/components/schemas/triggerType"
+          },
+          "trackedId": {
+            "type": "string"
+          }
+        }
+      },
+      "eventLog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "eventManagerId": {
+            "type": "string"
+          },
+          "triggerId": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          },
+          "response": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "title": "eventLog"
+      },
+      "eventLogList": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/event_manager.v1.PicklistOption"
-            },
-            "title": "data"
+              "type": "object",
+              "$ref": "#/components/schemas/eventLog"
+            }
           }
-        },
-        "title": "GetPicklistOptionsResponse",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.GetTriggerRequest": {
+      "eventManager": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "title": "id"
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "chain": {
+            "$ref": "#/components/schemas/chain"
+          },
+          "network": {
+            "type": "string"
+          },
+          "webhookUrl": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
           }
-        },
-        "title": "GetTriggerRequest",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.GetTriggerResponse": {
+      "eventManagerList": {
         "type": "object",
         "properties": {
           "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/eventManager"
+            }
           }
-        },
-        "title": "GetTriggerResponse",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.HealthcheckRequest": {
-        "type": "object",
-        "title": "HealthcheckRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.HealthcheckResponse": {
+      "filter": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "string",
-            "title": "status"
+          "key": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
           }
-        },
-        "title": "HealthcheckResponse",
-        "additionalProperties": false,
-        "description": "Healthcheck message"
+        }
       },
-      "event_manager.v1.ListDailyComputeCreditsRequest": {
+      "IDs": {
         "type": "object",
         "properties": {
           "ids": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "title": "ids"
-          },
-          "date": {
-            "title": "date",
-            "$ref": "#/components/schemas/google.protobuf.Timestamp"
-          }
-        },
-        "title": "ListDailyComputeCreditsRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListDailyComputeCreditsResponse": {
-        "type": "object",
-        "properties": {
-          "counts": {
-            "type": "object",
-            "title": "counts",
-            "additionalProperties": {
-              "type": [
-                "integer",
-                "string"
-              ],
-              "title": "value",
-              "format": "int64"
             }
           }
-        },
-        "title": "ListDailyComputeCreditsResponse",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.ListDailyComputeCreditsResponse.CountsEntry": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "title": "key"
-          },
-          "value": {
-            "type": [
-              "integer",
-              "string"
-            ],
-            "title": "value",
-            "format": "int64"
-          }
-        },
-        "title": "CountsEntry",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListEventLogsRequest": {
-        "type": "object",
-        "title": "ListEventLogsRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListEventLogsResponse": {
+      "triggerList": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/event_manager.v1.EventLog"
-            },
-            "title": "data"
+              "type": "object",
+              "$ref": "#/components/schemas/trigger"
+            }
           }
-        },
-        "title": "ListEventLogsResponse",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.ListManagersRequest": {
-        "type": "object",
-        "title": "ListManagersRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListManagersResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Manager"
-            },
-            "title": "data"
-          }
-        },
-        "title": "ListManagersResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListTriggersRequest": {
-        "type": "object",
-        "title": "ListTriggersRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListTriggersResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Trigger"
-            },
-            "title": "data"
-          }
-        },
-        "title": "ListTriggersResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.Manager": {
+      "trigger": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "name": {
-            "type": "string",
-            "title": "name"
-          },
-          "chain": {
-            "title": "chain",
-            "$ref": "#/components/schemas/event_manager.v1.Chain"
-          },
-          "network": {
-            "title": "network",
-            "$ref": "#/components/schemas/event_manager.v1.Network"
-          },
-          "webhookUrl": {
-            "type": "string",
-            "title": "webhook_url"
-          },
-          "status": {
-            "type": "string",
-            "title": "status"
-          },
-          "triggers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Trigger"
-            },
-            "title": "triggers"
-          }
-        },
-        "title": "Manager",
-        "additionalProperties": false
-      },
-      "event_manager.v1.PicklistOption": {
-        "type": "object",
-        "properties": {
-          "listName": {
-            "type": "string",
-            "title": "list_name"
-          },
-          "nestedListName": {
-            "type": "string",
-            "title": "nested_list_name"
-          },
-          "options": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.PicklistOption"
-            },
-            "title": "options"
-          },
-          "displayName": {
-            "type": "string",
-            "title": "display_name"
-          },
-          "value": {
-            "type": "string",
-            "title": "value"
-          },
-          "sortOrder": {
-            "type": "integer",
-            "title": "sort_order",
-            "format": "int32"
-          }
-        },
-        "title": "PicklistOption",
-        "additionalProperties": false
-      },
-      "event_manager.v1.Trigger": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
+            "type": "string"
           },
           "eventManagerId": {
-            "type": "string",
-            "title": "event_manager_id"
+            "type": "string"
           },
           "triggerType": {
-            "title": "trigger_type",
-            "$ref": "#/components/schemas/event_manager.v1.TriggerType"
+            "$ref": "#/components/schemas/triggerType"
           },
           "trackedId": {
-            "type": "string",
-            "title": "tracked_id"
+            "type": "string"
           },
           "filters": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Filter"
-            },
-            "title": "filters"
+              "type": "object",
+              "$ref": "#/components/schemas/filter"
+            }
           }
-        },
-        "title": "Trigger",
-        "additionalProperties": false
+        }
       },
-      "event_manager.v1.UpdateManagerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "eventManager": {
-            "title": "event_manager",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "UpdateManagerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.UpdateManagerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "UpdateManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.UpdateTriggerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "trigger": {
-            "title": "trigger",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "UpdateTriggerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.UpdateTriggerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "UpdateTriggerResponse",
-        "additionalProperties": false
-      },
-      "google.protobuf.Timestamp": {
+      "triggerType": {
         "type": "string",
-        "examples": [
-          "1s",
-          "1.000340012s"
-        ],
-        "format": "date-time",
-        "description": "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
-      },
-      "connect-protocol-version": {
-        "type": "number",
-        "title": "Connect-Protocol-Version",
         "enum": [
-          1
+          "trigger_type_unknown",
+          "transaction",
+          "sender",
+          "receiver",
+          "sender_or_receiver"
         ],
-        "description": "Define the version of the Connect protocol",
-        "const": 1
+        "default": "trigger_type_unknown"
       },
-      "connect-timeout-header": {
-        "type": "number",
-        "title": "Connect-Timeout-Ms",
-        "description": "Define the timeout, in ms"
-      },
-      "connect.error": {
+      "userComputeCreditCounts": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "string",
-            "examples": [
-              "not_found"
-            ],
-            "enum": [
-              "canceled",
-              "unknown",
-              "invalid_argument",
-              "deadline_exceeded",
-              "not_found",
-              "already_exists",
-              "permission_denied",
-              "resource_exhausted",
-              "failed_precondition",
-              "aborted",
-              "out_of_range",
-              "unimplemented",
-              "internal",
-              "unavailable",
-              "data_loss",
-              "unauthenticated"
-            ],
-            "description": "The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]."
-          },
-          "message": {
-            "type": "string",
-            "description": "A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client."
-          },
-          "detail": {
-            "$ref": "#/components/schemas/google.protobuf.Any"
-          }
-        },
-        "title": "Connect Error",
-        "additionalProperties": true,
-        "description": "Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation"
-      },
-      "google.protobuf.Any": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string",
-            "format": "binary"
-          },
-          "debug": {
+          "counts": {
             "type": "object",
-            "additionalProperties": true
+            "additionalProperties": {
+              "type": "string",
+              "format": "int64"
+            }
           }
-        },
-        "additionalProperties": true,
-        "description": "Contains an arbitrary serialized message along with a @type that describes the type of the serialized message."
+        }
       },
       "bitcoin_api.APIError": {
         "properties": {
@@ -13056,6 +14055,1322 @@
           }
         },
         "type": "object"
+      },
+      "AddressInfo": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "chain_stats": {
+            "$ref": "#/components/schemas/AddressStats"
+          },
+          "mempool_stats": {
+            "$ref": "#/components/schemas/AddressStats"
+          }
+        },
+        "required": [
+          "address",
+          "chain_stats",
+          "mempool_stats"
+        ]
+      },
+      "AddressStats": {
+        "type": "object",
+        "properties": {
+          "tx_count": {
+            "type": "integer"
+          },
+          "funded_txo_count": {
+            "type": "integer"
+          },
+          "funded_txo_sum": {
+            "type": "integer"
+          },
+          "spent_txo_count": {
+            "type": "integer"
+          },
+          "spent_txo_sum": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "tx_count",
+          "funded_txo_count",
+          "funded_txo_sum",
+          "spent_txo_count",
+          "spent_txo_sum"
+        ]
+      },
+      "AddressValidation": {
+        "type": "object",
+        "properties": {
+          "isvalid": {
+            "type": "boolean"
+          },
+          "address": {
+            "type": "string"
+          },
+          "scriptPubKey": {
+            "type": "string"
+          },
+          "isscript": {
+            "type": "boolean"
+          },
+          "iswitness": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "isvalid"
+        ]
+      },
+      "Block": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Block hash"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "mediantime": {
+            "type": "integer"
+          },
+          "bits": {
+            "type": "integer"
+          },
+          "nonce": {
+            "type": "integer"
+          },
+          "difficulty": {
+            "type": "number"
+          },
+          "merkle_root": {
+            "type": "string"
+          },
+          "tx_count": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "previousblockhash": {
+            "type": "string"
+          },
+          "extras": {
+            "type": "object",
+            "description": "Optional explorer-specific metadata"
+          }
+        },
+        "required": [
+          "id",
+          "height",
+          "version",
+          "timestamp",
+          "bits",
+          "nonce",
+          "merkle_root",
+          "tx_count",
+          "size",
+          "weight",
+          "previousblockhash"
+        ]
+      },
+      "BlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "mediantime": {
+            "type": "integer"
+          },
+          "bits": {
+            "type": "integer"
+          },
+          "nonce": {
+            "type": "integer"
+          },
+          "difficulty": {
+            "type": "number"
+          },
+          "merkle_root": {
+            "type": "string"
+          },
+          "tx_count": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "previousblockhash": {
+            "type": "string"
+          },
+          "extras": {
+            "type": "object",
+            "properties": {
+              "pool": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "height",
+          "timestamp",
+          "bits",
+          "nonce",
+          "tx_count",
+          "size",
+          "weight",
+          "previousblockhash"
+        ]
+      },
+      "BlockHash": {
+        "type": "string",
+        "description": "SHA-256 hash of the latest block"
+      },
+      "BlockHeader": {
+        "type": "string",
+        "description": "Hex-encoded string representing the block header (80 bytes, 160 hex characters)"
+      },
+      "BlockHeight": {
+        "type": "integer",
+        "example": 850302,
+        "description": "Height of the latest block on the best blockchain tip"
+      },
+      "BlockStatus": {
+        "type": "object",
+        "properties": {
+          "in_best_chain": {
+            "type": "boolean",
+            "description": "Whether the block is part of the best (main) chain"
+          },
+          "next_best": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Hash of the next block, if available"
+          }
+        },
+        "required": [
+          "in_best_chain"
+        ]
+      },
+      "BlockTxids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "A transaction ID (txid)"
+        },
+        "example": [
+          "5a7a9fe2c911c482c89a7ea1dbf35a7c9b68892ec5b2d92e93858a9f4a85b08e",
+          "b1fea5241d34b276c3f8a5a934ae9e5e2bb23ecad1c7426ec1dfde3e07aa55a9"
+        ]
+      },
+      "BlockFeePercentiles": {
+        "type": "object",
+        "properties": {
+          "min": {
+            "type": "number"
+          },
+          "perc_10": {
+            "type": "number"
+          },
+          "perc_25": {
+            "type": "number"
+          },
+          "perc_50": {
+            "type": "number"
+          },
+          "perc_75": {
+            "type": "number"
+          },
+          "perc_90": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          }
+        }
+      },
+      "BlockStats": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "integer"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "median_timestamp": {
+            "type": "integer"
+          },
+          "previous_block_hash": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "number"
+          },
+          "header": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "bits": {
+            "type": "integer"
+          },
+          "nonce": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "tx_count": {
+            "type": "integer"
+          },
+          "merkle_root": {
+            "type": "string"
+          },
+          "reward": {
+            "type": "integer"
+          },
+          "total_fee_amt": {
+            "type": "integer"
+          },
+          "avg_fee_amt": {
+            "type": "integer"
+          },
+          "median_fee_amt": {
+            "type": "integer"
+          },
+          "fee_amt_percentiles": {
+            "$ref": "#/components/schemas/BlockFeePercentiles"
+          },
+          "avg_fee_rate": {
+            "type": "number"
+          },
+          "median_fee_rate": {
+            "type": "number"
+          },
+          "fee_rate_percentiles": {
+            "$ref": "#/components/schemas/BlockFeePercentiles"
+          },
+          "total_inputs": {
+            "type": "integer"
+          },
+          "total_input_amt": {
+            "type": "integer"
+          },
+          "total_outputs": {
+            "type": "integer"
+          },
+          "total_output_amt": {
+            "type": "integer"
+          },
+          "segwit_total_txs": {
+            "type": "integer"
+          },
+          "segwit_total_size": {
+            "type": "integer"
+          },
+          "segwit_total_weight": {
+            "type": "integer"
+          },
+          "avg_tx_size": {
+            "type": "number"
+          },
+          "utxoset_change": {
+            "type": "integer"
+          },
+          "utxoset_size": {
+            "type": "integer"
+          },
+          "coinbase_raw": {
+            "type": "string"
+          },
+          "coinbase_address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "coinbase_signature": {
+            "type": "string"
+          },
+          "coinbase_signature_ascii": {
+            "type": "string"
+          },
+          "pool_slug": {
+            "type": "string"
+          },
+          "orphans": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BlockStatsArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/BlockStats"
+        }
+      },
+      "MempoolBlockPrediction": {
+        "type": "object",
+        "properties": {
+          "blockSize": {
+            "type": "integer",
+            "description": "Size of the predicted block in bytes."
+          },
+          "blockVSize": {
+            "type": "integer",
+            "description": "Virtual size in vbytes."
+          },
+          "nTx": {
+            "type": "integer",
+            "description": "Number of transactions expected in this block."
+          },
+          "totalFees": {
+            "type": "integer",
+            "description": "Total fees in sats."
+          },
+          "feeRange": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Min and max fee rate in sat/vB for transactions in this block."
+          }
+        },
+        "required": [
+          "blockSize",
+          "blockVSize",
+          "nTx",
+          "totalFees",
+          "feeRange"
+        ]
+      },
+      "MempoolBlocksFees": {
+        "type": "object",
+        "properties": {
+          "blockSize": {
+            "type": "integer",
+            "description": "Estimated size of the virtual block in bytes"
+          },
+          "blockVSize": {
+            "type": "integer",
+            "description": "Estimated virtual size of the virtual block in vbytes"
+          },
+          "nTx": {
+            "type": "integer",
+            "description": "Number of transactions projected in the block"
+          },
+          "totalFees": {
+            "type": "integer",
+            "description": "Total fees in satoshis for transactions in this block"
+          },
+          "medianFee": {
+            "type": "number",
+            "description": "Median fee rate in sat/vB"
+          },
+          "feeRange": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "List of fee rates (in sat/vB) from lowest to highest in this block"
+          }
+        },
+        "required": [
+          "blockSize",
+          "blockVSize",
+          "nTx",
+          "totalFees",
+          "medianFee",
+          "feeRange"
+        ]
+      },
+      "BlockAudit": {
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "score": {
+            "type": "integer"
+          },
+          "mined_by": {
+            "type": "string"
+          },
+          "validity": {
+            "type": "object",
+            "properties": {
+              "timestamp_valid": {
+                "type": "boolean"
+              },
+              "coinbase_valid": {
+                "type": "boolean"
+              },
+              "difficulty_valid": {
+                "type": "boolean"
+              }
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "hash",
+          "height",
+          "score",
+          "mined_by",
+          "validity"
+        ]
+      },
+      "AuditScore": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "integer",
+            "description": "Block height"
+          },
+          "hash": {
+            "type": "string",
+            "description": "Block hash"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Block timestamp (UNIX epoch seconds)"
+          },
+          "propagation": {
+            "type": "number",
+            "description": "Estimated propagation delay in seconds"
+          },
+          "size": {
+            "type": "integer",
+            "description": "Size of the block in bytes"
+          },
+          "weight": {
+            "type": "integer",
+            "description": "Weight units of the block"
+          },
+          "tx_count": {
+            "type": "integer",
+            "description": "Number of transactions in the block"
+          },
+          "score": {
+            "type": "number",
+            "description": "Audit score for the block (0–1, where 1 is best)"
+          }
+        },
+        "required": [
+          "height",
+          "hash",
+          "timestamp",
+          "propagation",
+          "size",
+          "weight",
+          "tx_count",
+          "score"
+        ]
+      },
+      "BlockAuditSummary": {
+        "type": "object",
+        "properties": {
+          "blockHeight": {
+            "type": "integer"
+          },
+          "blockHash": {
+            "type": "string"
+          },
+          "miner": {
+            "type": "string"
+          },
+          "coinbaseRecipient": {
+            "type": "string"
+          },
+          "totalFees": {
+            "type": "integer",
+            "description": "in satoshis"
+          },
+          "totalFeesUsd": {
+            "type": "number",
+            "description": "USD estimate at time of block"
+          },
+          "blockReward": {
+            "type": "integer",
+            "description": "in satoshis"
+          },
+          "blockRewardUsd": {
+            "type": "number",
+            "description": "USD estimate at time of block"
+          },
+          "subsidy": {
+            "type": "integer",
+            "description": "in satoshis"
+          },
+          "subsidyUsd": {
+            "type": "number",
+            "description": "USD estimate"
+          },
+          "numInputs": {
+            "type": "integer"
+          },
+          "numOutputs": {
+            "type": "integer"
+          },
+          "inputsTotal": {
+            "type": "integer",
+            "description": "in satoshis"
+          },
+          "outputsTotal": {
+            "type": "integer",
+            "description": "in satoshis"
+          },
+          "spendingToSelf": {
+            "type": "integer"
+          },
+          "spendingToSelfUsd": {
+            "type": "number"
+          },
+          "spendingToOthers": {
+            "type": "integer"
+          },
+          "spendingToOthersUsd": {
+            "type": "number"
+          },
+          "timestamp": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "blockHeight",
+          "blockHash",
+          "miner",
+          "coinbaseRecipient",
+          "totalFees",
+          "blockReward",
+          "timestamp"
+        ]
+      },
+      "RbfTransaction": {
+        "type": "object",
+        "properties": {
+          "txid": {
+            "type": "string"
+          },
+          "fee": {
+            "type": "integer"
+          },
+          "vsize": {
+            "type": "number"
+          },
+          "value": {
+            "type": "integer"
+          },
+          "rate": {
+            "type": "number"
+          },
+          "rbf": {
+            "type": "boolean"
+          },
+          "fullRbf": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "txid",
+          "fee",
+          "vsize",
+          "value",
+          "rate",
+          "rbf"
+        ]
+      },
+      "RbfReplacedTx": {
+        "type": "object",
+        "properties": {
+          "tx": {
+            "$ref": "#/components/schemas/RbfTransaction"
+          },
+          "time": {
+            "type": "integer"
+          },
+          "interval": {
+            "type": "integer"
+          },
+          "fullRbf": {
+            "type": "boolean"
+          },
+          "replaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RbfReplacedTx"
+            }
+          }
+        },
+        "required": [
+          "tx",
+          "time",
+          "fullRbf",
+          "replaces"
+        ]
+      },
+      "RbfReplacementRoot": {
+        "type": "object",
+        "properties": {
+          "replacements": {
+            "type": "object",
+            "properties": {
+              "tx": {
+                "$ref": "#/components/schemas/RbfTransaction"
+              },
+              "time": {
+                "type": "integer"
+              },
+              "fullRbf": {
+                "type": "boolean"
+              },
+              "replaces": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RbfReplacedTx"
+                }
+              }
+            },
+            "required": [
+              "tx",
+              "time",
+              "fullRbf",
+              "replaces"
+            ]
+          },
+          "replaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "replacements",
+          "replaces"
+        ]
+      },
+      "FullRbfStats": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": "Total number of transactions in the mempool."
+          },
+          "fullRBF": {
+            "type": "integer",
+            "description": "Number of transactions marked as full-RBF."
+          },
+          "optInRBF": {
+            "type": "integer",
+            "description": "Number of transactions marked as opt-in RBF (BIP125)."
+          },
+          "nonRBF": {
+            "type": "integer",
+            "description": "Number of transactions that are not RBF."
+          }
+        },
+        "required": [
+          "total",
+          "fullRBF",
+          "optInRBF",
+          "nonRBF"
+        ]
+      },
+      "CpfpRecommendation": {
+        "type": "object",
+        "properties": {
+          "vsize": {
+            "type": "integer",
+            "description": "Virtual size of the child transaction in vbytes."
+          },
+          "fee": {
+            "type": "integer",
+            "description": "Required fee for the child transaction in satoshis."
+          },
+          "totalVsize": {
+            "type": "integer",
+            "description": "Total virtual size of parent + child transaction."
+          },
+          "totalFee": {
+            "type": "integer",
+            "description": "Total required fee for parent + child."
+          },
+          "rate": {
+            "type": "number",
+            "description": "Effective fee rate (sat/vB) for parent + child."
+          },
+          "minRelayFee": {
+            "type": "integer",
+            "description": "Minimum relay fee required for the transaction to be accepted into the mempool."
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Error message if CPFP recommendation could not be provided."
+          }
+        },
+        "required": [
+          "vsize",
+          "fee",
+          "totalVsize",
+          "totalFee",
+          "rate",
+          "minRelayFee",
+          "error"
+        ]
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "txid": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "locktime": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "fee": {
+            "type": "integer"
+          },
+          "vin": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "txid": {
+                  "type": "string"
+                },
+                "vout": {
+                  "type": "integer"
+                },
+                "is_coinbase": {
+                  "type": "boolean"
+                },
+                "scriptsig": {
+                  "type": "string"
+                },
+                "scriptsig_asm": {
+                  "type": "string"
+                },
+                "sequence": {
+                  "type": "integer"
+                },
+                "witness": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "prevout": {
+                  "type": "object",
+                  "properties": {
+                    "scriptpubkey": {
+                      "type": "string"
+                    },
+                    "scriptpubkey_asm": {
+                      "type": "string"
+                    },
+                    "scriptpubkey_type": {
+                      "type": "string"
+                    },
+                    "scriptpubkey_address": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "vout": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "scriptpubkey": {
+                  "type": "string"
+                },
+                "scriptpubkey_asm": {
+                  "type": "string"
+                },
+                "scriptpubkey_type": {
+                  "type": "string"
+                },
+                "scriptpubkey_address": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "status": {
+            "type": "object",
+            "properties": {
+              "confirmed": {
+                "type": "boolean"
+              },
+              "block_height": {
+                "type": "integer"
+              },
+              "block_hash": {
+                "type": "string"
+              },
+              "block_time": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "required": [
+          "txid",
+          "vin",
+          "vout",
+          "status"
+        ]
+      },
+      "TransactionHex": {
+        "type": "string",
+        "description": "Raw hexadecimal representation of the Bitcoin transaction."
+      },
+      "TransactionStatus": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "type": "boolean"
+          },
+          "block_height": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "block_hash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "TransactionId": {
+        "type": "string",
+        "description": "A Bitcoin transaction ID (txid)"
+      },
+      "MempoolStats": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Number of transactions in the mempool"
+          },
+          "vsize": {
+            "type": "integer",
+            "description": "Total size of mempool transactions in virtual bytes"
+          },
+          "total_fee": {
+            "type": "integer",
+            "description": "Total fees paid by mempool transactions in satoshis"
+          },
+          "fee_histogram": {
+            "type": "array",
+            "description": "Mempool fee-rate distribution histogram as (feerate, vsize) tuples",
+            "items": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "count",
+          "vsize",
+          "total_fee",
+          "fee_histogram"
+        ]
+      },
+      "MempoolTxids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "Transaction ID (txid)"
+        },
+        "description": "Array of transaction IDs currently in the mempool"
+      },
+      "MempoolRecentTx": {
+        "type": "object",
+        "properties": {
+          "txid": {
+            "type": "string",
+            "description": "Transaction ID"
+          },
+          "fee": {
+            "type": "integer",
+            "description": "Total fee paid in satoshis"
+          },
+          "vsize": {
+            "type": "integer",
+            "description": "Virtual size of the transaction in vbytes"
+          },
+          "value": {
+            "type": "integer",
+            "description": "Total value transferred in satoshis"
+          }
+        },
+        "required": [
+          "txid",
+          "fee",
+          "vsize",
+          "value"
+        ]
+      },
+      "MempoolTransactions": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "txid": {
+                  "type": "string"
+                },
+                "fee": {
+                  "type": "integer"
+                },
+                "size": {
+                  "type": "integer"
+                },
+                "time": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "FeeEstimates": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      },
+      "FeeRecommendations": {
+        "type": "object",
+        "properties": {
+          "fastestFee": {
+            "type": "integer",
+            "description": "Recommended fee rate for the fastest confirmation (1 block)"
+          },
+          "halfHourFee": {
+            "type": "integer",
+            "description": "Recommended fee rate for confirmation within 3 blocks (~30 minutes)"
+          },
+          "hourFee": {
+            "type": "integer",
+            "description": "Recommended fee rate for confirmation within 6 blocks (~1 hour)"
+          }
+        },
+        "required": [
+          "fastestFee",
+          "halfHourFee",
+          "hourFee"
+        ]
+      },
+      "MerkleProof": {
+        "type": "object",
+        "properties": {
+          "block_height": {
+            "type": "integer",
+            "description": "Block height where the transaction was included."
+          },
+          "merkle": {
+            "type": "array",
+            "description": "Merkle branch hashes proving the inclusion of the transaction.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pos": {
+            "type": "integer",
+            "description": "Position of the transaction in the block's merkle tree."
+          }
+        },
+        "required": [
+          "block_height",
+          "merkle",
+          "pos"
+        ]
+      },
+      "TxOutspend": {
+        "type": "object",
+        "properties": {
+          "spent": {
+            "type": "boolean",
+            "description": "Whether the output has been spent."
+          },
+          "txid": {
+            "type": "string",
+            "description": "Transaction ID of the spending transaction.",
+            "nullable": true
+          },
+          "vin": {
+            "type": "integer",
+            "description": "Index of the input in the spending transaction.",
+            "nullable": true
+          },
+          "status": {
+            "type": "object",
+            "description": "Confirmation status of the spending transaction.",
+            "nullable": true,
+            "properties": {
+              "confirmed": {
+                "type": "boolean"
+              },
+              "block_height": {
+                "type": "integer"
+              },
+              "block_hash": {
+                "type": "string"
+              },
+              "block_time": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "required": [
+          "spent"
+        ]
+      },
+      "Outspend": {
+        "type": "object",
+        "properties": {
+          "spent": {
+            "type": "boolean",
+            "description": "Indicates whether this output has been spent."
+          },
+          "txid": {
+            "type": "string",
+            "nullable": true,
+            "description": "The transaction ID that spent this output, if any."
+          },
+          "vin": {
+            "type": "integer",
+            "nullable": true,
+            "description": "The input index in the spending transaction."
+          },
+          "status": {
+            "type": "object",
+            "nullable": true,
+            "description": "Status of the spending transaction.",
+            "properties": {
+              "confirmed": {
+                "type": "boolean"
+              },
+              "block_height": {
+                "type": "integer"
+              },
+              "block_hash": {
+                "type": "string"
+              },
+              "block_time": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "required": [
+          "spent"
+        ]
+      },
+      "TransactionTimes": {
+        "type": "object",
+        "properties": {
+          "firstSeen": {
+            "type": "integer",
+            "description": "Unix timestamp when the transaction was first observed"
+          },
+          "addedToMempool": {
+            "type": "integer",
+            "description": "Unix timestamp when the transaction entered the mempool"
+          },
+          "blockTime": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Unix timestamp when the transaction was confirmed in a block (null if unconfirmed)"
+          }
+        },
+        "required": [
+          "firstSeen",
+          "addedToMempool"
+        ]
+      },
+      "TxStatus": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "type": "boolean",
+            "description": "Whether the transaction is confirmed"
+          },
+          "block_height": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Height of the block containing the transaction (if confirmed)"
+          },
+          "block_hash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Hash of the block containing the transaction (if confirmed)"
+          }
+        },
+        "required": [
+          "confirmed"
+        ]
+      },
+      "BroadcastResponse": {
+        "type": "object",
+        "properties": {
+          "txid": {
+            "type": "string",
+            "description": "Transaction ID of the broadcast transaction."
+          }
+        },
+        "required": [
+          "txid"
+        ]
+      },
+      "Utxo1": {
+        "type": "object",
+        "properties": {
+          "txid": {
+            "type": "string",
+            "description": "Transaction ID where the UTXO originates."
+          },
+          "vout": {
+            "type": "integer",
+            "description": "Index of the output in the transaction."
+          },
+          "value": {
+            "type": "integer",
+            "description": "Value of the UTXO in satoshis."
+          },
+          "status": {
+            "type": "object",
+            "properties": {
+              "confirmed": {
+                "type": "boolean"
+              },
+              "block_height": {
+                "type": "integer"
+              },
+              "block_hash": {
+                "type": "string"
+              },
+              "block_time": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "confirmed"
+            ]
+          }
+        },
+        "required": [
+          "txid",
+          "vout",
+          "value",
+          "status"
+        ]
       }
     },
     "securitySchemes": {
