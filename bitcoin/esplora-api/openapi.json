@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.0.3",
     "info": {
         "title": "Esplora REST API",
         "version": "1.0.0",
@@ -7,10 +7,10 @@
     },
     "servers": [
         {
-            "url": "http://xbt-mainnet.gomaestro-api.org/v0/esplora"
+            "url": "https://xbt-mainnet.gomaestro-api.org/v0/esplora"
         },
         {
-            "url": "http://xbt-testnet.gomaestro-api.org/v0/esplora"
+            "url": "https://xbt-testnet.gomaestro-api.org/v0/esplora"
         }
     ],
     "paths": {
