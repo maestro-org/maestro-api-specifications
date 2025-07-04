@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "Esplora REST API",
+        "title": "Bitcoin - Esplora API",
         "version": "1.0.0",
         "description": "OpenAPI spec for core Esplora endpoints: blocks, transactions, addresses, mining info, mempool, fees, UTXO data and more.\n"
     },
@@ -24,7 +24,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
                         },
                         "description": "Bitcoin address to query"
                     }
@@ -57,7 +58,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
                         },
                         "description": "The Bitcoin address to query."
                     }
@@ -97,7 +99,8 @@
                         "required": true,
                         "description": "The Bitcoin address to query.",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
                         }
                     }
                 ],
@@ -136,7 +139,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
                         },
                         "description": "The Bitcoin address whose unconfirmed transactions should be retrieved."
                     }
@@ -175,7 +179,8 @@
                         "required": true,
                         "description": "The Bitcoin address to query.",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
                         }
                     }
                 ],
@@ -203,7 +208,7 @@
                 "tags": ["Addresses"]
             }
         },
-        "/address/{address}/validate": {
+        "/v1/validate-address/{address}": {
             "get": {
                 "summary": "Address Validation",
                 "description": "Returns whether an address is valid or not. Available fields: isvalid (boolean), address (string), scriptPubKey (string), isscript (boolean), iswitness (boolean), witness_version (numeric, optional), and witness_program (string, optional).",
@@ -213,7 +218,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
                         },
                         "description": "The Bitcoin address to validate."
                     }
@@ -247,7 +253,7 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "0000000000000000000a16e7f42c2edb702c8e5c68dc06782a82c4e6be5b0b7d"
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         },
                         "description": "The block hash to retrieve information for."
                     }
@@ -280,7 +286,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         },
                         "description": "The block hash to query."
                     }
@@ -314,7 +321,7 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "0000000000000000000b4d0d437d0cd028cb7f19dc5d7e5e6aa06254f19ac7f6"
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         },
                         "description": "The hash of the block to retrieve the header for."
                     }
@@ -353,7 +360,8 @@
                         "required": true,
                         "description": "The block hash to query",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         }
                     }
                 ],
@@ -389,7 +397,8 @@
                         "required": true,
                         "description": "The block hash.",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         }
                     },
                     {
@@ -434,7 +443,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         },
                         "description": "The hash of the block to query."
                     }
@@ -471,7 +481,8 @@
                         "required": true,
                         "description": "The block hash.",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         }
                     },
                     {
@@ -517,7 +528,8 @@
                         "required": true,
                         "description": "The hash of the block",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         }
                     }
                 ],
@@ -635,7 +647,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "00000000000000000001880a9ce60cd1f88b0d1c61bb5a1d6276acfa3536c9e5"
+                                    "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                                 }
                             }
                         }
@@ -1027,9 +1039,9 @@
                     },
                     "404": {
                         "description": "Block not found"
-                    },
-                    "tags": ["Blocks"]
-                }
+                    }
+                },
+                "tags": ["Blocks"]
             }
         },
         "/v1/mining/blocks/fees/{time_period}": {
@@ -1246,7 +1258,7 @@
                         }
                     }
                 },
-                "tags": ["Fees", "Blocks", "Mempool"]
+                "tags": ["Mining"]
             }
         },
         "/v1/mining/blocks/audit/score/{hash}": {
@@ -1260,7 +1272,7 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "00000000000000000002b76ad4d92c98392c4aefb87dbb4564a2d1e84c54f342"
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         },
                         "description": "The block hash to retrieve audit data for."
                     }
@@ -1328,7 +1340,7 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "0000000000000000000a16f1e13eb703e6a07bce4b7dbde90740b0425f9b7b95"
+                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
                         },
                         "description": "Block hash to retrieve the audit summary for."
                     }
@@ -1509,7 +1521,7 @@
                         }
                     }
                 },
-                "tags": ["Mempool"]
+                "tags": ["Fees"]
             }
         },
         "/v1/fees/recommended": {
@@ -1559,7 +1571,7 @@
                         "description": "Transaction not found or not eligible for CPFP."
                     }
                 },
-                "tags": ["Fees"]
+                "tags": ["Transactions"]
             }
         },
         "/tx/{txid}": {
@@ -1572,7 +1584,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         },
                         "description": "The transaction ID to look up."
                     }
@@ -1607,7 +1620,7 @@
                         "description": "Transaction ID of the transaction to fetch.",
                         "schema": {
                             "type": "string",
-                            "example": "4b0d2a...bfa2"
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         }
                     }
                 ],
@@ -1641,7 +1654,7 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "2e95ff9094df9f3650e3f2abc189250760162be89a88f9f2f23301c7cb14b8b4"
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         },
                         "description": "The transaction ID to retrieve the merkleblock proof for."
                     }
@@ -1679,7 +1692,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         },
                         "description": "The transaction ID to get the merkle proof for."
                     }
@@ -1724,7 +1738,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         },
                         "description": "Transaction ID of the parent transaction."
                     },
@@ -1733,7 +1748,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 0
                         },
                         "description": "The output index within the transaction."
                     }
@@ -1788,7 +1804,7 @@
                         "description": "The transaction ID (txid) to query.",
                         "schema": {
                             "type": "string",
-                            "example": "f854aeb44e44dc207c56c7f23b84e517ac7e1d0b4529db9adfb76b14f8c0efcb"
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         }
                     }
                 ],
@@ -1843,7 +1859,8 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         },
                         "description": "The transaction ID."
                     }
@@ -1879,7 +1896,7 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "2e95ff9094df9f3650e3f2abc189250760162be89a88f9f2f23301c7cb14b8b4"
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         },
                         "description": "The transaction ID to trace RBF replacements for."
                     }
@@ -1937,7 +1954,7 @@
                         "description": "Transaction ID to query.",
                         "schema": {
                             "type": "string",
-                            "example": "e3c...abc"
+                            "example": "d78b1139140848e646cfd7eb95868d2e01c600c3922de88038c591d2fb55cf96"
                         }
                     }
                 ],
