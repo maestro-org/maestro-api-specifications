@@ -43,7 +43,8 @@
                     "404": {
                         "description": "Address not found"
                     }
-                }
+                },
+                "tags": ["Addresses"]
             }
         },
         "/address/{address}/txs": {
@@ -1825,36 +1826,6 @@
                 },
                 "tags": ["Transactions"]
             }
-        },
-        "/asset/{asset_id}/supply": {
-            "get": {
-                "summary": "GET /asset/:asset_id/supply",
-                "responses": {
-                    "200": {
-                        "description": "Successful response"
-                    }
-                }
-            }
-        },
-        "/asset/{asset_id}/supply/decimal": {
-            "get": {
-                "summary": "GET /asset/:asset_id/supply/decimal",
-                "responses": {
-                    "200": {
-                        "description": "Successful response"
-                    }
-                }
-            }
-        },
-        "/assets/registry": {
-            "get": {
-                "summary": "GET /assets/registry",
-                "responses": {
-                    "200": {
-                        "description": "Successful response"
-                    }
-                }
-            }
         }
     },
     "components": {
@@ -3007,6 +2978,19 @@
                 },
                 "required": ["txid", "vout", "value", "status"]
             }
+        },
+        "securitySchemes": {
+            "api-key": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "api-key",
+                "description": "Project API Key"
+            }
         }
-    }
+    },
+    "security": [
+        {
+            "api-key": []
+        }
+    ]
 }
