@@ -7,10 +7,10 @@
     },
     "servers": [
         {
-            "url": "http://xbt-testnet.gomaestro-api.org/v0/electrs"
+            "url": "http://xbt-mainnet.gomaestro-api.org/v0/esplora"
         },
         {
-            "url": "http://xbt-mainnet.gomaestro-api.org/v0/electrs"
+            "url": "http://xbt-testnet.gomaestro-api.org/v0/esplora"
         }
     ],
     "paths": {
