@@ -49,8 +49,8 @@
         },
         "/address/{address}/txs": {
             "get": {
-                "summary": "Get address transactions",
-                "description": "Returns a list of confirmed and unconfirmed transactions for a Bitcoin address, sorted with the most recent first.",
+                "summary": "Address Transactions",
+                "description": "Get transaction history for the specified address/scripthash, sorted with newest first. Returns up to 50 mempool transactions plus the first 25 confirmed transactions. You can request more confirmed transactions using an after_txid query parameter.",
                 "parameters": [
                     {
                         "name": "address",
@@ -88,23 +88,14 @@
         },
         "/address/{address}/txs/chain": {
             "get": {
-                "summary": "Get confirmed address transaction history",
-                "description": "Returns up to 25 confirmed transactions for the given address, ordered from newest to oldest. To fetch the next page of results, use the last seen txid from the previous response as the `last_seen_txid` query parameter.",
+                "summary": "Address Transactions Chain",
+                "description": "Get confirmed transaction history for the specified address/scripthash, sorted with newest first. Returns 25 transactions per page. More can be requested by specifying the last txid seen by the previous query.",
                 "parameters": [
                     {
                         "name": "address",
                         "in": "path",
                         "required": true,
                         "description": "The Bitcoin address to query.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "last_seen_txid",
-                        "in": "query",
-                        "required": false,
-                        "description": "The txid of the last transaction from the previous response. Used for pagination.",
                         "schema": {
                             "type": "string"
                         }
@@ -136,8 +127,8 @@
         },
         "/address/{address}/txs/mempool": {
             "get": {
-                "summary": "Get address mempool transactions",
-                "description": "Returns unconfirmed (mempool) transactions for the given Bitcoin address. Limited to the most recent 50 transactions.",
+                "summary": "Address Transactions Mempool",
+                "description": "Get unconfirmed transaction history for the specified address/scripthash. Returns up to 50 transactions (no paging).",
                 "tags": ["Addresses"],
                 "parameters": [
                     {
@@ -175,8 +166,8 @@
         },
         "/address/{address}/utxo": {
             "get": {
-                "summary": "Get address UTXOs",
-                "description": "Returns the list of unspent transaction outputs (UTXOs) associated with a Bitcoin address.",
+                "summary": "Address UTXOs",
+                "description": "Get the list of unspent transaction outputs associated with the address/scripthash. Available fields: txid, vout, value, and status (with the status of the funding tx).",
                 "parameters": [
                     {
                         "name": "address",
@@ -214,8 +205,8 @@
         },
         "/address/{address}/validate": {
             "get": {
-                "summary": "Validate Bitcoin address",
-                "description": "Checks whether a given string is a valid Bitcoin address on the current network.",
+                "summary": "Address Validation",
+                "description": "Returns whether an address is valid or not. Available fields: isvalid (boolean), address (string), scriptPubKey (string), isscript (boolean), iswitness (boolean), witness_version (numeric, optional), and witness_program (string, optional).",
                 "parameters": [
                     {
                         "name": "address",
@@ -247,8 +238,8 @@
         },
         "/block/{hash}": {
             "get": {
-                "summary": "Get block by hash",
-                "description": "Returns information about a specific block, including its metadata but not full transaction data.",
+                "summary": "Block",
+                "description": "Returns details about a block.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -281,9 +272,8 @@
         },
         "/v1/block/{hash}": {
             "get": {
-                "summary": "Get block details",
-                "description": "Returns detailed information for a specific block by its hash.",
-                "tags": ["Blocks"],
+                "summary": "Block (v1)",
+                "description": "Returns details about a block using Mempool's Node.js backend.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -309,13 +299,14 @@
                     "404": {
                         "description": "Block not found."
                     }
-                }
+                },
+                "tags": ["Blocks"]
             }
         },
         "/block/{hash}/header": {
             "get": {
-                "summary": "Get block header (hex)",
-                "description": "Returns the raw hex-encoded header of a block by its hash. This is a 160-character hexadecimal string representing the 80-byte block header.",
+                "summary": "Block Header",
+                "description": "Returns the hex-encoded block header.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -353,8 +344,8 @@
         },
         "/block/{hash}/status": {
             "get": {
-                "summary": "Get block status",
-                "description": "Returns status data about a given block, including whether it is in the best chain and what block follows it.",
+                "summary": "Block Status",
+                "description": "Returns the confirmation status of a block. Available fields: in_best_chain (boolean, false for orphaned blocks), next_best (the hash of the next block, only available for blocks in the best chain).",
                 "parameters": [
                     {
                         "name": "hash",
@@ -387,10 +378,10 @@
                 "tags": ["Blocks"]
             }
         },
-        "/block/{hash}/txs": {
+        "/block/{hash}/txs/{start_index}": {
             "get": {
                 "summary": "Get block transactions",
-                "description": "Returns a list of transactions in the block with the specified hash. Returns up to 25 transactions per call. Optional query param `start_index` controls pagination.",
+                "description": "Returns a list of transactions in the block (up to 25 transactions beginning at start_index). Transactions returned here do not have the status field, since all the transactions share the same block and confirmation status.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -435,9 +426,8 @@
         },
         "/block/{hash}/txids": {
             "get": {
-                "summary": "Returns a list of all txids in the block.",
-                "description": "Returns a list of all transaction IDs (txids) in the specified block.",
-                "tags": ["Blocks"],
+                "summary": "Block Transaction IDs",
+                "description": "Returns a list of all txids in the block.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -466,14 +456,14 @@
                     "404": {
                         "description": "Block not found."
                     }
-                }
+                },
+                "tags": ["Blocks"]
             }
         },
         "/block/{hash}/txid/{index}": {
             "get": {
-                "summary": "Get transaction ID by block and index",
-                "description": "Returns the transaction ID at the specified index in the block.",
-                "tags": ["Blocks"],
+                "summary": "Block Transaction ID",
+                "description": "Returns the transaction at index :index within the specified block.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -512,14 +502,14 @@
                     "404": {
                         "description": "Block or transaction not found"
                     }
-                }
+                },
+                "tags": ["Blocks"]
             }
         },
         "/block/{hash}/raw": {
             "get": {
-                "summary": "Get raw block data",
-                "description": "Returns the raw block data in binary form for a given block hash.",
-                "tags": ["Blocks"],
+                "summary": "Block Raw",
+                "description": "Returns the raw block representation in binary.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -549,18 +539,19 @@
                     "404": {
                         "description": "Block not found"
                     }
-                }
+                },
+                "tags": ["Blocks"]
             }
         },
         "/blocks/{start_height}": {
             "get": {
                 "summary": "Blocks",
-                "description": "Returns 10 blocks starting from the specified block height and going backwards.",
+                "description": "Returns details on the past 10 blocks. If :startHeight is specified, the 10 blocks before (and including) :startHeight are returned.",
                 "parameters": [
                     {
                         "name": "start_height",
                         "in": "path",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         },
@@ -588,11 +579,21 @@
                 "tags": ["Blocks"]
             }
         },
-        "/v1/blocks": {
+        "/v1/blocks/{start_height}": {
             "get": {
-                "summary": "Get recent blocks",
-                "description": "Returns a list of the most recent blocks. Default is the latest 10 blocks mined.",
-                "tags": ["Blocks"],
+                "summary": "Blocks (v1)",
+                "description": "Returns details on the past 15 blocks from Mempool's Node.js backend. Includes fee and mining details in an extras field. If :startHeight is specified, the past 15 blocks before (and including) :startHeight are returned.",
+                "parameters": [
+                    {
+                        "name": "start_height",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "The block height to start from."
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A list of recent blocks.",
@@ -607,13 +608,14 @@
                             }
                         }
                     }
-                }
+                },
+                "tags": ["Blocks"]
             }
         },
         "/block-height/{height}": {
             "get": {
-                "summary": "Get block hash by height",
-                "description": "Returns the block hash of the block at the specified height.",
+                "summary": "Block Height",
+                "description": "Returns the hash of the block currently at :height.",
                 "parameters": [
                     {
                         "name": "height",
@@ -648,13 +650,13 @@
                 "tags": ["Blocks"]
             }
         },
-        "/v1/blocks-bulk/{minHeight}/{maxHeight}": {
+        "/v1/blocks-bulk/{minHeight}/{max_height}": {
             "get": {
-                "summary": "Get detailed stats for a block range between minHeight and maxHeight; if maxHeight is not specified, it defaults to the current tip.",
-                "description": "Returns stats for up to 10 blocks between `minHeight` and `maxHeight`, inclusive. If `maxHeight` exceeds the current tip, the response is limited to available blocks.",
+                "summary": "Blocks (Bulk)",
+                "description": "Returns details on the range of blocks between :minHeight and :maxHeight, inclusive, up to 10 blocks. If :maxHeight is not specified, it defaults to the current tip.",
                 "parameters": [
                     {
-                        "name": "minHeight",
+                        "name": "min_height",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -662,9 +664,9 @@
                         }
                     },
                     {
-                        "name": "maxHeight",
+                        "name": "max_height",
                         "in": "path",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         }
@@ -690,8 +692,8 @@
         },
         "/blocks/tip/height": {
             "get": {
-                "summary": "Get block tip height",
-                "description": "Returns the height of the tip of the best (most-work) blockchain.",
+                "summary": "Block Tip Height",
+                "description": "Returns the height of the last block.",
                 "responses": {
                     "200": {
                         "content": {
@@ -708,8 +710,8 @@
         },
         "/blocks/tip/hash": {
             "get": {
-                "summary": "Get tip block hash",
-                "description": "Returns the hash of the most recent block in the best blockchain.",
+                "summary": "Block Tip Hash",
+                "description": "Returns the hash of the last block.",
                 "responses": {
                     "200": {
                         "description": "Block hash string of the latest block",
@@ -725,10 +727,31 @@
                 "tags": ["Blocks"]
             }
         },
-        "/v1/mining/pools": {
+        "/v1/mining/pools/{time_period}": {
             "get": {
-                "summary": "Get mining pool stats",
-                "description": "Returns a list of recent blocks and the corresponding identified mining pools.",
+                "summary": "Mining Pools",
+                "description": "Returns a list of all known mining pools ordered by blocks found over the specified trailing :timePeriod.\nLeave :timePeriod unspecified to get all available data, or specify one of the following values: 24h, 3d, 1w, 1m, 3m, 6m, 1y, 2y, 3y.",
+                "parameters": [
+                    {
+                        "name": "time_period",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "24h",
+                                "3d",
+                                "1w",
+                                "1m",
+                                "3m",
+                                "6m",
+                                "1y",
+                                "2y",
+                                "3y"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of mining pools and their recent block counts.",
@@ -749,11 +772,11 @@
         },
         "/v1/mining/pool/{slug}": {
             "get": {
-                "summary": "Returns details about the mining pool specified by :slug.",
+                "summary": "Mining Pool",
                 "description": "Returns details about the mining pool specified by :slug.",
                 "parameters": [
                     {
-                        "name": "address",
+                        "name": "slug",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -784,6 +807,17 @@
             "get": {
                 "summary": "Mining Pool Hashrates",
                 "description": "Returns average hashrates (and share of total hashrate) of mining pools active in the specified trailing :timePeriod, in descending order of hashrate. Leave :timePeriod unspecified to get all available data, or specify any of the following time periods: 1m, 3m, 6m, 1y, 2y, 3y.",
+                "parameters": [
+                    {
+                        "name": "time_period",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": ["1m", "3m", "6m", "1y", "2y", "3y"]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A list of mining pools with hashrate data.",
@@ -806,6 +840,17 @@
             "get": {
                 "summary": "Mining Pool Hashrate",
                 "description": "Returns all known hashrate data for the mining pool specified by :slug. Hashrate values are weekly averages.",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The identifier used by the mining pool."
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Hashrate distribution by mining pool.",
@@ -828,6 +873,26 @@
             "get": {
                 "summary": "Mining Pool Blocks",
                 "description": "Returns past 10 blocks mined by the specified mining pool (:slug) before the specified :blockHeight. If no :blockHeight is specified, the mining pool's 10 most recent blocks are returned.",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The identifier used by the mining pool."
+                    },
+                    {
+                        "name": "block_height",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "The block height."
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A list of mining pools with block counts.",
@@ -850,7 +915,17 @@
             "get": {
                 "summary": "Hashrate",
                 "description": "Returns network-wide hashrate and difficulty figures over the specified trailing :timePeriod:\n\n- Current (real-time) hashrate\n- Current (real-time) difficulty\n- Historical daily average hashrates\n- Historical difficulty\n\nValid values for :timePeriod are 1m, 3m, 6m, 1y, 2y, 3y. If no time interval is specified, all available data is returned.\n\nBe sure that INDEXING_BLOCKS_AMOUNT is set properly in your backend config so that enough blocks are indexed to properly serve your request.",
-                "tags": ["Mining"],
+                "parameters": [
+                    {
+                        "name": "time_period",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": ["1m", "3m", "6m", "1y", "2y", "3y"]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Hashrate data returned successfully.",
@@ -862,7 +937,8 @@
                             }
                         }
                     }
-                }
+                },
+                "tags": ["Mining"]
             }
         },
         "/v1/mining/difficulty-adjustments/{interval}": {
@@ -887,7 +963,19 @@
         "/v1/mining/reward-stats/{block_count}": {
             "get": {
                 "summary": "Reward Stats",
-                "description": "Returns the current Bitcoin block subsidy, fee reward, and the total block reward based on recent blocks.",
+                "description": "Returns block reward and total transactions confirmed for the past :blockCount blocks.",
+                "parameters": [
+                    {
+                        "name": "block_count",
+                        "in": "path",
+                        "required": true,
+                        "description": "Number of blocks to retrieve reward stats for.",
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Block reward statistics",
@@ -903,21 +991,72 @@
                 "tags": ["Mining"]
             }
         },
+        "/v1/mining/blocks/timestamp/{timestamp}": {
+            "get": {
+                "summary": "Block Timestamp",
+                "description": "Returns the height and the hash of the block closest to the given :timestamp.",
+                "parameters": [
+                    {
+                        "name": "timestamp",
+                        "in": "path",
+                        "required": true,
+                        "description": "Timestamp",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Block confirmation and status data.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BlockStatus"
+                                },
+                                "examples": {
+                                    "example": {
+                                        "value": {
+                                            "in_best_chain": true,
+                                            "next_best": "0000000000000000000a16e2a3b5e1d416b2e456fa3b32123d51291b27528aa4"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Block not found"
+                    },
+                    "tags": ["Blocks"]
+                }
+            }
+        },
         "/v1/mining/blocks/fees/{time_period}": {
             "get": {
                 "summary": "Block Fees",
-                "description": "Returns aggregate fee, fee rate, and vsize statistics for all transactions in a block (excluding the coinbase).",
+                "description": "Returns average total fees for blocks in the specified :timePeriod, ordered oldest to newest. :timePeriod can be any of the following: 24h, 3d, 1w, 1m, 3m, 6m, 1y, 2y, 3y.\nFor 24h and 3d time periods, every block is included and fee amounts are exact (not averages). For the 1w time period, fees may be averages depending on how fast blocks were found around a particular timestamp. For other time periods, fees are averages.",
                 "tags": ["Blocks"],
                 "parameters": [
                     {
-                        "name": "hash",
+                        "name": "time_period",
                         "in": "path",
                         "required": true,
-                        "description": "Block hash to retrieve fee data for.",
                         "schema": {
                             "type": "string",
-                            "example": "0000000000000000000839fdf3b4d6c2a0620f61722a0c4d960a3b7e1a64432e"
-                        }
+                            "enum": [
+                                "24h",
+                                "3d",
+                                "1w",
+                                "1m",
+                                "3m",
+                                "6m",
+                                "1y",
+                                "2y",
+                                "3y"
+                            ]
+                        },
+                        "description": "The time period for which to retrieve block fee data."
                     }
                 ],
                 "responses": {
@@ -940,17 +1079,27 @@
         "/v1/mining/blocks/rewards/{time_period}": {
             "get": {
                 "summary": "Block Rewards",
-                "description": "Returns the total block reward, including the block subsidy and total fees (in satoshis).",
+                "description": "Returns average block rewards for blocks in the specified :timePeriod, ordered oldest to newest. :timePeriod can be any of the following: 24h, 3d, 1w, 1m, 3m, 6m, 1y, 2y, 3y.\nFor 24h and 3d time periods, every block is included and block rewards are exact (not averages). For the 1w time period, block rewards may be averages depending on how fast blocks were found around a particular timestamp. For other time periods, block rewards are averages.",
                 "parameters": [
                     {
-                        "name": "hash",
+                        "name": "time_period",
                         "in": "path",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "0000000000000000000bba951d26c9c91b97e2b6d04d13c0f99e06ae95a68e0d"
+                            "enum": [
+                                "24h",
+                                "3d",
+                                "1w",
+                                "1m",
+                                "3m",
+                                "6m",
+                                "1y",
+                                "2y",
+                                "3y"
+                            ]
                         },
-                        "description": "The hash of the block to get the reward for."
+                        "description": "The time period for which to retrieve block reward data."
                     }
                 ],
                 "responses": {
@@ -977,14 +1126,23 @@
                 "description": "Returns average feerate percentiles for blocks in the specified :timePeriod, ordered oldest to newest. :timePeriod can be any of the following: 24h, 3d, 1w, 1m, 3m, 6m, 1y, 2y, 3y.\nFor 24h and 3d time periods, every block is included and percentiles are exact (not averages). For the 1w time period, percentiles may be averages depending on how fast blocks were found around a particular timestamp. For other time periods, percentiles are averages.",
                 "parameters": [
                     {
-                        "name": "block_hash",
+                        "name": "time_period",
                         "in": "path",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "0000000000000000000c6b5c5ed19466aeeb5e5582275c3e4f257f879b548efb"
-                        },
-                        "description": "The hash of the block to retrieve fee rates for."
+                            "enum": [
+                                "24h",
+                                "3d",
+                                "1w",
+                                "1m",
+                                "3m",
+                                "6m",
+                                "1y",
+                                "2y",
+                                "3y"
+                            ]
+                        }
                     }
                 ],
                 "responses": {
@@ -1009,6 +1167,27 @@
             "get": {
                 "summary": "Block Sizes and Weights",
                 "description": "Returns average size (bytes) and average weight (weight units) for blocks in the specified :timePeriod, ordered oldest to newest. :timePeriod can be any of the following: 24h, 3d, 1w, 1m, 3m, 6m, 1y, 2y, 3y.\nFor 24h and 3d time periods, every block is included and figures are exact (not averages). For the 1w time period, figures may be averages depending on how fast blocks were found around a particular timestamp. For other time periods, figures are averages.",
+                "parameters": [
+                    {
+                        "name": "time_period",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "24h",
+                                "3d",
+                                "1w",
+                                "1m",
+                                "3m",
+                                "6m",
+                                "1y",
+                                "2y",
+                                "3y"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A list of daily average block size and weight statistics.",
@@ -1030,7 +1209,28 @@
         "/v1/mining/blocks/predictions/{time_period}": {
             "get": {
                 "summary": "Block Predictions",
-                "description": "Returns predicted blocks based on current mempool transactions, ordered by fee rate. Each object represents a potential next block with aggregated transaction stats.",
+                "description": "Returns average block health in the specified :timePeriod, ordered oldest to newest. :timePeriod can be any of the following: 24h, 3d, 1w, 1m, 3m, 6m, 1y, 2y, 3y.\nFor 24h and 3d time periods, every block is included and figures are exact (not averages). For the 1w time period, figures may be averages depending on how fast blocks were found around a particular timestamp. For other time periods, figures are averages.",
+                "parameters": [
+                    {
+                        "name": "time_period",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "24h",
+                                "3d",
+                                "1w",
+                                "1m",
+                                "3m",
+                                "6m",
+                                "1y",
+                                "2y",
+                                "3y"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A list of predicted next blocks based on current mempool state.",
@@ -1049,10 +1249,10 @@
                 "tags": ["Fees", "Blocks", "Mempool"]
             }
         },
-        "/v1/mining/blocks/audit/score/{block_hash}": {
+        "/v1/mining/blocks/audit/score/{hash}": {
             "get": {
                 "summary": "Block Audit Score",
-                "description": "Returns audit metadata about a block, including its score based on validation properties.",
+                "description": "Returns the block audit score for the specified :blockHash. Available fields: hash, matchRate, expectedFees, and expectedWeight.",
                 "parameters": [
                     {
                         "name": "hash",
@@ -1087,6 +1287,18 @@
             "get": {
                 "summary": "Blocks Audit Scores",
                 "description": "Returns blocks audit score for the past 16 blocks. If :startHeight is specified, the past 15 blocks before (and including) :startHeight are returned. Available fields: hash, matchRate, expectedFees, and expectedWeight.",
+                "parameters": [
+                    {
+                        "name": "start_height",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 804000
+                        },
+                        "description": "The block height to start from. If not specified, the latest blocks are returned."
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of audit scores for recent blocks.",
@@ -1105,7 +1317,7 @@
                 "tags": ["Blocks"]
             }
         },
-        "/v1/block/{block_hash}/audit-summary": {
+        "/v1/block/{hash}/audit-summary": {
             "get": {
                 "summary": "Block Audit Summary",
                 "description": "Returns the block audit summary for the specified :blockHash. Available fields: height, id, timestamp, template, missingTxs, addedTxs, freshTxs, sigopTxs, fullrbfTxs, acceleratedTxs, matchRate, expectedFees, and expectedWeight.",
@@ -1247,7 +1459,7 @@
         "/mempool/recent": {
             "get": {
                 "summary": "Mempool Recent",
-                "description": "Returns the last 10 transactions that entered the mempool, with simplified metadata.",
+                "description": "Get a list of the last 10 transactions to enter the mempool. Each transaction object contains simplified overview data, with the following fields: txid, fee, vsize, and value.",
                 "responses": {
                     "200": {
                         "description": "A list of recent mempool transactions.",
@@ -1785,7 +1997,7 @@
         },
         "/tx": {
             "post": {
-                "summary": "Broadcast raw transaction",
+                "summary": "Transaction",
                 "description": "Broadcast a raw transaction to the network. The transaction should be provided as hex in the request body. The txid will be returned on success.",
                 "requestBody": {
                     "description": "Hex-encoded raw transaction data.",
