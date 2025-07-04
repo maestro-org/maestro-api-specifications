@@ -3,7 +3,7 @@
   "info": {
     "title": "Bitcoin - Merged Services API",
     "version": "1.0.0",
-    "description": "Maestro's Bitcoin Merged Service API is a unified OpenAPI specification that combines multiple Bitcoin-related services into one comprehensive spec. It integrates endpoints from the following core services:\n\n - **Blockchain Indexer API:** Core Bitcoin endpoints with support for Bitcoin metaprotocols indexed for real-time, rollback-protected access to UTXO data such as transaction activity, address balances and block data.\n - **Event Manager API:** Programmable webhook infrastructure for tracking Bitcoin events like transactions, address activity, and related state changes via configurable triggers.\n - **Market Price API:** Real-time, rollback-protected DEX pricing data with deep network-level indexing for BTC and Rune assets.\n - **Mempool Monitoring API:** Core Bitcoin endpoints indexed with mempool awareness, providing real-time visibility into unconfirmed transactions and fees.\n - **Node RPC API:** Interaction with Bitcoin nodes for low-level operations like sending transactions and querying blockchain state.\n - **Wallet API:** Granular address-level visibility across native Bitcoin and metaprotocol assets like inscriptions and runes, enabling detailed tracking of balance changes, token activity, and historical balance changes with USD-denominated valuation over time."
+    "description": "Maestro's Bitcoin Merged Service API is a unified OpenAPI specification that combines multiple Bitcoin-related services into one comprehensive spec. It integrates endpoints from the following core services:\n\n - **Esplora API:** Core Esplora endpoints: blocks, transactions, addresses, mempool, fees, UTXO data and more.\n\n - **Blockchain Indexer API:** Core Bitcoin endpoints with support for Bitcoin metaprotocols indexed for real-time, rollback-protected access to UTXO data such as transaction activity, address balances and block data.\n - **Event Manager API:** Programmable webhook infrastructure for tracking Bitcoin events like transactions, address activity, and related state changes via configurable triggers.\n - **Market Price API:** Real-time, rollback-protected DEX pricing data with deep network-level indexing for BTC and Rune assets.\n - **Mempool Monitoring API:** Core Bitcoin endpoints indexed with mempool awareness, providing real-time visibility into unconfirmed transactions and fees.\n - **Node RPC API:** Interaction with Bitcoin nodes for low-level operations like sending transactions and querying blockchain state.\n - **Wallet API:** Granular address-level visibility across native Bitcoin and metaprotocol assets like inscriptions and runes, enabling detailed tracking of balance changes, token activity, and historical balance changes with USD-denominated valuation over time."
   },
   "servers": [
     {
@@ -6783,7 +6783,7 @@
         ]
       }
     },
-    "/address/{address}": {
+    "/esplora/address/{address}": {
       "get": {
         "summary": "Address",
         "description": "Returns details about an address. Available fields: address, chain_stats, and mempool_stats. chain_stats and mempool_stats each contain an object with tx_count, funded_txo_count, funded_txo_sum, spent_txo_count, and spent_txo_sum.",
@@ -6819,7 +6819,7 @@
         ]
       }
     },
-    "/address/{address}/txs": {
+    "/esplora/address/{address}/txs": {
       "get": {
         "summary": "Address Transactions",
         "description": "Get transaction history for the specified address/scripthash, sorted with newest first. Returns up to 50 mempool transactions plus the first 25 confirmed transactions. You can request more confirmed transactions using an after_txid query parameter.",
@@ -6861,7 +6861,7 @@
         ]
       }
     },
-    "/address/{address}/txs/chain": {
+    "/esplora/address/{address}/txs/chain": {
       "get": {
         "summary": "Address Transactions Chain",
         "description": "Get confirmed transaction history for the specified address/scripthash, sorted with newest first. Returns 25 transactions per page. More can be requested by specifying the last txid seen by the previous query.",
@@ -6903,7 +6903,7 @@
         ]
       }
     },
-    "/address/{address}/txs/mempool": {
+    "/esplora/address/{address}/txs/mempool": {
       "get": {
         "summary": "Address Transactions Mempool",
         "description": "Get unconfirmed transaction history for the specified address/scripthash. Returns up to 50 transactions (no paging).",
@@ -6945,7 +6945,7 @@
         }
       }
     },
-    "/address/{address}/utxo": {
+    "/esplora/address/{address}/utxo": {
       "get": {
         "summary": "Address UTXOs",
         "description": "Get the list of unspent transaction outputs associated with the address/scripthash. Available fields: txid, vout, value, and status (with the status of the funding tx).",
@@ -6987,7 +6987,7 @@
         ]
       }
     },
-    "/v1/validate-address/{address}": {
+    "/esplora/v1/validate-address/{address}": {
       "get": {
         "summary": "Address Validation",
         "description": "Returns whether an address is valid or not. Available fields: isvalid (boolean), address (string), scriptPubKey (string), isscript (boolean), iswitness (boolean), witness_version (numeric, optional), and witness_program (string, optional).",
@@ -7023,7 +7023,7 @@
         ]
       }
     },
-    "/block/{hash}": {
+    "/esplora/block/{hash}": {
       "get": {
         "summary": "Block",
         "description": "Returns details about a block.",
@@ -7059,7 +7059,7 @@
         ]
       }
     },
-    "/v1/block/{hash}": {
+    "/esplora/v1/block/{hash}": {
       "get": {
         "summary": "Block (v1)",
         "description": "Returns details about a block using Mempool's Node.js backend.",
@@ -7095,7 +7095,7 @@
         ]
       }
     },
-    "/block/{hash}/header": {
+    "/esplora/block/{hash}/header": {
       "get": {
         "summary": "Block Header",
         "description": "Returns the hex-encoded block header.",
@@ -7136,7 +7136,7 @@
         ]
       }
     },
-    "/block/{hash}/status": {
+    "/esplora/block/{hash}/status": {
       "get": {
         "summary": "Block Status",
         "description": "Returns the confirmation status of a block. Available fields: in_best_chain (boolean, false for orphaned blocks), next_best (the hash of the next block, only available for blocks in the best chain).",
@@ -7175,7 +7175,7 @@
         ]
       }
     },
-    "/block/{hash}/txs/{start_index}": {
+    "/esplora/block/{hash}/txs/{start_index}": {
       "get": {
         "summary": "Get block transactions",
         "description": "Returns a list of transactions in the block (up to 25 transactions beginning at start_index). Transactions returned here do not have the status field, since all the transactions share the same block and confirmation status.",
@@ -7224,7 +7224,7 @@
         ]
       }
     },
-    "/block/{hash}/txids": {
+    "/esplora/block/{hash}/txids": {
       "get": {
         "summary": "Block Transaction IDs",
         "description": "Returns a list of all txids in the block.",
@@ -7263,7 +7263,7 @@
         ]
       }
     },
-    "/block/{hash}/txid/{index}": {
+    "/esplora/block/{hash}/txid/{index}": {
       "get": {
         "summary": "Block Transaction ID",
         "description": "Returns the transaction at index :index within the specified block.",
@@ -7312,7 +7312,7 @@
         ]
       }
     },
-    "/block/{hash}/raw": {
+    "/esplora/block/{hash}/raw": {
       "get": {
         "summary": "Block Raw",
         "description": "Returns the raw block representation in binary.",
@@ -7352,7 +7352,7 @@
         ]
       }
     },
-    "/blocks/{start_height}": {
+    "/esplora/blocks/{start_height}": {
       "get": {
         "summary": "Blocks",
         "description": "Returns details on the past 10 blocks. If :startHeight is specified, the 10 blocks before (and including) :startHeight are returned.",
@@ -7390,7 +7390,7 @@
         ]
       }
     },
-    "/v1/blocks/{start_height}": {
+    "/esplora/v1/blocks/{start_height}": {
       "get": {
         "summary": "Blocks (v1)",
         "description": "Returns details on the past 15 blocks from Mempool's Node.js backend. Includes fee and mining details in an extras field. If :startHeight is specified, the past 15 blocks before (and including) :startHeight are returned.",
@@ -7425,7 +7425,7 @@
         ]
       }
     },
-    "/block-height/{height}": {
+    "/esplora/block-height/{height}": {
       "get": {
         "summary": "Block Height",
         "description": "Returns the hash of the block currently at :height.",
@@ -7465,7 +7465,7 @@
         ]
       }
     },
-    "/v1/blocks-bulk/{minHeight}/{max_height}": {
+    "/esplora/v1/blocks-bulk/{minHeight}/{max_height}": {
       "get": {
         "summary": "Blocks (Bulk)",
         "description": "Returns details on the range of blocks between :minHeight and :maxHeight, inclusive, up to 10 blocks. If :maxHeight is not specified, it defaults to the current tip.",
@@ -7507,7 +7507,7 @@
         ]
       }
     },
-    "/blocks/tip/height": {
+    "/esplora/blocks/tip/height": {
       "get": {
         "summary": "Block Tip Height",
         "description": "Returns the height of the last block.",
@@ -7527,7 +7527,7 @@
         ]
       }
     },
-    "/blocks/tip/hash": {
+    "/esplora/blocks/tip/hash": {
       "get": {
         "summary": "Block Tip Hash",
         "description": "Returns the hash of the last block.",
@@ -7548,7 +7548,7 @@
         ]
       }
     },
-    "/v1/block/{hash}/audit-summary": {
+    "/esplora/v1/block/{hash}/audit-summary": {
       "get": {
         "summary": "Block Audit Summary",
         "description": "Returns the block audit summary for the specified :blockHash. Available fields: height, id, timestamp, template, missingTxs, addedTxs, freshTxs, sigopTxs, fullrbfTxs, acceleratedTxs, matchRate, expectedFees, and expectedWeight.",
@@ -7584,7 +7584,7 @@
         ]
       }
     },
-    "/mempool": {
+    "/esplora/mempool": {
       "get": {
         "summary": "Mempool",
         "description": "Returns current mempool backlog statistics.",
@@ -7644,7 +7644,7 @@
         ]
       }
     },
-    "/mempool/txids": {
+    "/esplora/mempool/txids": {
       "get": {
         "summary": "Mempool Transaction IDs",
         "description": "Get the full list of txids in the mempool as an array. The order of the txids is arbitrary and does not match bitcoind.",
@@ -7673,7 +7673,7 @@
         ]
       }
     },
-    "/v1/replacements": {
+    "/esplora/v1/replacements": {
       "get": {
         "summary": "Mempool RBF Transactions",
         "description": "Returns the list of mempool transactions that are part of a RBF chain.",
@@ -7697,7 +7697,7 @@
         ]
       }
     },
-    "/v1/fullrbf/replacements": {
+    "/esplora/v1/fullrbf/replacements": {
       "get": {
         "summary": "Mempool Full RBF Transactions",
         "description": "Returns the list of mempool transactions that are part of a Full-RBF chain.",
@@ -7718,7 +7718,7 @@
         ]
       }
     },
-    "/mempool/recent": {
+    "/esplora/mempool/recent": {
       "get": {
         "summary": "Mempool Recent",
         "description": "Get a list of the last 10 transactions to enter the mempool. Each transaction object contains simplified overview data, with the following fields: txid, fee, vsize, and value.",
@@ -7754,7 +7754,7 @@
         ]
       }
     },
-    "/v1/fees/mempool-blocks": {
+    "/esplora/v1/fees/mempool-blocks": {
       "get": {
         "summary": "Mempool Blocks Fees",
         "description": "Returns current mempool as projected blocks.",
@@ -7778,7 +7778,7 @@
         ]
       }
     },
-    "/v1/fees/recommended": {
+    "/esplora/v1/fees/recommended": {
       "get": {
         "summary": "Recommended Fees",
         "description": "Returns our currently suggested fees for new transactions.",
@@ -7808,7 +7808,7 @@
         ]
       }
     },
-    "/v1/cpfp": {
+    "/esplora/v1/cpfp": {
       "get": {
         "summary": "Children Pay for Parent",
         "description": "Returns the ancestors and the best descendant fees for a transaction.",
@@ -7832,7 +7832,7 @@
         ]
       }
     },
-    "/tx/{txid}": {
+    "/esplora/tx/{txid}": {
       "get": {
         "summary": "Transaction",
         "description": "Returns details about a transaction. Available fields: txid, version, locktime, size, weight, fee, vin, vout, and status.",
@@ -7868,7 +7868,7 @@
         ]
       }
     },
-    "/tx/{txid}/hex": {
+    "/esplora/tx/{txid}/hex": {
       "get": {
         "summary": "Transaction Hex",
         "description": "Returns a transaction serialized as hex.",
@@ -7905,7 +7905,7 @@
         ]
       }
     },
-    "/tx/{txid}/merkleblock-proof": {
+    "/esplora/tx/{txid}/merkleblock-proof": {
       "get": {
         "summary": "Transaction Merkleblock Proof",
         "description": "Returns a merkle inclusion proof for the transaction using bitcoind's merkleblock format.",
@@ -7946,7 +7946,7 @@
         ]
       }
     },
-    "/tx/{txid}/merkle-proof": {
+    "/esplora/tx/{txid}/merkle-proof": {
       "get": {
         "summary": "Transaction Merkle Proof",
         "description": "Returns a merkle inclusion proof for the transaction using Electrum's blockchain.transaction.get_merkle format.",
@@ -7994,7 +7994,7 @@
         ]
       }
     },
-    "/tx/{txid}/outspend/{vout}": {
+    "/esplora/tx/{txid}/outspend/{vout}": {
       "get": {
         "summary": "Transaction Outspend",
         "description": "Returns the spending status of a transaction output. Available fields: spent (boolean), txid (optional), vin (optional), and status (optional, the status of the spending tx).",
@@ -8060,7 +8060,7 @@
         ]
       }
     },
-    "/tx/{txid}/outspends": {
+    "/esplora/tx/{txid}/outspends": {
       "get": {
         "summary": "Transaction Outspends",
         "description": "Returns the spending status of all transaction outputs.",
@@ -8119,7 +8119,7 @@
         ]
       }
     },
-    "/tx/{txid}/raw": {
+    "/esplora/tx/{txid}/raw": {
       "get": {
         "summary": "Transaction Raw",
         "description": "Returns a transaction as binary data.",
@@ -8156,7 +8156,7 @@
         ]
       }
     },
-    "/tx/{txid}/rbf": {
+    "/esplora/tx/{txid}/rbf": {
       "get": {
         "summary": "Transaction RBF Timeline",
         "description": "Returns the RBF tree timeline of a transaction.",
@@ -8216,7 +8216,7 @@
         }
       }
     },
-    "/tx/{txid}/status": {
+    "/esplora/tx/{txid}/status": {
       "get": {
         "summary": "Transaction Status",
         "description": "Returns the confirmation status of a transaction. Available fields: confirmed (boolean), block_height (optional), and block_hash (optional).",
@@ -8266,7 +8266,7 @@
         ]
       }
     },
-    "/v1/transaction-times": {
+    "/esplora/v1/transaction-times": {
       "get": {
         "summary": "Transaction Times",
         "description": "Returns the timestamps when a list of unconfirmed transactions was initially observed in the mempool. If a transaction is not found in the mempool or has been mined, the timestamp will be 0.",
@@ -8290,7 +8290,7 @@
         }
       }
     },
-    "/tx": {
+    "/esplora/tx": {
       "post": {
         "summary": "Transaction",
         "description": "Broadcast a raw transaction to the network. The transaction should be provided as hex in the request body. The txid will be returned on success.",

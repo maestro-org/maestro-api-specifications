@@ -24,7 +24,8 @@
             "pathModification": { "prepend": "/markets" }
         },
         {
-            "inputFile": "../esplora-api/openapi.json"
+            "inputFile": "../esplora-api/openapi.json",
+            "pathModification": { "prepend": "/esplora" }
         }
     ],
     "output": "./openapi-merged.json"
