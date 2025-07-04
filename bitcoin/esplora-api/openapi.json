@@ -3,7 +3,7 @@
     "info": {
         "title": "Esplora REST API",
         "version": "1.0.0",
-        "description": "OpenAPI spec for core Esplora endpoints: blocks, transactions, addresses, mempool, fees, raw transactions, UTXO data, pagination, address transaction history, mempool per transaction/address and more.\n"
+        "description": "OpenAPI spec for core Esplora endpoints: blocks, transactions, addresses, mining info, mempool, fees, UTXO data and more.\n"
     },
     "servers": [
         {
