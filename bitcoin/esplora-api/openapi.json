@@ -208,40 +208,6 @@
                 "tags": ["Addresses"]
             }
         },
-        "/v1/validate-address/{address}": {
-            "get": {
-                "summary": "Address Validation",
-                "description": "Returns whether an address is valid or not. Available fields: isvalid (boolean), address (string), scriptPubKey (string), isscript (boolean), iswitness (boolean), witness_version (numeric, optional), and witness_program (string, optional).",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "bc1qcx7ys0ahvtfqcc63sfn6axls0qrhkadnslpd94"
-                        },
-                        "description": "The Bitcoin address to validate."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Validation result",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AddressValidation"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request or malformed address"
-                    }
-                },
-                "tags": ["Addresses"]
-            }
-        },
         "/block/{hash}": {
             "get": {
                 "summary": "Block",
@@ -271,40 +237,6 @@
                     },
                     "404": {
                         "description": "Block not found"
-                    }
-                },
-                "tags": ["Blocks"]
-            }
-        },
-        "/v1/block/{hash}": {
-            "get": {
-                "summary": "Block (v1)",
-                "description": "Returns details about a block using Mempool's Node.js backend.",
-                "parameters": [
-                    {
-                        "name": "hash",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
-                        },
-                        "description": "The block hash to query."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Block data retrieved successfully.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Block"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Block not found."
                     }
                 },
                 "tags": ["Blocks"]
@@ -591,39 +523,6 @@
                 "tags": ["Blocks"]
             }
         },
-        "/v1/blocks/{start_height}": {
-            "get": {
-                "summary": "Blocks (v1)",
-                "description": "Returns details on the past 15 blocks from Mempool's Node.js backend. Includes fee and mining details in an extras field. If :startHeight is specified, the past 15 blocks before (and including) :startHeight are returned.",
-                "parameters": [
-                    {
-                        "name": "start_height",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "description": "The block height to start from."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "A list of recent blocks.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/BlockV1"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Blocks"]
-            }
-        },
         "/block-height/{height}": {
             "get": {
                 "summary": "Block Height",
@@ -662,46 +561,6 @@
                 "tags": ["Blocks"]
             }
         },
-        "/v1/blocks-bulk/{minHeight}/{max_height}": {
-            "get": {
-                "summary": "Blocks (Bulk)",
-                "description": "Returns details on the range of blocks between :minHeight and :maxHeight, inclusive, up to 10 blocks. If :maxHeight is not specified, it defaults to the current tip.",
-                "parameters": [
-                    {
-                        "name": "min_height",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "max_height",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Detailed statistics on blocks in the requested height range.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/BlockStatsArray"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid range or block limit exceeded"
-                    }
-                },
-                "tags": ["Blocks"]
-            }
-        },
         "/blocks/tip/height": {
             "get": {
                 "summary": "Block Tip Height",
@@ -734,40 +593,6 @@
                                 }
                             }
                         }
-                    }
-                },
-                "tags": ["Blocks"]
-            }
-        },
-        "/v1/block/{hash}/audit-summary": {
-            "get": {
-                "summary": "Block Audit Summary",
-                "description": "Returns the block audit summary for the specified :blockHash. Available fields: height, id, timestamp, template, missingTxs, addedTxs, freshTxs, sigopTxs, fullrbfTxs, acceleratedTxs, matchRate, expectedFees, and expectedWeight.",
-                "parameters": [
-                    {
-                        "name": "hash",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "00000000000000000001b9dca5d168a8e959df258814beec486572e843fddee5"
-                        },
-                        "description": "Block hash to retrieve the audit summary for."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Audit data for the block.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/BlockAuditSummary"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Block not found"
                     }
                 },
                 "tags": ["Blocks"]
@@ -837,47 +662,6 @@
                 "tags": ["Mempool"]
             }
         },
-        "/v1/replacements": {
-            "get": {
-                "summary": "Mempool RBF Transactions",
-                "description": "Returns the list of mempool transactions that are part of a RBF chain.",
-                "responses": {
-                    "200": {
-                        "description": "RBF replacement metadata for the transaction",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RbfReplacementRoot"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Transaction not found or not eligible for RBF data"
-                    }
-                },
-                "tags": ["Mempool"]
-            }
-        },
-        "/v1/fullrbf/replacements": {
-            "get": {
-                "summary": "Mempool Full RBF Transactions",
-                "description": "Returns the list of mempool transactions that are part of a Full-RBF chain.",
-                "responses": {
-                    "200": {
-                        "description": "Full-RBF statistics from the mempool.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FullRbfStats"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Mempool"]
-            }
-        },
         "/mempool/recent": {
             "get": {
                 "summary": "Mempool Recent",
@@ -910,78 +694,6 @@
                     }
                 },
                 "tags": ["Mempool"]
-            }
-        },
-        "/v1/fees/mempool-blocks": {
-            "get": {
-                "summary": "Mempool Blocks Fees",
-                "description": "Returns current mempool as projected blocks.",
-                "responses": {
-                    "200": {
-                        "description": "A list of virtual blocks representing estimated mempool blocks.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/MempoolBlocksFees"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Fees"]
-            }
-        },
-        "/v1/fees/recommended": {
-            "get": {
-                "summary": "Recommended Fees",
-                "description": "Returns our currently suggested fees for new transactions.",
-                "responses": {
-                    "200": {
-                        "description": "Recommended fee rates in sat/vB.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FeeRecommendations"
-                                },
-                                "examples": {
-                                    "example": {
-                                        "value": {
-                                            "fastestFee": 25,
-                                            "halfHourFee": 20,
-                                            "hourFee": 15
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Fees"]
-            }
-        },
-        "/v1/cpfp": {
-            "get": {
-                "summary": "Children Pay for Parent",
-                "description": "Returns the ancestors and the best descendant fees for a transaction.",
-                "responses": {
-                    "200": {
-                        "description": "CPFP recommendation data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CpfpRecommendation"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Transaction not found or not eligible for CPFP."
-                    }
-                },
-                "tags": ["Transactions"]
             }
         },
         "/tx/{txid}": {
@@ -1400,28 +1112,6 @@
                 "tags": ["Transactions"]
             }
         },
-        "/v1/transaction-times": {
-            "get": {
-                "summary": "Transaction Times",
-                "description": "Returns the timestamps when a list of unconfirmed transactions was initially observed in the mempool. If a transaction is not found in the mempool or has been mined, the timestamp will be 0.",
-                "tags": ["Transactions"],
-                "responses": {
-                    "200": {
-                        "description": "Transaction propagation timestamps.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TransactionTimes"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Transaction not found"
-                    }
-                }
-            }
-        },
         "/tx": {
             "post": {
                 "summary": "Transaction",
@@ -1635,271 +1325,6 @@
                 "example": [
                     "5a7a9fe2c911c482c89a7ea1dbf35a7c9b68892ec5b2d92e93858a9f4a85b08e",
                     "b1fea5241d34b276c3f8a5a934ae9e5e2bb23ecad1c7426ec1dfde3e07aa55a9"
-                ]
-            },
-            "BlockFeePercentiles": {
-                "type": "object",
-                "properties": {
-                    "min": { "type": "number" },
-                    "perc_10": { "type": "number" },
-                    "perc_25": { "type": "number" },
-                    "perc_50": { "type": "number" },
-                    "perc_75": { "type": "number" },
-                    "perc_90": { "type": "number" },
-                    "max": { "type": "number" }
-                }
-            },
-            "BlockStats": {
-                "type": "object",
-                "properties": {
-                    "height": { "type": "integer" },
-                    "hash": { "type": "string" },
-                    "timestamp": { "type": "integer" },
-                    "median_timestamp": { "type": "integer" },
-                    "previous_block_hash": { "type": "string" },
-                    "difficulty": { "type": "number" },
-                    "header": { "type": "string" },
-                    "version": { "type": "integer" },
-                    "bits": { "type": "integer" },
-                    "nonce": { "type": "integer" },
-                    "size": { "type": "integer" },
-                    "weight": { "type": "integer" },
-                    "tx_count": { "type": "integer" },
-                    "merkle_root": { "type": "string" },
-                    "reward": { "type": "integer" },
-                    "total_fee_amt": { "type": "integer" },
-                    "avg_fee_amt": { "type": "integer" },
-                    "median_fee_amt": { "type": "integer" },
-                    "fee_amt_percentiles": {
-                        "$ref": "#/components/schemas/BlockFeePercentiles"
-                    },
-                    "avg_fee_rate": { "type": "number" },
-                    "median_fee_rate": { "type": "number" },
-                    "fee_rate_percentiles": {
-                        "$ref": "#/components/schemas/BlockFeePercentiles"
-                    },
-                    "total_inputs": { "type": "integer" },
-                    "total_input_amt": { "type": "integer" },
-                    "total_outputs": { "type": "integer" },
-                    "total_output_amt": { "type": "integer" },
-                    "segwit_total_txs": { "type": "integer" },
-                    "segwit_total_size": { "type": "integer" },
-                    "segwit_total_weight": { "type": "integer" },
-                    "avg_tx_size": { "type": "number" },
-                    "utxoset_change": { "type": "integer" },
-                    "utxoset_size": { "type": "integer" },
-                    "coinbase_raw": { "type": "string" },
-                    "coinbase_address": { "type": ["string", "null"] },
-                    "coinbase_signature": { "type": "string" },
-                    "coinbase_signature_ascii": { "type": "string" },
-                    "pool_slug": { "type": "string" },
-                    "orphans": {
-                        "type": "array",
-                        "items": { "type": "string" }
-                    }
-                }
-            },
-            "BlockStatsArray": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/BlockStats"
-                }
-            },
-            "MempoolBlockPrediction": {
-                "type": "object",
-                "properties": {
-                    "blockSize": {
-                        "type": "integer",
-                        "description": "Size of the predicted block in bytes."
-                    },
-                    "blockVSize": {
-                        "type": "integer",
-                        "description": "Virtual size in vbytes."
-                    },
-                    "nTx": {
-                        "type": "integer",
-                        "description": "Number of transactions expected in this block."
-                    },
-                    "totalFees": {
-                        "type": "integer",
-                        "description": "Total fees in sats."
-                    },
-                    "feeRange": {
-                        "type": "array",
-                        "items": { "type": "integer" },
-                        "description": "Min and max fee rate in sat/vB for transactions in this block."
-                    }
-                },
-                "required": [
-                    "blockSize",
-                    "blockVSize",
-                    "nTx",
-                    "totalFees",
-                    "feeRange"
-                ]
-            },
-            "MempoolBlocksFees": {
-                "type": "object",
-                "properties": {
-                    "blockSize": {
-                        "type": "integer",
-                        "description": "Estimated size of the virtual block in bytes"
-                    },
-                    "blockVSize": {
-                        "type": "integer",
-                        "description": "Estimated virtual size of the virtual block in vbytes"
-                    },
-                    "nTx": {
-                        "type": "integer",
-                        "description": "Number of transactions projected in the block"
-                    },
-                    "totalFees": {
-                        "type": "integer",
-                        "description": "Total fees in satoshis for transactions in this block"
-                    },
-                    "medianFee": {
-                        "type": "number",
-                        "description": "Median fee rate in sat/vB"
-                    },
-                    "feeRange": {
-                        "type": "array",
-                        "items": { "type": "number" },
-                        "description": "List of fee rates (in sat/vB) from lowest to highest in this block"
-                    }
-                },
-                "required": [
-                    "blockSize",
-                    "blockVSize",
-                    "nTx",
-                    "totalFees",
-                    "medianFee",
-                    "feeRange"
-                ]
-            },
-            "BlockAudit": {
-                "type": "object",
-                "properties": {
-                    "hash": { "type": "string" },
-                    "height": { "type": "integer" },
-                    "score": { "type": "integer" },
-                    "mined_by": { "type": "string" },
-                    "validity": {
-                        "type": "object",
-                        "properties": {
-                            "timestamp_valid": { "type": "boolean" },
-                            "coinbase_valid": { "type": "boolean" },
-                            "difficulty_valid": { "type": "boolean" }
-                        }
-                    },
-                    "errors": {
-                        "type": "array",
-                        "items": { "type": "string" }
-                    }
-                },
-                "required": ["hash", "height", "score", "mined_by", "validity"]
-            },
-            "AuditScore": {
-                "type": "object",
-                "properties": {
-                    "height": {
-                        "type": "integer",
-                        "description": "Block height"
-                    },
-                    "hash": {
-                        "type": "string",
-                        "description": "Block hash"
-                    },
-                    "timestamp": {
-                        "type": "integer",
-                        "description": "Block timestamp (UNIX epoch seconds)"
-                    },
-                    "propagation": {
-                        "type": "number",
-                        "description": "Estimated propagation delay in seconds"
-                    },
-                    "size": {
-                        "type": "integer",
-                        "description": "Size of the block in bytes"
-                    },
-                    "weight": {
-                        "type": "integer",
-                        "description": "Weight units of the block"
-                    },
-                    "tx_count": {
-                        "type": "integer",
-                        "description": "Number of transactions in the block"
-                    },
-                    "score": {
-                        "type": "number",
-                        "description": "Audit score for the block (0–1, where 1 is best)"
-                    }
-                },
-                "required": [
-                    "height",
-                    "hash",
-                    "timestamp",
-                    "propagation",
-                    "size",
-                    "weight",
-                    "tx_count",
-                    "score"
-                ]
-            },
-            "BlockAuditSummary": {
-                "type": "object",
-                "properties": {
-                    "blockHeight": { "type": "integer" },
-                    "blockHash": { "type": "string" },
-                    "miner": { "type": "string" },
-                    "coinbaseRecipient": { "type": "string" },
-                    "totalFees": {
-                        "type": "integer",
-                        "description": "in satoshis"
-                    },
-                    "totalFeesUsd": {
-                        "type": "number",
-                        "description": "USD estimate at time of block"
-                    },
-                    "blockReward": {
-                        "type": "integer",
-                        "description": "in satoshis"
-                    },
-                    "blockRewardUsd": {
-                        "type": "number",
-                        "description": "USD estimate at time of block"
-                    },
-                    "subsidy": {
-                        "type": "integer",
-                        "description": "in satoshis"
-                    },
-                    "subsidyUsd": {
-                        "type": "number",
-                        "description": "USD estimate"
-                    },
-                    "numInputs": { "type": "integer" },
-                    "numOutputs": { "type": "integer" },
-                    "inputsTotal": {
-                        "type": "integer",
-                        "description": "in satoshis"
-                    },
-                    "outputsTotal": {
-                        "type": "integer",
-                        "description": "in satoshis"
-                    },
-                    "spendingToSelf": { "type": "integer" },
-                    "spendingToSelfUsd": { "type": "number" },
-                    "spendingToOthers": { "type": "integer" },
-                    "spendingToOthersUsd": { "type": "number" },
-                    "timestamp": { "type": "integer" }
-                },
-                "required": [
-                    "blockHeight",
-                    "blockHash",
-                    "miner",
-                    "coinbaseRecipient",
-                    "totalFees",
-                    "blockReward",
-                    "timestamp"
                 ]
             },
             "RbfTransaction": {
@@ -2174,58 +1599,6 @@
                     }
                 },
                 "required": ["txid", "fee", "vsize", "value"]
-            },
-            "MempoolTransactions": {
-                "type": "object",
-                "properties": {
-                    "count": {
-                        "type": "integer"
-                    },
-                    "transactions": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "txid": {
-                                    "type": "string"
-                                },
-                                "fee": {
-                                    "type": "integer"
-                                },
-                                "size": {
-                                    "type": "integer"
-                                },
-                                "time": {
-                                    "type": "integer"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "FeeEstimates": {
-                "type": "object",
-                "additionalProperties": {
-                    "type": "number"
-                }
-            },
-            "FeeRecommendations": {
-                "type": "object",
-                "properties": {
-                    "fastestFee": {
-                        "type": "integer",
-                        "description": "Recommended fee rate for the fastest confirmation (1 block)"
-                    },
-                    "halfHourFee": {
-                        "type": "integer",
-                        "description": "Recommended fee rate for confirmation within 3 blocks (~30 minutes)"
-                    },
-                    "hourFee": {
-                        "type": "integer",
-                        "description": "Recommended fee rate for confirmation within 6 blocks (~1 hour)"
-                    }
-                },
-                "required": ["fastestFee", "halfHourFee", "hourFee"]
             },
             "MerkleProof": {
                 "type": "object",

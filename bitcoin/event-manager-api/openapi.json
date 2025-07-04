@@ -1,1310 +1,735 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "Bitcoin - Event Manager API",
-    "description": "Maestro's Bitcoin Event Manager API provides a programmable webhook infrastructure for tracking Bitcoin events like transactions, address activity, and related on-chain changes. It allows developers to configure event managers and attach triggers that define what blockchain events to listen for, delivering relevant data to a specified webhook in real time. This API is ideal for alerting systems, real-time monitoring dashboards, and backend processes that need to react to blockchain state changes.\n\n### Key Features:\n- **Custom Event Managers:** Define named webhook listeners scoped to a specific chain and network (e.g., Bitcoin mainnet).\n- **Granular Triggers:** Set up address-based triggers for sender, receiver, or transaction events with optional filters for additional precision.\n- **Real-Time Webhook Delivery:** Events are pushed to your provided webhook URL the moment matching transactions are detected.\n- **Structured Logging:** Access detailed logs for each event fired, including payload, status, and webhook response.\n- **Flexible Lifecycle Control:** Fully manage, update, or delete event managers and their triggers via API endpoints.\n\n### Key Benefits for Developers:\nDevelopers can automate transaction monitoring and event handling without running full nodes or maintaining custom indexers. The Event Manager API streamlines webhook setup for Bitcoin applications, enabling responsive, event-driven architectures. It’s especially valuable for wallet notifications, transaction confirmations, backend synchronization, and building reactive user experiences without polling the chain.",
-    "license": {
-      "name": "Apache 2.0",
-      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Bitcoin - Event Manager API",
+        "version": "0.1.0",
+        "description": "Event Manager API for Bitcoin."
     },
-    "version": "v1"
-  },
-  "paths": {
-    "/eventmanager/healthcheck": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "summary": "Healthcheck",
-        "description": "Healthcheck",
-        "operationId": "event_manager.v1.EventManagerService.Healthcheck",
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+    "paths": {
+        "/logs": {
+            "get": {
+                "tags": ["Logs"],
+                "summary": "User event logs",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eventLogList"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.HealthcheckResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/managers": {
-      "get": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "ListManagers",
-        "description": "List all event managers\n\n Returns a list of all event managers associated with the API key. These represent configured webhook listeners for blockchain events.",
-        "operationId": "event_manager.v1.EventManagerService.ListManagers",
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListManagersResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "CreateManager",
-        "description": "Create a new event manager\n\n Creates a new event manager that defines a webhook URL and related triggers.",
-        "operationId": "event_manager.v1.EventManagerService.CreateManager",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/event_manager.v1.CreateManagerRequest"
-              }
-            }
-          },
-          "required": true
         },
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+        "/logs/{id}": {
+            "get": {
+                "tags": ["Logs"],
+                "summary": "Event log info by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Event log ID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eventLog"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.CreateManagerResponse"
+        },
+        "/managers": {
+            "get": {
+                "tags": ["Managers"],
+                "summary": "User event managers",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eventManagerList"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
+            },
+            "post": {
+                "tags": ["Managers"],
+                "summary": "Create event manager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createEventManagerRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eventManager"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
+        },
+        "/managers/{id}": {
+            "get": {
+                "tags": ["Managers"],
+                "summary": "Event manager info by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eventManager"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Managers"],
+                "summary": "Delete event manager",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eventManager"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Managers"],
+                "summary": "Update event manager",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateEventManagerBody"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eventManager"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/triggers": {
+            "get": {
+                "tags": ["Triggers"],
+                "summary": "User event manager triggers",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/triggerList"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Triggers"],
+                "summary": "Create event manager trigger",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createTriggerRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trigger"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/triggers/{id}": {
+            "get": {
+                "tags": ["Triggers"],
+                "summary": "Event trigger info by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trigger"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Triggers"],
+                "summary": "Delete event manager trigger",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trigger"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Triggers"],
+                "summary": "Update event manager trigger",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateTriggerBody"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trigger"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
     },
-    "/eventmanager/managers/{id}": {
-      "get": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "GetManager",
-        "description": "Fetch a specific event manager\n\n Retrieves the configuration of a specific manager identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.GetManager",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetManagerResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "UpdateManager",
-        "description": "Update an existing event manager\n\n Updates an event manager’s metadata, webhook, or attached triggers identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.UpdateManager",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
+    "components": {
+        "schemas": {
+            "updateEventManagerBody": {
                 "type": "object",
                 "properties": {
-                  "eventManager": {
-                    "title": "event_manager",
-                    "$ref": "#/components/schemas/event_manager.v1.Manager"
-                  }
-                },
-                "title": "UpdateManagerRequest",
-                "additionalProperties": false
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
+                    "name": {
+                        "type": "string"
+                    },
+                    "chain": {
+                        "$ref": "#/components/schemas/chain"
+                    },
+                    "network": {
+                        "type": "string"
+                    },
+                    "webhookUrl": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "triggers": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/trigger"
+                        }
+                    }
                 }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.UpdateManagerResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "DeleteManager",
-        "description": "Delete an event manager\n\n Removes the manager and all associated triggers identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.DeleteManager",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.DeleteManagerResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/triggers": {
-      "get": {
-        "tags": [
-          "Triggers"
-        ],
-        "summary": "ListTriggers",
-        "description": "List all triggers\n\n Returns all individual triggers associated with your event managers.",
-        "operationId": "event_manager.v1.EventManagerService.ListTriggers",
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListTriggersResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Triggers"
-        ],
-        "summary": "CreateTrigger",
-        "description": "Create a new trigger\n\n Adds a trigger to a manager to listen for specific blockchain activity.",
-        "operationId": "event_manager.v1.EventManagerService.CreateTrigger",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/event_manager.v1.CreateTriggerRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.CreateTriggerResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/triggers/{id}": {
-      "get": {
-        "tags": [
-          "Triggers"
-        ],
-        "summary": "GetTrigger",
-        "description": "Fetch trigger details\n\n Returns metadata and configuration for a specific trigger identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.GetTrigger",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetTriggerResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Triggers"
-        ],
-        "summary": "UpdateTrigger",
-        "description": "Update a trigger\n\n Allows modification of a trigger's properties identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.UpdateTrigger",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
+            },
+            "updateTriggerBody": {
                 "type": "object",
                 "properties": {
-                  "trigger": {
-                    "title": "trigger",
-                    "$ref": "#/components/schemas/event_manager.v1.Trigger"
-                  }
+                    "eventManagerId": {
+                        "type": "string"
+                    },
+                    "triggerType": {
+                        "$ref": "#/components/schemas/triggerType"
+                    },
+                    "trackedId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "protobufAny": {
+                "type": "object",
+                "properties": {
+                    "@type": {
+                        "type": "string"
+                    }
                 },
-                "title": "UpdateTriggerRequest",
-                "additionalProperties": false
-              }
+                "additionalProperties": {}
+            },
+            "rpcStatus": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "details": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/protobufAny"
+                        }
+                    }
+                }
+            },
+            "chain": {
+                "type": "string",
+                "enum": ["chain_unknown", "bitcoin"],
+                "default": "chain_unknown"
+            },
+            "createEventManagerRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "chain": {
+                        "$ref": "#/components/schemas/chain"
+                    },
+                    "network": {
+                        "type": "string"
+                    },
+                    "webhookUrl": {
+                        "type": "string"
+                    },
+                    "triggers": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/createTriggerRequest"
+                        }
+                    }
+                },
+                "title": "createEventManagerRequest"
+            },
+            "createTriggerRequest": {
+                "type": "object",
+                "properties": {
+                    "eventManagerId": {
+                        "type": "string"
+                    },
+                    "triggerType": {
+                        "$ref": "#/components/schemas/triggerType"
+                    },
+                    "trackedId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "eventLog": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "eventManagerId": {
+                        "type": "string"
+                    },
+                    "triggerId": {
+                        "type": "string"
+                    },
+                    "payload": {
+                        "type": "string"
+                    },
+                    "response": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "title": "eventLog"
+            },
+            "eventLogList": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/eventLog"
+                        }
+                    }
+                }
+            },
+            "eventManager": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "chain": {
+                        "$ref": "#/components/schemas/chain"
+                    },
+                    "network": {
+                        "type": "string"
+                    },
+                    "webhookUrl": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "eventManagerList": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/eventManager"
+                        }
+                    }
+                }
+            },
+            "filter": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "operator": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "IDs": {
+                "type": "object",
+                "properties": {
+                    "ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "triggerList": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/trigger"
+                        }
+                    }
+                }
+            },
+            "trigger": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "eventManagerId": {
+                        "type": "string"
+                    },
+                    "triggerType": {
+                        "$ref": "#/components/schemas/triggerType"
+                    },
+                    "trackedId": {
+                        "type": "string"
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/filter"
+                        }
+                    }
+                }
+            },
+            "triggerType": {
+                "type": "string",
+                "enum": [
+                    "trigger_type_unknown",
+                    "transaction",
+                    "sender",
+                    "receiver",
+                    "sender_or_receiver"
+                ],
+                "default": "trigger_type_unknown"
+            },
+            "userComputeCreditCounts": {
+                "type": "object",
+                "properties": {
+                    "counts": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string",
+                            "format": "int64"
+                        }
+                    }
+                }
             }
-          },
-          "required": true
         },
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "api-key",
+                "description": "Project API Key"
             }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.UpdateTriggerResponse"
-                }
-              }
-            }
-          }
         }
-      },
-      "delete": {
-        "tags": [
-          "Triggers"
-        ],
-        "summary": "DeleteTrigger",
-        "description": "Remove a trigger\n\n Deletes a specific trigger identified by its unique `id`, leaving the event manager intact.",
-        "operationId": "event_manager.v1.EventManagerService.DeleteTrigger",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.DeleteTriggerResponse"
-                }
-              }
-            }
-          }
-        }
-      }
     },
-    "/eventmanager/logs/{id}": {
-      "get": {
-        "tags": [
-          "Logs"
-        ],
-        "summary": "GetEventLog",
-        "description": "Fetch a single event log by ID\n\n Returns the payload, status, and response of a specific event log identified by its unique `id`.",
-        "operationId": "event_manager.v1.EventManagerService.GetEventLog",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "id"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetEventLogResponse"
-                }
-              }
-            }
-          }
+    "servers": [
+        {
+            "url": "https://xbt-mainnet.gomaestro-api.org/v0/eventmanager",
+            "description": "Bitcoin Mainnet"
+        },
+        {
+            "url": "https://xbt-testnet.gomaestro-api.org/v0/eventmanager",
+            "description": "Bitcoin Testnet"
         }
-      }
-    },
-    "/eventmanager/logs": {
-      "get": {
-        "tags": [
-          "Logs"
-        ],
-        "summary": "ListEventLogs",
-        "description": "Fetch all event logs\n\n Returns a list of event logs that have been generated from event manager triggers. Each log captures a payload, response status, and other metadata.",
-        "operationId": "event_manager.v1.EventManagerService.ListEventLogs",
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListEventLogsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/picklist_options/{name}": {
-      "get": {
-        "tags": [
-          "Metadata"
-        ],
-        "summary": "GetPicklistOptions",
-        "description": "Fetch picklist options by name\n\n Returns a list of picklist options identified by its unique `name`.",
-        "operationId": "event_manager.v1.EventManagerService.GetPicklistOptions",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "name"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.GetPicklistOptionsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/_internal/daily_credits": {
-      "post": {
-        "tags": [
-          "Internal"
-        ],
-        "summary": "ListDailyComputeCredits",
-        "description": "Fetch daily compute credits\n \n Fetches the compute credits available (calculation for previous day).",
-        "operationId": "event_manager.v1.EventManagerService.ListDailyComputeCredits",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/event_manager.v1.ListDailyComputeCreditsRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/connect.error"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event_manager.v1.ListDailyComputeCreditsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "event_manager.v1.Chain": {
-        "type": "string",
-        "title": "Chain",
-        "enum": [
-          "CHAIN_UNSPECIFIED",
-          "CHAIN_BITCOIN"
-        ]
-      },
-      "event_manager.v1.Network": {
-        "type": "string",
-        "title": "Network",
-        "enum": [
-          "NETWORK_UNSPECIFIED",
-          "NETWORK_MAINNET",
-          "NETWORK_TESTNET"
-        ]
-      },
-      "event_manager.v1.TriggerType": {
-        "type": "string",
-        "title": "TriggerType",
-        "enum": [
-          "TRIGGER_TYPE_UNSPECIFIED",
-          "TRIGGER_TYPE_TRANSACTION",
-          "TRIGGER_TYPE_SENDER",
-          "TRIGGER_TYPE_RECEIVER",
-          "TRIGGER_TYPE_SENDER_OR_RECEIVER"
-        ]
-      },
-      "event_manager.v1.CreateManagerRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "name"
-          },
-          "chain": {
-            "title": "chain",
-            "$ref": "#/components/schemas/event_manager.v1.Chain"
-          },
-          "network": {
-            "title": "network",
-            "$ref": "#/components/schemas/event_manager.v1.Network"
-          },
-          "webhookUrl": {
-            "type": "string",
-            "title": "webhook_url"
-          },
-          "triggers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.CreateTriggerRequest"
-            },
-            "title": "triggers"
-          }
-        },
-        "title": "CreateManagerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.CreateManagerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "CreateManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.CreateTriggerRequest": {
-        "type": "object",
-        "properties": {
-          "eventManagerId": {
-            "type": "string",
-            "title": "event_manager_id"
-          },
-          "triggerType": {
-            "title": "trigger_type",
-            "$ref": "#/components/schemas/event_manager.v1.TriggerType"
-          },
-          "trackedId": {
-            "type": "string",
-            "title": "tracked_id"
-          },
-          "filters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Filter"
-            },
-            "title": "filters"
-          }
-        },
-        "title": "CreateTriggerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.CreateTriggerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "CreateTriggerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.DeleteManagerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "DeleteManagerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.DeleteManagerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "DeleteManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.DeleteTriggerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "DeleteTriggerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.DeleteTriggerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "DeleteTriggerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.EventLog": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "eventManagerId": {
-            "type": "string",
-            "title": "event_manager_id"
-          },
-          "triggerId": {
-            "type": "string",
-            "title": "trigger_id"
-          },
-          "payload": {
-            "type": "string",
-            "title": "payload"
-          },
-          "responseStatus": {
-            "type": "string",
-            "title": "response_status"
-          },
-          "status": {
-            "type": "string",
-            "title": "status"
-          }
-        },
-        "title": "EventLog",
-        "additionalProperties": false
-      },
-      "event_manager.v1.Filter": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "title": "key"
-          },
-          "operator": {
-            "type": "string",
-            "title": "operator"
-          },
-          "value": {
-            "type": "string",
-            "title": "value"
-          }
-        },
-        "title": "Filter",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetEventLogRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "GetEventLogRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetEventLogResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.EventLog"
-          }
-        },
-        "title": "GetEventLogResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetManagerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "GetManagerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetManagerResponse": {
-        "type": "object",
-        "properties": {
-          "eventManager": {
-            "title": "event_manager",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "GetManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetPicklistOptionsRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "name"
-          }
-        },
-        "title": "GetPicklistOptionsRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetPicklistOptionsResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.PicklistOption"
-            },
-            "title": "data"
-          }
-        },
-        "title": "GetPicklistOptionsResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetTriggerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          }
-        },
-        "title": "GetTriggerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.GetTriggerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "GetTriggerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.HealthcheckRequest": {
-        "type": "object",
-        "title": "HealthcheckRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.HealthcheckResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "status"
-          }
-        },
-        "title": "HealthcheckResponse",
-        "additionalProperties": false,
-        "description": "Healthcheck message"
-      },
-      "event_manager.v1.ListDailyComputeCreditsRequest": {
-        "type": "object",
-        "properties": {
-          "ids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "title": "ids"
-          },
-          "date": {
-            "title": "date",
-            "$ref": "#/components/schemas/google.protobuf.Timestamp"
-          }
-        },
-        "title": "ListDailyComputeCreditsRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListDailyComputeCreditsResponse": {
-        "type": "object",
-        "properties": {
-          "counts": {
-            "type": "object",
-            "title": "counts",
-            "additionalProperties": {
-              "type": [
-                "integer",
-                "string"
-              ],
-              "title": "value",
-              "format": "int64"
-            }
-          }
-        },
-        "title": "ListDailyComputeCreditsResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListDailyComputeCreditsResponse.CountsEntry": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "title": "key"
-          },
-          "value": {
-            "type": [
-              "integer",
-              "string"
-            ],
-            "title": "value",
-            "format": "int64"
-          }
-        },
-        "title": "CountsEntry",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListEventLogsRequest": {
-        "type": "object",
-        "title": "ListEventLogsRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListEventLogsResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.EventLog"
-            },
-            "title": "data"
-          }
-        },
-        "title": "ListEventLogsResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListManagersRequest": {
-        "type": "object",
-        "title": "ListManagersRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListManagersResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Manager"
-            },
-            "title": "data"
-          }
-        },
-        "title": "ListManagersResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListTriggersRequest": {
-        "type": "object",
-        "title": "ListTriggersRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.ListTriggersResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Trigger"
-            },
-            "title": "data"
-          }
-        },
-        "title": "ListTriggersResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.Manager": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "name": {
-            "type": "string",
-            "title": "name"
-          },
-          "chain": {
-            "title": "chain",
-            "$ref": "#/components/schemas/event_manager.v1.Chain"
-          },
-          "network": {
-            "title": "network",
-            "$ref": "#/components/schemas/event_manager.v1.Network"
-          },
-          "webhookUrl": {
-            "type": "string",
-            "title": "webhook_url"
-          },
-          "status": {
-            "type": "string",
-            "title": "status"
-          },
-          "triggers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Trigger"
-            },
-            "title": "triggers"
-          }
-        },
-        "title": "Manager",
-        "additionalProperties": false
-      },
-      "event_manager.v1.PicklistOption": {
-        "type": "object",
-        "properties": {
-          "listName": {
-            "type": "string",
-            "title": "list_name"
-          },
-          "nestedListName": {
-            "type": "string",
-            "title": "nested_list_name"
-          },
-          "options": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.PicklistOption"
-            },
-            "title": "options"
-          },
-          "displayName": {
-            "type": "string",
-            "title": "display_name"
-          },
-          "value": {
-            "type": "string",
-            "title": "value"
-          },
-          "sortOrder": {
-            "type": "integer",
-            "title": "sort_order",
-            "format": "int32"
-          }
-        },
-        "title": "PicklistOption",
-        "additionalProperties": false
-      },
-      "event_manager.v1.Trigger": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "eventManagerId": {
-            "type": "string",
-            "title": "event_manager_id"
-          },
-          "triggerType": {
-            "title": "trigger_type",
-            "$ref": "#/components/schemas/event_manager.v1.TriggerType"
-          },
-          "trackedId": {
-            "type": "string",
-            "title": "tracked_id"
-          },
-          "filters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/event_manager.v1.Filter"
-            },
-            "title": "filters"
-          }
-        },
-        "title": "Trigger",
-        "additionalProperties": false
-      },
-      "event_manager.v1.UpdateManagerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "eventManager": {
-            "title": "event_manager",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "UpdateManagerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.UpdateManagerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Manager"
-          }
-        },
-        "title": "UpdateManagerResponse",
-        "additionalProperties": false
-      },
-      "event_manager.v1.UpdateTriggerRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "id"
-          },
-          "trigger": {
-            "title": "trigger",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "UpdateTriggerRequest",
-        "additionalProperties": false
-      },
-      "event_manager.v1.UpdateTriggerResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "title": "data",
-            "$ref": "#/components/schemas/event_manager.v1.Trigger"
-          }
-        },
-        "title": "UpdateTriggerResponse",
-        "additionalProperties": false
-      },
-      "google.protobuf.Timestamp": {
-        "type": "string",
-        "examples": [
-          "1s",
-          "1.000340012s"
-        ],
-        "format": "date-time",
-        "description": "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(\u0026tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(\u0026ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) \u003c\u003c 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
-      },
-      "connect-protocol-version": {
-        "type": "number",
-        "title": "Connect-Protocol-Version",
-        "enum": [
-          1
-        ],
-        "description": "Define the version of the Connect protocol",
-        "const": 1
-      },
-      "connect-timeout-header": {
-        "type": "number",
-        "title": "Connect-Timeout-Ms",
-        "description": "Define the timeout, in ms"
-      },
-      "connect.error": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "examples": [
-              "not_found"
-            ],
-            "enum": [
-              "canceled",
-              "unknown",
-              "invalid_argument",
-              "deadline_exceeded",
-              "not_found",
-              "already_exists",
-              "permission_denied",
-              "resource_exhausted",
-              "failed_precondition",
-              "aborted",
-              "out_of_range",
-              "unimplemented",
-              "internal",
-              "unavailable",
-              "data_loss",
-              "unauthenticated"
-            ],
-            "description": "The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]."
-          },
-          "message": {
-            "type": "string",
-            "description": "A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client."
-          },
-          "detail": {
-            "$ref": "#/components/schemas/google.protobuf.Any"
-          }
-        },
-        "title": "Connect Error",
-        "additionalProperties": true,
-        "description": "Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation"
-      },
-      "google.protobuf.Any": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string",
-            "format": "binary"
-          },
-          "debug": {
-            "type": "object",
-            "additionalProperties": true
-          }
-        },
-        "additionalProperties": true,
-        "description": "Contains an arbitrary serialized message along with a @type that describes the type of the serialized message."
-      }
-    },
-    "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "apiKey",
-        "name": "api-key",
-        "in": "header"
-      }
-    }
-  },
-  "security": [],
-  "tags": [
-    {
-      "name": "event_manager.v1.EventManagerService"
-    }
-  ]
+    ]
 }
