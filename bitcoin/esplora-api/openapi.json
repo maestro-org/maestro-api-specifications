@@ -335,8 +335,8 @@
                     },
                     {
                         "name": "start_index",
-                        "in": "query",
-                        "required": false,
+                        "in": "path",
+                        "required": true,
                         "description": "Index to start fetching transactions from (pagination).",
                         "schema": {
                             "type": "integer",
@@ -495,7 +495,7 @@
                     {
                         "name": "start_height",
                         "in": "path",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         },
@@ -567,6 +567,7 @@
                 "description": "Returns the height of the last block.",
                 "responses": {
                     "200": {
+                        "description": "Block height of the latest block",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1310,7 +1311,7 @@
                         "description": "Whether the block is part of the best (main) chain"
                     },
                     "next_best": {
-                        "type": ["string", "null"],
+                        "type": "string",
                         "description": "Hash of the next block, if available"
                     }
                 },
@@ -1433,7 +1434,7 @@
                         "description": "Minimum relay fee required for the transaction to be accepted into the mempool."
                     },
                     "error": {
-                        "type": ["string", "null"],
+                        "type": "string",
                         "description": "Error message if CPFP recommendation could not be provided."
                     }
                 },
@@ -1530,10 +1531,10 @@
                         "type": "boolean"
                     },
                     "block_height": {
-                        "type": ["integer", "null"]
+                        "type": "integer"
                     },
                     "block_hash": {
-                        "type": ["string", "null"]
+                        "type": "string"
                     }
                 }
             },
@@ -1561,10 +1562,11 @@
                         "description": "Mempool fee-rate distribution histogram as (feerate, vsize) tuples",
                         "items": {
                             "type": "array",
-                            "items": [
-                                { "type": "number" },
-                                { "type": "integer" }
-                            ]
+                            "items": {
+                                "type": "number"
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
                         }
                     }
                 },
@@ -1695,7 +1697,7 @@
                         "description": "Unix timestamp when the transaction entered the mempool"
                     },
                     "blockTime": {
-                        "type": ["integer", "null"],
+                        "type": "integer",
                         "description": "Unix timestamp when the transaction was confirmed in a block (null if unconfirmed)"
                     }
                 },
@@ -1709,11 +1711,11 @@
                         "description": "Whether the transaction is confirmed"
                     },
                     "block_height": {
-                        "type": ["integer", "null"],
+                        "type": "integer",
                         "description": "Height of the block containing the transaction (if confirmed)"
                     },
                     "block_hash": {
-                        "type": ["string", "null"],
+                        "type": "string",
                         "description": "Hash of the block containing the transaction (if confirmed)"
                     }
                 },
