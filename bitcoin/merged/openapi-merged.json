@@ -5654,6 +5654,7 @@
           "Logs"
         ],
         "summary": "User event logs",
+        "operationId": "event_manager_logs",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -5684,6 +5685,7 @@
           "Logs"
         ],
         "summary": "Event log info by ID",
+        "operationId": "event_manager_log_info",
         "parameters": [
           {
             "name": "id",
@@ -5725,6 +5727,7 @@
           "Managers"
         ],
         "summary": "User event managers",
+        "operationId": "event_manager_list",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -5753,6 +5756,7 @@
           "Managers"
         ],
         "summary": "Create event manager",
+        "operationId": "event_manager_create",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5793,6 +5797,7 @@
           "Managers"
         ],
         "summary": "Event manager info by ID",
+        "operationId": "event_manager_info",
         "parameters": [
           {
             "name": "id",
@@ -5831,6 +5836,7 @@
           "Managers"
         ],
         "summary": "Delete event manager",
+        "operationId": "event_manager_delete",
         "parameters": [
           {
             "name": "id",
@@ -5869,6 +5875,7 @@
           "Managers"
         ],
         "summary": "Update event manager",
+        "operationId": "event_manager_update",
         "parameters": [
           {
             "name": "id",
@@ -5919,6 +5926,7 @@
           "Triggers"
         ],
         "summary": "User event manager triggers",
+        "operationId": "event_manager_triggers",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -5947,6 +5955,7 @@
           "Triggers"
         ],
         "summary": "Create event manager trigger",
+        "operationId": "event_manager_trigger_create",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5987,6 +5996,7 @@
           "Triggers"
         ],
         "summary": "Event trigger info by ID",
+        "operationId": "event_manager_trigger_info",
         "parameters": [
           {
             "name": "id",
@@ -6025,6 +6035,7 @@
           "Triggers"
         ],
         "summary": "Delete event manager trigger",
+        "operationId": "event_manager_trigger_delete",
         "parameters": [
           {
             "name": "id",
@@ -6063,6 +6074,7 @@
           "Triggers"
         ],
         "summary": "Update event manager trigger",
+        "operationId": "event_manager_trigger_update",
         "parameters": [
           {
             "name": "id",
@@ -6787,6 +6799,7 @@
       "get": {
         "summary": "Address",
         "description": "Returns details about an address. Available fields: address, chain_stats, and mempool_stats. chain_stats and mempool_stats each contain an object with tx_count, funded_txo_count, funded_txo_sum, spent_txo_count, and spent_txo_sum.",
+        "operationId": "esplora_address_details",
         "parameters": [
           {
             "name": "address",
@@ -6823,6 +6836,7 @@
       "get": {
         "summary": "Address Transactions",
         "description": "Get transaction history for the specified address/scripthash, sorted with newest first. Returns up to 50 mempool transactions plus the first 25 confirmed transactions. You can request more confirmed transactions using an after_txid query parameter.",
+        "operationId": "esplora_address_transactions",
         "parameters": [
           {
             "name": "address",
@@ -6865,6 +6879,7 @@
       "get": {
         "summary": "Address Transactions Chain",
         "description": "Get confirmed transaction history for the specified address/scripthash, sorted with newest first. Returns 25 transactions per page. More can be requested by specifying the last txid seen by the previous query.",
+        "operationId": "esplora_address_transactions_chain",
         "parameters": [
           {
             "name": "address",
@@ -6907,6 +6922,7 @@
       "get": {
         "summary": "Address Transactions Mempool",
         "description": "Get unconfirmed transaction history for the specified address/scripthash. Returns up to 50 transactions (no paging).",
+        "operationId": "esplora_address_transactions_mempool",
         "tags": [
           "Addresses"
         ],
@@ -6949,6 +6965,7 @@
       "get": {
         "summary": "Address UTXOs",
         "description": "Get the list of unspent transaction outputs associated with the address/scripthash. Available fields: txid, vout, value, and status (with the status of the funding tx).",
+        "operationId": "esplora_address_utxos",
         "parameters": [
           {
             "name": "address",
@@ -6991,6 +7008,7 @@
       "get": {
         "summary": "Block",
         "description": "Returns details about a block.",
+        "operationId": "esplora_block_details",
         "parameters": [
           {
             "name": "hash",
@@ -7027,6 +7045,7 @@
       "get": {
         "summary": "Block Header",
         "description": "Returns the hex-encoded block header.",
+        "operationId": "esplora_block_header",
         "parameters": [
           {
             "name": "hash",
@@ -7068,6 +7087,7 @@
       "get": {
         "summary": "Block Status",
         "description": "Returns the confirmation status of a block. Available fields: in_best_chain (boolean, false for orphaned blocks), next_best (the hash of the next block, only available for blocks in the best chain).",
+        "operationId": "esplora_block_status",
         "parameters": [
           {
             "name": "hash",
@@ -7107,6 +7127,7 @@
       "get": {
         "summary": "Get block transactions",
         "description": "Returns a list of transactions in the block (up to 25 transactions beginning at start_index). Transactions returned here do not have the status field, since all the transactions share the same block and confirmation status.",
+        "operationId": "esplora_block_transactions",
         "parameters": [
           {
             "name": "hash",
@@ -7156,6 +7177,7 @@
       "get": {
         "summary": "Block Transaction IDs",
         "description": "Returns a list of all txids in the block.",
+        "operationId": "esplora_block_txids",
         "parameters": [
           {
             "name": "hash",
@@ -7195,6 +7217,7 @@
       "get": {
         "summary": "Block Transaction ID",
         "description": "Returns the transaction at index :index within the specified block.",
+        "operationId": "esplora_block_txid_by_index",
         "parameters": [
           {
             "name": "hash",
@@ -7244,6 +7267,7 @@
       "get": {
         "summary": "Block Raw",
         "description": "Returns the raw block representation in binary.",
+        "operationId": "esplora_block_raw",
         "parameters": [
           {
             "name": "hash",
@@ -7284,6 +7308,7 @@
       "get": {
         "summary": "Blocks",
         "description": "Returns details on the past 10 blocks. If :startHeight is specified, the 10 blocks before (and including) :startHeight are returned.",
+        "operationId": "esplora_blocks",
         "parameters": [
           {
             "name": "start_height",
@@ -7322,6 +7347,7 @@
       "get": {
         "summary": "Block Height",
         "description": "Returns the hash of the block currently at :height.",
+        "operationId": "esplora_block_hash_by_height",
         "parameters": [
           {
             "name": "height",
@@ -7362,6 +7388,7 @@
       "get": {
         "summary": "Block Tip Height",
         "description": "Returns the height of the last block.",
+        "operationId": "esplora_block_tip_height",
         "responses": {
           "200": {
             "description": "Block height of the latest block",
@@ -7383,6 +7410,7 @@
       "get": {
         "summary": "Block Tip Hash",
         "description": "Returns the hash of the last block.",
+        "operationId": "esplora_block_tip_hash",
         "responses": {
           "200": {
             "description": "Block hash string of the latest block",
@@ -7404,6 +7432,7 @@
       "get": {
         "summary": "Mempool",
         "description": "Returns current mempool backlog statistics.",
+        "operationId": "esplora_mempool_stats",
         "responses": {
           "200": {
             "description": "Aggregated mempool data.",
@@ -7464,6 +7493,7 @@
       "get": {
         "summary": "Mempool Transaction IDs",
         "description": "Get the full list of txids in the mempool as an array. The order of the txids is arbitrary and does not match bitcoind.",
+        "operationId": "esplora_mempool_txids",
         "responses": {
           "200": {
             "description": "List of transaction IDs currently in the mempool.",
@@ -7493,6 +7523,7 @@
       "get": {
         "summary": "Mempool Recent",
         "description": "Get a list of the last 10 transactions to enter the mempool. Each transaction object contains simplified overview data, with the following fields: txid, fee, vsize, and value.",
+        "operationId": "esplora_mempool_recent",
         "responses": {
           "200": {
             "description": "A list of recent mempool transactions.",
@@ -7529,6 +7560,7 @@
       "get": {
         "summary": "Transaction",
         "description": "Returns details about a transaction. Available fields: txid, version, locktime, size, weight, fee, vin, vout, and status.",
+        "operationId": "esplora_transaction_details",
         "parameters": [
           {
             "name": "txid",
@@ -7565,6 +7597,7 @@
       "get": {
         "summary": "Transaction Hex",
         "description": "Returns a transaction serialized as hex.",
+        "operationId": "esplora_transaction_hex",
         "parameters": [
           {
             "name": "txid",
@@ -7602,6 +7635,7 @@
       "get": {
         "summary": "Transaction Merkleblock Proof",
         "description": "Returns a merkle inclusion proof for the transaction using bitcoind's merkleblock format.",
+        "operationId": "esplora_transaction_merkleblock_proof",
         "parameters": [
           {
             "name": "txid",
@@ -7643,6 +7677,7 @@
       "get": {
         "summary": "Transaction Merkle Proof",
         "description": "Returns a merkle inclusion proof for the transaction using Electrum's blockchain.transaction.get_merkle format.",
+        "operationId": "esplora_transaction_merkle_proof",
         "parameters": [
           {
             "name": "txid",
@@ -7691,6 +7726,7 @@
       "get": {
         "summary": "Transaction Outspend",
         "description": "Returns the spending status of a transaction output. Available fields: spent (boolean), txid (optional), vin (optional), and status (optional, the status of the spending tx).",
+        "operationId": "esplora_transaction_outspend",
         "parameters": [
           {
             "name": "txid",
@@ -7757,6 +7793,7 @@
       "get": {
         "summary": "Transaction Outspends",
         "description": "Returns the spending status of all transaction outputs.",
+        "operationId": "esplora_transaction_outspends",
         "parameters": [
           {
             "name": "txid",
@@ -7816,6 +7853,7 @@
       "get": {
         "summary": "Transaction Raw",
         "description": "Returns a transaction as binary data.",
+        "operationId": "esplora_transaction_raw",
         "parameters": [
           {
             "name": "txid",
@@ -7853,6 +7891,7 @@
       "get": {
         "summary": "Transaction RBF Timeline",
         "description": "Returns the RBF tree timeline of a transaction.",
+        "operationId": "esplora_transaction_rbf_timeline",
         "tags": [
           "Transactions"
         ],
@@ -7913,6 +7952,7 @@
       "get": {
         "summary": "Transaction Status",
         "description": "Returns the confirmation status of a transaction. Available fields: confirmed (boolean), block_height (optional), and block_hash (optional).",
+        "operationId": "esplora_transaction_status",
         "parameters": [
           {
             "name": "txid",
@@ -7963,6 +8003,7 @@
       "post": {
         "summary": "Transaction",
         "description": "Broadcast a raw transaction to the network. The transaction should be provided as hex in the request body. The txid will be returned on success.",
+        "operationId": "esplora_broadcast_transaction",
         "requestBody": {
           "description": "Hex-encoded raw transaction data.",
           "required": true,
