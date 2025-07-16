@@ -708,11 +708,6 @@
                         "schema": { "type": "integer" }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": { "schema": { "type": "object" } }
-                    }
-                },
                 "responses": {
                     "200": {
                         "content": {
@@ -772,11 +767,6 @@
                         "schema": { "type": "integer" }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": { "schema": { "type": "object" } }
-                    }
-                },
                 "responses": {
                     "200": {
                         "content": {
