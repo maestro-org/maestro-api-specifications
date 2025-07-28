@@ -46,7 +46,26 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolTimestampedSatoshis"
                                 },
-                                "example": "{\n    \"data\": \"695100\",\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"000000000000000000012c80ffd2f0bd17f1f92a0bb4c098236d7108f727bfe5\",\n            \"block_height\": 874584\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 874585,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 8,\n                \"max\": 504\n            }\n        }]\n    }\n}"
+                                "example": {
+                                    "data": "695100",
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "000000000000000000012c80ffd2f0bd17f1f92a0bb4c098236d7108f727bfe5",
+                                            "block_height": 874584
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 874585,
+                                                "sats_per_vb": {
+                                                    "max": 504,
+                                                    "median": 8,
+                                                    "min": 1
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-01-06 16:43:32"
+                                    }
+                                }
                             }
                         }
                     },
@@ -100,12 +119,36 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolTimestampedRuneQuantities"
                                 },
-                                "example": "{\n    \"data\": {\n        \"867138:1861\": \"230000\"\n    },\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930\",\n            \"block_height\": 867154\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 867155,\n            \"sats_per_vb\": {\n                \"min\": 12,\n                \"median\": 14,\n                \"max\": 16\n            }\n        }]\n    }\n}"
+                                "example": {
+                                    "data": {
+                                        "867138:1861": "230000"
+                                    },
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930",
+                                            "block_height": 867154
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 867155,
+                                                "sats_per_vb": {
+                                                    "max": 16,
+                                                    "median": 14,
+                                                    "min": 12
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-01-06 16:43:32"
+                                    }
+                                }
                             }
                         }
                     },
                     "400": {
                         "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -230,12 +273,75 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolPaginatedRuneUtxoByAddress"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n        \"vout\": 3,\n        \"satoshis\": \"546\",\n        \"confirmations\": 20674,\n        \"height\": 876954,\n        \"runes\": [{\n            \"rune_id\": \"876947:7\",\n            \"amount\": \"2500000\"\n        }]\n    }, {\n        \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n        \"vout\": 4,\n        \"satoshis\": \"546\",\n        \"confirmations\": 20674,\n        \"height\": 876954,\n        \"runes\": [{\n            \"rune_id\": \"876947:7\",\n            \"amount\": \"2500000\"\n        }]\n    }, {\n        \"txid\": \"67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b\",\n        \"vout\": 5,\n        \"satoshis\": \"546\",\n        \"confirmations\": 20674,\n        \"height\": 876954,\n        \"runes\": [{\n            \"rune_id\": \"876947:7\",\n            \"amount\": \"2500000\"\n        }]\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"0000000000000000000119bd8dffd7d8285a69744011aa98f0d9091b0555ca46\",\n            \"block_height\": 897627\n        },\n        \"mempool_timestamp\": \"2025-05-21 00:47:53\",\n        \"estimated_blocks\": [{\n            \"block_height\": 897628,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 5,\n                \"max\": 202\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
+                                "example": {
+                                    "data": [
+                                        {
+                                            "confirmations": 20674,
+                                            "height": 876954,
+                                            "runes": [
+                                                {
+                                                    "amount": "2500000",
+                                                    "rune_id": "876947:7"
+                                                }
+                                            ],
+                                            "satoshis": "546",
+                                            "txid": "67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b",
+                                            "vout": 3
+                                        },
+                                        {
+                                            "confirmations": 20674,
+                                            "height": 876954,
+                                            "runes": [
+                                                {
+                                                    "amount": "2500000",
+                                                    "rune_id": "876947:7"
+                                                }
+                                            ],
+                                            "satoshis": "546",
+                                            "txid": "67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b",
+                                            "vout": 4
+                                        },
+                                        {
+                                            "confirmations": 20674,
+                                            "height": 876954,
+                                            "runes": [
+                                                {
+                                                    "amount": "2500000",
+                                                    "rune_id": "876947:7"
+                                                }
+                                            ],
+                                            "satoshis": "546",
+                                            "txid": "67715c2b42eaa053fc174c68ca4f393446986567ed0509fa78eb3aa9d0b8db0b",
+                                            "vout": 5
+                                        }
+                                    ],
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "0000000000000000000119bd8dffd7d8285a69744011aa98f0d9091b0555ca46",
+                                            "block_height": 897627
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 897628,
+                                                "sats_per_vb": {
+                                                    "max": 202,
+                                                    "median": 5,
+                                                    "min": 1
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-05-21 00:47:53"
+                                    },
+                                    "next_cursor": null
+                                }
                             }
                         }
                     },
                     "400": {
                         "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -379,12 +485,73 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolPaginatedUtxo"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"txid\": \"e60e70271cce70df4cc1f9d0217d7cc9cbced26f0526c6ba946945cd155b49e4\",\n        \"vout\": 0,\n        \"address\": \"bc1pkh05juaxqc3d388klrjq8msszzzfr33nnn5kt2na00jja3mue89q5wxvew\",\n        \"script_pubkey\": \"5120b5df4973a60622d89cf6f8e403ee10108491c6339ce965aa7d7be52ec77cc9ca\",\n        \"satoshis\": \"546\",\n        \"height\": 867154,\n        \"mempool\": false,\n        \"runes\": [{\n            \"rune_id\": \"867138:1861\",\n            \"amount\": \"2000\"\n        }],\n        \"inscriptions\": []\n    }, {\n        \"txid\": \"9f00f52bc6e9d95797e5597ea50427258ba873df059b13a319f0868ca9da1265\",\n        \"vout\": 0,\n        \"address\": \"bc1pkh05juaxqc3d388klrjq8msszzzfr33nnn5kt2na00jja3mue89q5wxvew\",\n        \"script_pubkey\": \"5120b5df4973a60622d89cf6f8e403ee10108491c6339ce965aa7d7be52ec77cc9ca\",\n        \"satoshis\": \"546\",\n        \"height\": 867155,\n        \"mempool\": true,\n        \"runes\": [{\n            \"rune_id\": \"867138:1861\",\n            \"amount\": \"44000\"\n        }],\n        \"inscriptions\": [{\n            \"offset\": 0,\n            \"inscription_id\": \"47bb5438d366863b25b4b1782af0d0cf0a89a922adce5da81253790d3e651501i0\"\n        }]\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930\",\n            \"block_height\": 867154\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 867155,\n            \"sats_per_vb\": {\n                \"min\": 12,\n                \"median\": 14,\n                \"max\": 16\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
+                                "example": {
+                                    "data": [
+                                        {
+                                            "address": "bc1pkh05juaxqc3d388klrjq8msszzzfr33nnn5kt2na00jja3mue89q5wxvew",
+                                            "height": 867154,
+                                            "inscriptions": [],
+                                            "mempool": false,
+                                            "runes": [
+                                                {
+                                                    "amount": "2000",
+                                                    "rune_id": "867138:1861"
+                                                }
+                                            ],
+                                            "satoshis": "546",
+                                            "script_pubkey": "5120b5df4973a60622d89cf6f8e403ee10108491c6339ce965aa7d7be52ec77cc9ca",
+                                            "txid": "e60e70271cce70df4cc1f9d0217d7cc9cbced26f0526c6ba946945cd155b49e4",
+                                            "vout": 0
+                                        },
+                                        {
+                                            "address": "bc1pkh05juaxqc3d388klrjq8msszzzfr33nnn5kt2na00jja3mue89q5wxvew",
+                                            "height": 867155,
+                                            "inscriptions": [
+                                                {
+                                                    "inscription_id": "47bb5438d366863b25b4b1782af0d0cf0a89a922adce5da81253790d3e651501i0",
+                                                    "offset": 0
+                                                }
+                                            ],
+                                            "mempool": true,
+                                            "runes": [
+                                                {
+                                                    "amount": "44000",
+                                                    "rune_id": "867138:1861"
+                                                }
+                                            ],
+                                            "satoshis": "546",
+                                            "script_pubkey": "5120b5df4973a60622d89cf6f8e403ee10108491c6339ce965aa7d7be52ec77cc9ca",
+                                            "txid": "9f00f52bc6e9d95797e5597ea50427258ba873df059b13a319f0868ca9da1265",
+                                            "vout": 0
+                                        }
+                                    ],
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930",
+                                            "block_height": 867154
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 867155,
+                                                "sats_per_vb": {
+                                                    "max": 16,
+                                                    "median": 14,
+                                                    "min": 12
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-01-06 16:43:32"
+                                    },
+                                    "next_cursor": null
+                                }
                             }
                         }
                     },
                     "400": {
                         "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -444,12 +611,46 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolPaginatedRuneHolder"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"address\": \"bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v\",\n        \"script_pubkey\": \"0014f6aa24e0d1e39edc330dbfa7376e896437f7e14b\",\n        \"balance\": \"9000000.000000000000000000\"\n    }, {\n        \"address\": \"bc1pqfhj6tlxgpvc72mvn9hh0z666k45fpxgsej92d9q08sfe572mhlqca68ld\",\n        \"script_pubkey\": \"5120026f2d2fe640598f2b6c996f778b5ad5ab4484c886645534a079e09cd3caddfe\",\n        \"balance\": \"420000.000000000000000000\"\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930\",\n            \"block_height\": 867154\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 867155,\n            \"sats_per_vb\": {\n                \"min\": 12,\n                \"median\": 14,\n                \"max\": 16\n            }\n        }]\n    },\n    \"next_cursor\": null\n}"
+                                "example": {
+                                    "data": [
+                                        {
+                                            "address": "bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v",
+                                            "balance": "9000000.000000000000000000",
+                                            "script_pubkey": "0014f6aa24e0d1e39edc330dbfa7376e896437f7e14b"
+                                        },
+                                        {
+                                            "address": "bc1pqfhj6tlxgpvc72mvn9hh0z666k45fpxgsej92d9q08sfe572mhlqca68ld",
+                                            "balance": "420000.000000000000000000",
+                                            "script_pubkey": "5120026f2d2fe640598f2b6c996f778b5ad5ab4484c886645534a079e09cd3caddfe"
+                                        }
+                                    ],
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "00000000000000000002da06787fe86324e1cc1421861d899b7bd1e340aa1930",
+                                            "block_height": 867154
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 867155,
+                                                "sats_per_vb": {
+                                                    "max": 16,
+                                                    "median": 14,
+                                                    "min": 12
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-01-06 16:43:32"
+                                    },
+                                    "next_cursor": null
+                                }
                             }
                         }
                     },
                     "400": {
                         "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -471,12 +672,43 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolTimestampedFeeRates"
                                 },
-                                "example": "{\n    \"data\": [{\n        \"block_height\": 874585,\n        \"sats_per_vb\": {\n            \"min\": 1,\n            \"median\": 8,\n            \"max\": 504\n        }\n    }],\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"000000000000000000012c80ffd2f0bd17f1f92a0bb4c098236d7108f727bfe5\",\n            \"block_height\": 874584\n        },\n        \"mempool_timestamp\": \"2025-01-06 16:43:32\",\n        \"estimated_blocks\": [{\n            \"block_height\": 874585,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 8,\n                \"max\": 504\n            }\n        }]\n    }\n}"
+                                "example": {
+                                    "data": [
+                                        {
+                                            "block_height": 874585,
+                                            "sats_per_vb": {
+                                                "max": 504,
+                                                "median": 8,
+                                                "min": 1
+                                            }
+                                        }
+                                    ],
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "000000000000000000012c80ffd2f0bd17f1f92a0bb4c098236d7108f727bfe5",
+                                            "block_height": 874584
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 874585,
+                                                "sats_per_vb": {
+                                                    "max": 504,
+                                                    "median": 8,
+                                                    "min": 1
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-01-06 16:43:32"
+                                    }
+                                }
                             }
                         }
                     },
                     "400": {
                         "description": "Malformed query parameters"
+                    },
+                    "404": {
+                        "description": "Requested entity not found on-chain"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -510,7 +742,94 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolTimestampedTxInfoMetaprotocols"
                                 },
-                                "example": "{\n    \"data\": {\n        \"height\": 900962,\n        \"volume\": \"3666788\",\n        \"fees\": \"508\",\n        \"sats_per_vb\": 2,\n        \"metaprotocols\": [\n          \"runes\"\n        ],\n        \"inputs\": [{\n            \"txid\": \"ed6273c6ff9259ec6a68dff0b21ddc4499e2e6d9837981f8c5089ac4935f6cf5\",\n            \"vout\": 0,\n            \"address\": \"bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8\",\n            \"script_pubkey\": \"00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910\",\n            \"satoshis\": \"3666696\",\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"txid\": \"a115a1818805fa06a80eaa57287c0c3f57d5993c1f0d3f771523b4d11711d31f\",\n            \"vout\": 1,\n            \"address\": \"bc1pn2w92qyh7mwpf9rzmnvjnc0whswft243n0ntj50lurpnsjwwfy9sjur75v\",\n            \"script_pubkey\": \"51209a9c550097f6dc149462dcd929e1eebc1c95aab19be6b951ffe0c33849ce490b\",\n            \"satoshis\": \"600\",\n            \"inscriptions\": [],\n            \"runes\": []\n        }],\n        \"outputs\": [{\n            \"address\": null,\n            \"script_pubkey\": \"6a5d0b00c0a23303ffbedbb50201\",\n            \"satoshis\": \"0\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1pdruptufwh9awfepzq506kh03392lk074n4a5cy3v8zu0ma0sjvtqhwdu85\",\n            \"script_pubkey\": \"512068f815f12eb97ae4e422051fab5df18955fb3fd59d7b4c122c38b8fdf5f09316\",\n            \"satoshis\": \"546\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8\",\n            \"script_pubkey\": \"00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910\",\n            \"satoshis\": \"3641305\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qp8j9sx6609h7llqufurxjgrwsqwt020tqzn0gs\",\n            \"script_pubkey\": \"001409e4581b5a796feffc1c4f0669206e801cb7a9eb\",\n            \"satoshis\": \"580\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n          }, {\n            \"address\": \"bc1qqx7h6wrl52hxwqnp8v8k072ahnr3sq8huzynww\",\n            \"script_pubkey\": \"001401bd7d387fa2ae6702613b0f67f95dbcc71800f7\",\n            \"satoshis\": \"24357\",\n            \"spending_tx\": null,\n            \"inscriptions\": [],\n            \"runes\": []\n        }]\n    },\n    \"indexer_info\": {\n    \"chain_tip\": {\n        \"block_hash\": \"0000000000000000000148c7dbf4f8721db8912485cc6860e5b22f9b62e09870\",\n        \"block_height\": 900961\n    },\n    \"mempool_timestamp\": \"2025-06-12 17:27:29\",\n    \"estimated_blocks\": [{\n        \"block_height\": 900962,\n        \"sats_per_vb\": {\n            \"min\": 2,\n            \"median\": 4,\n            \"max\": 101\n        }\n    }]\n}"
+                                "example": {
+                                    "data": {
+                                        "fees": "508",
+                                        "height": 900962,
+                                        "inputs": [
+                                            {
+                                                "address": "bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8",
+                                                "inscriptions": [],
+                                                "runes": [],
+                                                "satoshis": "3666696",
+                                                "script_pubkey": "00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910",
+                                                "txid": "ed6273c6ff9259ec6a68dff0b21ddc4499e2e6d9837981f8c5089ac4935f6cf5",
+                                                "vout": 0
+                                            },
+                                            {
+                                                "address": "bc1pn2w92qyh7mwpf9rzmnvjnc0whswft243n0ntj50lurpnsjwwfy9sjur75v",
+                                                "inscriptions": [],
+                                                "runes": [],
+                                                "satoshis": "600",
+                                                "script_pubkey": "51209a9c550097f6dc149462dcd929e1eebc1c95aab19be6b951ffe0c33849ce490b",
+                                                "txid": "a115a1818805fa06a80eaa57287c0c3f57d5993c1f0d3f771523b4d11711d31f",
+                                                "vout": 1
+                                            }
+                                        ],
+                                        "metaprotocols": ["runes"],
+                                        "outputs": [
+                                            {
+                                                "address": null,
+                                                "inscriptions": [],
+                                                "runes": [],
+                                                "satoshis": "0",
+                                                "script_pubkey": "6a5d0b00c0a23303ffbedbb50201",
+                                                "spending_tx": null
+                                            },
+                                            {
+                                                "address": "bc1pdruptufwh9awfepzq506kh03392lk074n4a5cy3v8zu0ma0sjvtqhwdu85",
+                                                "inscriptions": [],
+                                                "runes": [],
+                                                "satoshis": "546",
+                                                "script_pubkey": "512068f815f12eb97ae4e422051fab5df18955fb3fd59d7b4c122c38b8fdf5f09316",
+                                                "spending_tx": null
+                                            },
+                                            {
+                                                "address": "bc1qyvtvxfyz60mmudgsmtxxpf22jl040ejmpj5mqnwv9lwr30jzmygqhr9tv8",
+                                                "inscriptions": [],
+                                                "runes": [],
+                                                "satoshis": "3641305",
+                                                "script_pubkey": "00202316c32482d3f7be3510dacc60a54a97df57e65b0ca9b04dcc2fdc38be42d910",
+                                                "spending_tx": null
+                                            },
+                                            {
+                                                "address": "bc1qp8j9sx6609h7llqufurxjgrwsqwt020tqzn0gs",
+                                                "inscriptions": [],
+                                                "runes": [],
+                                                "satoshis": "580",
+                                                "script_pubkey": "001409e4581b5a796feffc1c4f0669206e801cb7a9eb",
+                                                "spending_tx": null
+                                            },
+                                            {
+                                                "address": "bc1qqx7h6wrl52hxwqnp8v8k072ahnr3sq8huzynww",
+                                                "inscriptions": [],
+                                                "runes": [],
+                                                "satoshis": "24357",
+                                                "script_pubkey": "001401bd7d387fa2ae6702613b0f67f95dbcc71800f7",
+                                                "spending_tx": null
+                                            }
+                                        ],
+                                        "sats_per_vb": 2,
+                                        "volume": "3666788"
+                                    },
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "0000000000000000000148c7dbf4f8721db8912485cc6860e5b22f9b62e09870",
+                                            "block_height": 900961
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 900962,
+                                                "sats_per_vb": {
+                                                    "max": 101,
+                                                    "median": 4,
+                                                    "min": 2
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-06-12 17:27:29"
+                                    }
+                                }
                             }
                         }
                     },
@@ -562,7 +881,33 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/MempoolTimestampedTxOutMetaprotocols"
                                 },
-                                "example": "{\n    \"data\": {\n        \"address\": \"bc1qr46dacxy28zz5apsjrvs5jdgvs5sdcf2ed4tvl\",\n        \"script_pubkey\": \"00141d74dee0c451c42a743090d90a49a8642906e12a\",\n        \"satoshis\": \"85000\",\n        \"spending_tx\": null,\n        \"inscriptions\": [],\n        \"runes\": []\n    },\n    \"indexer_info\": {\n        \"chain_tip\": {\n            \"block_hash\": \"0000000000000000000085563bb7da463844c02d6c82bca13e3eec5411f8c8ed\",\n            \"block_height\": 897991\n        },\n        \"mempool_timestamp\": \"2025-05-23 11:43:08\",\n        \"estimated_blocks\": [{\n            \"block_height\": 897992,\n            \"sats_per_vb\": {\n                \"min\": 1,\n                \"median\": 4,\n                \"max\": 210\n            }\n        }]\n    }\n}"
+                                "example": {
+                                    "data": {
+                                        "address": "bc1qr46dacxy28zz5apsjrvs5jdgvs5sdcf2ed4tvl",
+                                        "inscriptions": [],
+                                        "runes": [],
+                                        "satoshis": "85000",
+                                        "script_pubkey": "00141d74dee0c451c42a743090d90a49a8642906e12a",
+                                        "spending_tx": null
+                                    },
+                                    "indexer_info": {
+                                        "chain_tip": {
+                                            "block_hash": "0000000000000000000085563bb7da463844c02d6c82bca13e3eec5411f8c8ed",
+                                            "block_height": 897991
+                                        },
+                                        "estimated_blocks": [
+                                            {
+                                                "block_height": 897992,
+                                                "sats_per_vb": {
+                                                    "max": 210,
+                                                    "median": 4,
+                                                    "min": 1
+                                                }
+                                            }
+                                        ],
+                                        "mempool_timestamp": "2025-05-23 11:43:08"
+                                    }
+                                }
                             }
                         }
                     },
