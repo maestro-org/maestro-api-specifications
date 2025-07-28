@@ -1,2162 +1,2666 @@
 {
-    "openapi": "3.0.3",
-    "info": {
-        "title": "Dogecoin - Blockchain Indexer API",
-        "description": "Core indexer endpoints dedicated to Dogecoin metaprotocols.",
-        "contact": {
-            "name": "Maestro Blockchain Inc.",
-            "url": "https://gomaestro.org/",
-            "email": "info@gomaestro.org"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
-        },
-        "version": "v0.1.1"
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Dogecoin - Blockchain Indexer API",
+    "description": "Core indexer endpoints dedicated to Dogecoin metaprotocols.",
+    "contact": {
+      "name": "Maestro Blockchain Inc.",
+      "url": "https://gomaestro.org/",
+      "email": "info@gomaestro.org"
     },
-    "servers": [
-        {
-            "url": "https://xdg-mainnet.gomaestro-api.org/v0",
-            "description": "Dogecoin Mainnet"
-        },
-        {
-            "url": "https://xdg-testnet.gomaestro-api.org/v0",
-            "description": "Dogecoin Testnet"
-        }
-    ],
-    "paths": {
-        "/addresses/{address}/balance": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "Total Balance by Address",
-                "description": "Sum of koinu in UTxOs which reside at the specified address or script pubkey.",
-                "operationId": "total_balance_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TimestampedTotalBalanceByAddress"
-                                },
-                                "example": "{\n    \"data\": \"695100\",\n    \"last_updated\": {\n        \"block_hash\": \"000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83\",\n        \"block_height\": 884991\n    }\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "404": {
-                        "description": "Requested entity not found on-chain"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/addresses/{address}/drc20": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "DRC20 by Address",
-                "description": "Map of all DRC20 tokens and corresponding total and available balances\ncontrolled by the specified address or script pubkey.",
-                "operationId": "drc20_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TimestampedDrc20Quantities"
-                                },
-                                "example": "{\n    \"data\": {\n        \"ABCD\": {\n            \"total\": \"312000.000\",\n            \"available\": \"0.123\"\n        }\n    },\n    \"last_updated\": {\n        \"block_hash\": \"000000009ed3f5385c1807ca04630b9b2273398670726f93282fd41ba88dc6b8\",\n        \"block_height\": 2413542\n    }\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/addresses/{address}/dunes": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "Dunes by Address",
-                "description": "Returns a map of all Dunes and corresponding amounts in UTxOs controlled by\nthe specified address or script pubkey.",
-                "operationId": "dunes_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TimestampedDuneQuantities"
-                                },
-                                "example": "{\n    \"data\": {\n        \"5244142:13\": \"2100000.00000000\",\n        \"5244114:7\": \"0.01000000\",\n        \"5244141:12\": \"2100000.00000000\",\n        \"5244142:14\": \"2100000.00000000\",\n        \"5244144:12\": \"2100000.00000000\"\n    },\n    \"last_updated\": {\n        \"block_hash\": \"85bd0d5594a7cd024ee6b3f345ea2e8ca0725a96fe751f5487202064dbb64b1c\",\n        \"block_height\": 5251959\n    }\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/addresses/{address}/dunes/{dune}": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "Dune UTxOs by Address and Dune",
-                "description": "Return all UTxOs controlled by the specified address or script pubkey which\ncontain some of a specific kind of dune.",
-                "operationId": "dune_utxos_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    },
-                    {
-                        "name": "dune",
-                        "in": "path",
-                        "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "2519999:31"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "description": "The order in which the results are sorted (by height at which UTxO was produced)",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "string",
-                                    "default": "asc",
-                                    "enum": ["asc", "desc"]
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "Return only UTxOs created on or after a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "Return only UTxOs created on or before a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedAddressDuneUtxo"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"txid\": \"cd990aa533ffb733934344fafbc07350ba5945a5a50fca3adb9845573a99e545\",\n        \"vout\": 1,\n        \"satoshis\": \"100000\",\n        \"confirmations\": 3597,\n        \"height\": 5280972,\n        \"dune_amount\": \"0.00001000\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"e45be2dac59c8b6a2090a6cee4c5c035c6d285b9ca4690fe7d454d9d6ad67a42\",\n        \"block_height\": 5284569\n    },\n    \"next_cursor\": null\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "404": {
-                        "description": "Requested entity not found on-chain"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/addresses/{address}/inscriptions": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "Inscriptions by Address",
-                "description": "List of all inscriptions which reside at the specified address or script pubkey.",
-                "operationId": "inscriptions_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedInscriptionByAddress"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"inscription_id\": \"f02da3d6bebab13d5d604be1ed73d9a9c677dadf6ca71bc5fff7d99cdead11b0i0\",\n        \"satoshis\": 546,\n        \"utxo_sat_offset\": 0,\n        \"utxo_txid\": \"e2283e7c915ef074806136e0002cbc69f5fdd2e9f70f14b0eab48cdcbe867cc1\",\n        \"utxo_vout\": 0,\n        \"utxo_block_height\": 843010,\n        \"utxo_confirmations\": 23701\n    }, {\n        \"inscription_id\": \"7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0\",\n        \"satoshis\": 546,\n        \"utxo_sat_offset\": 0,\n        \"utxo_txid\": \"3c7c0f5c6a0d3f0ab5c8bcef0adf3be56f5aeed8b2dd1504b7a950fc4fee1f46\",\n        \"utxo_vout\": 1,\n        \"utxo_block_height\": 850976,\n        \"utxo_confirmations\": 15735\n    }, {\n        \"inscription_id\": \"360550a31c9510ed5052c4351619bf68d5ae3f218bf2e9c1092090dbcf86acb3i0\",\n        \"satoshis\": 546,\n        \"utxo_sat_offset\": 0,\n        \"utxo_txid\": \"3c7c0f5c6a0d3f0ab5c8bcef0adf3be56f5aeed8b2dd1504b7a950fc4fee1f46\",\n        \"utxo_vout\": 1,\n        \"utxo_block_height\": 850976,\n        \"utxo_confirmations\": 15735\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7\",\n        \"block_height\": 866710\n    },\n    \"next_cursor\": null\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/addresses/{address}/transfer_inscriptions": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "DRC20 Transfer Inscriptions by Address",
-                "description": "List of all unused transfer inscriptions which reside at the specified address or script pubkey.",
-                "operationId": "transfer_inscriptions_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    },
-                    {
-                        "name": "ticker",
-                        "in": "query",
-                        "description": "DRC20 ticker string",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        },
-                        "example": "TUAH"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "description": "The order in which the results are sorted",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "string",
-                                    "default": "asc",
-                                    "enum": ["asc", "desc"]
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedTransferInscriptionByAddress"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"ticker\": \"TUAH\",\n        \"inscription_id\": \"f02da3d6bebab13d5d604be1ed73d9a9c677dadf6ca71bc5fff7d99cdead11b0i0\",\n        \"token_amount\": 1234,\n        \"sat_amount\": 5678,\n        \"utxo_txid\": \"e2283e7c915ef074806136e0002cbc69f5fdd2e9f70f14b0eab48cdcbe867cc1\",\n        \"utxo_vout\": 0,\n        \"utxo_sat_offset\": 0,\n        \"utxo_block_height\": 843010,\n        \"utxo_confirmations\": 23700\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7\",\n        \"block_height\": 866710\n    },\n    \"next_cursor\": \"BFRVQUhgfQot2JciKRPVj8lXsEKVJhF6CmHJZGQv6TsHfzKMzsEAAAAA\"\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "404": {
-                        "description": "Requested entity not found on-chain"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/addresses/{address}/txs": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "Transactions by Address",
-                "description": "List of all transactions which consumed or produced a UTxO controlled\nby the specified address or script pubkey.",
-                "operationId": "txs_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "description": "The order in which the results are sorted (by height at which transaction was included in a block)",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "string",
-                                    "default": "asc",
-                                    "enum": ["asc", "desc"]
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "Return only transactions included on or after a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "Return only transactions included on or before a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedInvolvedTransaction"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"tx_hash\": \"1cd3a819876660e98d3d5d9e4d36ddbd1ae6f96e58de0d3977f0ef2ce6e4194a\",\n        \"height\": 5277680,\n        \"input\": true,\n        \"output\": true\n    }, {\n        \"tx_hash\": \"ad7b8037fc7551fd9e644ddd39bc0501bc6aac865284fd79dde8b732af45acd9\",\n        \"height\": 5277682,\n        \"input\": true,\n        \"output\": true\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"8ac9689a7901531013c3cd621eae8b8e75b1994f477d616a4faa2a10afd9be58\",\n        \"block_height\": 5277710\n    },\n    \"next_cursor\": \"AAAAAABQh_JgAAlg2axFrzK36N15_YRShqxqvAEFvDndTWSe_VF1_DeAe60\"\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/addresses/{address}/utxos": {
-            "get": {
-                "tags": ["Addresses"],
-                "summary": "UTxOs by Address",
-                "description": "List of all UTxOs which reside at the specified address or script pubkey.",
-                "operationId": "utxos_by_address",
-                "parameters": [
-                    {
-                        "name": "address",
-                        "in": "path",
-                        "description": "Dogecoin address or hex encoded script pubkey",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
-                    },
-                    {
-                        "name": "filter_dust",
-                        "in": "query",
-                        "description": "Ignore UTxOs containing less than 100000 shibes",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean",
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "filter_dust_threshold",
-                        "in": "query",
-                        "description": "Ignore UTxOs containing less than specified shibes",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "exclude_metaprotocols",
-                        "in": "query",
-                        "description": "Exclude metaprotocol UTxOs (UTxOs involved in metaprotocols like dunes or inscriptions)",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean",
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "description": "The order in which the results are sorted (by height at which UTxO was produced)",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "string",
-                                    "default": "asc",
-                                    "enum": ["asc", "desc"]
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "Return only UTxOs created on or after a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "Return only UTxOs created on or before a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedUtxo"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"txid\": \"ee4b62b6e221eb92ea821ecb7932eb325647d9fdce5632747905146a561b8a4b\",\n        \"vout\": 1,\n        \"address\": \"DEvbE2KyPKAzDsj511wijyF1NSBN9qMcix\",\n        \"script_pubkey\": \"76a9146b53cbbe67beef7079e6ea3e39bdfdc34bf2707b88ac\",\n        \"satoshis\": \"100000\",\n        \"confirmations\": 121,\n        \"height\": 5095478,\n        \"dunes\": [{\n            \"dune_id\": \"5095478:8\",\n            \"amount\": \"5.00000000\"\n        }],\n        \"inscriptions\": []\n    }, {\n        \"txid\": \"ee4b62b6e221eb92ea821ecb7932eb325647d9fdce5632747905146a561b8a4b\",\n        \"vout\": 2,\n        \"address\": \"DEvbE2KyPKAzDsj511wijyF1NSBN9qMcix\",\n        \"script_pubkey\": \"76a9146b53cbbe67beef7079e6ea3e39bdfdc34bf2707b88ac\",\n        \"satoshis\": \"1999441400000\",\n        \"confirmations\": 121,\n        \"height\": 5095478,\n        \"dunes\": [],\n        \"inscriptions\": []\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"cedd9ed0572e357af2e383382053ee40cb0ab38a07f58bae74314117c878fbd5\",\n        \"block_height\": 5095599\n    },\n    \"next_cursor\": null\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/drc20": {
-            "get": {
-                "tags": ["DRC20"],
-                "summary": "List DRC20",
-                "description": "List of tickers of all deployed DRC20 assets.",
-                "operationId": "list_drc20s",
-                "parameters": [
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedDrc20Ticker"
-                                },
-                                "example": "{\n    \"data\": [\"aosi\", \"ap'q\", \"fctb\"],\n    \"last_updated\": {\n        \"block_hash\": \"0000000000000000000235c5edb5c89ef52715452a2aca610949194b3361ef7d\",\n        \"block_height\": 850368\n    },\n    \"next_cursor\": \"BGZjdGI\"\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/drc20/{ticker}": {
-            "get": {
-                "tags": ["DRC20"],
-                "summary": "DRC20 Info",
-                "description": "Information about the specified DRC20 asset.",
-                "operationId": "drc20_info",
-                "parameters": [
-                    {
-                        "name": "ticker",
-                        "in": "path",
-                        "description": "DRC20 ticker string",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "FCTB"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TimestampedDrc20Info"
-                                },
-                                "example": "{\n    \"data\": {\n        \"ticker\": \"$yod\",\n        \"ticker_hex\": \"24796f64\",\n        \"deploy_inscription\": \"f86ac394543faf363d18b9bebfe160f6e57539f69642ce9a3d23f2e4e92c12c5i0\",\n        \"holders\": 86,\n        \"minted_supply\": \"7969155.000000000000000000\",\n        \"terms\": {\n            \"max\": \"20420420.000000000000000000\",\n            \"limit\": \"69.000000000000000000\",\n            \"dec\": 18\n        }\n    },\n    \"last_updated\": {\n        \"block_hash\": \"bdb39d4aaf7dc588c3732a27fd57b7cdc0c93bec20c98526e3af45217590500a\",\n        \"block_height\": 5288700\n    }\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/drc20/{ticker}/holders": {
-            "get": {
-                "tags": ["DRC20"],
-                "summary": "DRC20 Holders",
-                "description": "Script pubkeys or addresses that hold the specified DRC20\ntoken and corresponding total balances.",
-                "operationId": "drc20_holders_by_ticker",
-                "parameters": [
-                    {
-                        "name": "ticker",
-                        "in": "path",
-                        "description": "DRC20 ticker string",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "TUAH"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedDrc20Holder"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"address\": \"DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb\",\n        \"script_pubkey\": \"0014f6aa24e0d1e39edc330dbfa7376e896437f7e14b\",\n        \"balance\": \"9000000.000000000000000000\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000002747b9e3c0097172bc23489d686e8b885a6fa89c2c4da\",\n        \"block_height\": 850534\n    },\n    \"next_cursor\": \"19FwuaejD9hE1R4ckTQKaqe0ecA\"\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/dunes": {
-            "get": {
-                "tags": ["Dunes"],
-                "summary": "List Dunes",
-                "description": "Returns a list of ID and names of all deployed Dune assets.",
-                "operationId": "list_dunes",
-                "parameters": [
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedDuneIdAndName"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"id\": \"5228806:44\",\n        \"spaced_name\": \"JUST•SEND•ITTTT\"\n    }, {\n        \"id\": \"5228811:6\",\n        \"spaced_name\": \"MOMMAWEMADEIT\"\n    }, {\n        \"id\": \"5228827:57\",\n        \"spaced_name\": \"BOOK•ON•DUNESSS\"\n    }, {\n        \"id\": \"5228850:19\",\n        \"spaced_name\": \"TODAY•TOMORROW\"\n    }, {\n        \"id\": \"5228851:15\",\n        \"spaced_name\": \"TOMORROW•TODAY\"\n    }, {\n        \"id\": \"5229366:35\",\n        \"spaced_name\": \"PEPE•MEME•KING\"\n    }, {\n        \"id\": \"5244144:12\",\n        \"spaced_name\": \"DOGECOIN•FIWB\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"85bd0d5594a7cd024ee6b3f345ea2e8ca0725a96fe751f5487202064dbb64b1c\",\n        \"block_height\": 5251959\n    },\n    \"next_cursor\": null\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/dunes/{dune}": {
-            "get": {
-                "tags": ["Dunes"],
-                "summary": "Dunes Info",
-                "description": "Returns information about the specified Dune, including etching information,\ncurrent supply and number of holders.",
-                "operationId": "info_by_dune",
-                "parameters": [
-                    {
-                        "name": "dune",
-                        "in": "path",
-                        "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "2519999:31"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TimestampedDuneInfo"
-                                },
-                                "example": "{\n    \"data\": {\n        \"id\": \"5280961:140\",\n        \"etching_cenotaph\": false,\n        \"etching_tx\": \"39a7cc8155a9e68692ee280e2dfb5a4007cfa5f83f2801abf10fb2682ee3fabc\",\n        \"etching_height\": 5280961,\n        \"name\": \"TESTTESTTEEST\",\n        \"spaced_name\": \"TEST•TEST•TEEST\",\n        \"symbol\": \"a\",\n        \"divisibility\": 8,\n        \"terms\": {\n            \"mint_txs_cap\": \"1000000000\",\n            \"amount_per_mint\": \"1000.00000000\",\n            \"start_height\": \"5280850\",\n            \"end_height\": \"5290000\",\n            \"start_offset\": null,\n            \"end_offset\": null\n        },\n        \"max_supply\": \"1000000000000.00000000\",\n        \"mints\": 2,\n        \"unique_holders\": 2\n    },\n    \"last_updated\": {\n        \"block_hash\": \"304f07cefebe68472f2ceb02706f9a3b5a9e9ecb3534ec34923799c8ecd7f27d\",\n        \"block_height\": 5303197\n    }\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "404": {
-                        "description": "Requested entity not found on-chain"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/dunes/{dune}/holders": {
-            "get": {
-                "tags": ["Dunes"],
-                "summary": "Holders by Dune",
-                "description": "List of all addresses that hold the specified Dune, with the respective amounts.",
-                "operationId": "holders_by_dune",
-                "parameters": [
-                    {
-                        "name": "dune",
-                        "in": "path",
-                        "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "5095478:8"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedDuneHolder"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"address\": \"bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v\",\n        \"script_pubkey\": \"0014f6aa24e0d1e39edc330dbfa7376e896437f7e14b\",\n        \"balance\": \"9000000.000000000000000000\"\n    }, {\n        \"address\": \"bc1pqfhj6tlxgpvc72mvn9hh0z666k45fpxgsej92d9q08sfe572mhlqca68ld\",\n        \"script_pubkey\": \"5120026f2d2fe640598f2b6c996f778b5ad5ab4484c886645534a079e09cd3caddfe\",\n        \"balance\": \"420000.000000000000000000\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000002747b9e3c0097172bc23489d686e8b885a6fa89c2c4da\",\n        \"block_height\": 850534\n    },\n    \"next_cursor\": \"19FwuaejD9hE1R4ckTQKaqe0ecA\"\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/dunes/{dune}/utxos": {
-            "get": {
-                "tags": ["Dunes"],
-                "summary": "UTxOs by Dunes",
-                "description": "Returns a list of UTxOs which contain some of the specified Dune.",
-                "operationId": "utxos_by_dune",
-                "parameters": [
-                    {
-                        "name": "dune",
-                        "in": "path",
-                        "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "2519999:31"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of results per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "description": "The order in which the results are sorted (by height at which UTxO was produced)",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "string",
-                                    "default": "asc",
-                                    "enum": ["asc", "desc"]
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "Return only UTxOs created on or after a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "Return only UTxOs created on or before a specific height",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "nullable": true,
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedDuneUtxo"
-                                },
-                                "example": "{\n    \"data\": [{\n        \"txid\": \"cd990aa533ffb733934344fafbc07350ba5945a5a50fca3adb9845573a99e545\",\n        \"vout\": 1,\n        \"address\": \"D8UC42uehZdBYAfMBJumQKuBNs9vvarxtt\",\n        \"script_pubkey\": \"76a9142484e20925fa4d816f04b313b07162a0f5f0961a88ac\",\n        \"satoshis\": \"100000\",\n        \"confirmations\": 1336,\n        \"height\": 5280972,\n        \"dune_amount\": \"0.00001000\"\n    }, {\n        \"txid\": \"55e0351b8904a44a337491da372d53138991f642a4eafb5d4a86c66cd30eb1fd\",\n        \"vout\": 1,\n        \"address\": \"D8vgB8Viu2ZGMKBUHh4khtS9FzR6B1D4cK\",\n        \"script_pubkey\": \"76a91429872c5e5a0a611372348ae5afd278a446dd155f88ac\",\n        \"satoshis\": \"100000\",\n        \"confirmations\": 1323,\n        \"height\": 5280985,\n        \"dune_amount\": \"1000.00000000\"\n    }],\n    \"last_updated\": {\n        \"block_hash\": \"caf5db9cfd306cccaec5f4fc92a3f47d9aa8e4007b3b74b6bdf97aab5f68808f\",\n        \"block_height\": 5282308\n    },\n    \"next_cursor\": null\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/inscriptions/{inscription_id}": {
-            "get": {
-                "tags": ["Inscriptions"],
-                "summary": "Inscription Info",
-                "description": "Information about an inscription. A preview of the content body is given only if its type is\n\"text/plain\". For the whole content, use the complementary endpoint, namely\n`/assets/inscriptions/{inscription_id}/content_body`.",
-                "operationId": "inscription_info",
-                "parameters": [
-                    {
-                        "name": "inscription_id",
-                        "in": "path",
-                        "description": "Inscription ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TimestampedInscriptionInfo"
-                                },
-                                "example": "{\n    \"data\": {\n        \"inscription_id\": \"7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0\",\n        \"created_at\": 842166,\n        \"inscription_num\": 70634325,\n        \"content_type\": \"text/html;charset=utf-8\",\n        \"content_body_preview\": null,\n        \"content_length\": 3035\n    },\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7\",\n        \"block_height\": 866710\n    }\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "404": {
-                        "description": "Requested entity not found on-chain"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/assets/inscriptions/{inscription_id}/content_body": {
-            "get": {
-                "tags": ["Inscriptions"],
-                "summary": "Content by Inscription ID",
-                "description": "Paginated response of the content body byte array of an inscription. This endpoint is\ncomplementary to the \"Inscription Information\" endpoint.",
-                "operationId": "content_by_inscription_id",
-                "parameters": [
-                    {
-                        "name": "inscription_id",
-                        "in": "path",
-                        "description": "Inscription ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0"
-                    },
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "The max number of bytes per page",
-                        "required": false,
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "type": "integer",
-                                    "default": 100,
-                                    "minimum": 0
-                                }
-                            ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "cursor",
-                        "in": "query",
-                        "description": "Pagination cursor string: the offset in the content body. Use the cursor to query for the next page",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Requested data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PaginatedContentBody"
-                                },
-                                "example": "{\n    \"data\": {\n        \"content_body_page\": \"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiYw==\",\n        \"total_length\": 3035,\n        \"remaining_bytes\": 2935\n    },\n    \"last_updated\": {\n        \"block_hash\": \"00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7\",\n        \"block_height\": 866710\n    },\n    \"next_cursor\": \"AAAAAAAAAGQ\"\n}"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Malformed query parameters"
-                    },
-                    "404": {
-                        "description": "Requested entity not found on-chain"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        }
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
     },
-    "components": {
-        "schemas": {
-            "Address": {
-                "type": "object",
-                "required": ["payload", "network"],
-                "properties": {
-                    "network": {
-                        "$ref": "#/components/schemas/Network"
-                    },
-                    "payload": {
-                        "$ref": "#/components/schemas/Payload"
-                    }
-                }
+    "version": "v0.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://xdg-mainnet.gomaestro-api.org/v0",
+      "description": "Dogecoin Mainnet"
+    },
+    {
+      "url": "https://xdg-testnet.gomaestro-api.org/v0",
+      "description": "Dogecoin Testnet"
+    }
+  ],
+  "paths": {
+    "/addresses/{address}/balance": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Total Balance by Address",
+        "description": "Sum of koinu in UTxOs which reside at the specified address or script pubkey.",
+        "operationId": "total_balance_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
             },
-            "AddressDuneUtxo": {
-                "type": "object",
-                "required": [
-                    "txid",
-                    "vout",
-                    "satoshis",
-                    "confirmations",
-                    "height",
-                    "dune_amount"
-                ],
-                "properties": {
-                    "confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "dune_amount": {
-                        "type": "string"
-                    },
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "satoshis": {
-                        "type": "string"
-                    },
-                    "txid": {
-                        "type": "string"
-                    },
-                    "vout": {
-                        "type": "integer",
-                        "format": "int32",
-                        "minimum": 0
-                    }
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimestampedTotalBalanceByAddress"
+                },
+                "example": {
+                  "data": "695100",
+                  "last_updated": {
+                    "block_hash": "000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83",
+                    "block_height": 884991
+                  }
                 }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/addresses/{address}/drc20": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "DRC20 by Address",
+        "description": "Map of all DRC20 tokens and corresponding total and available balances\ncontrolled by the specified address or script pubkey.",
+        "operationId": "drc20_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
             },
-            "ContentBody": {
-                "type": "object",
-                "required": [
-                    "content_body_page",
-                    "total_length",
-                    "remaining_bytes"
-                ],
-                "properties": {
-                    "content_body_page": {
-                        "type": "string",
-                        "description": "Base64-encoded representation of a slice of the inscription content body. All types supported."
-                    },
-                    "remaining_bytes": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of bytes remaining in the inscription content body.",
-                        "minimum": 0
-                    },
-                    "total_length": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of bytes in entire inscription content body.",
-                        "minimum": 0
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimestampedDrc20Quantities"
+                },
+                "example": {
+                  "data": {
+                    "ABCD": {
+                      "available": "0.123",
+                      "total": "312000.000"
                     }
+                  },
+                  "last_updated": {
+                    "block_hash": "000000009ed3f5385c1807ca04630b9b2273398670726f93282fd41ba88dc6b8",
+                    "block_height": 2413542
+                  }
                 }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/addresses/{address}/dunes": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Dunes by Address",
+        "description": "Returns a map of all Dunes and corresponding amounts in UTxOs controlled by\nthe specified address or script pubkey.",
+        "operationId": "dunes_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
             },
-            "Drc20Holder": {
-                "type": "object",
-                "required": ["script_pubkey", "balance"],
-                "properties": {
-                    "address": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "balance": {
-                        "type": "string"
-                    },
-                    "script_pubkey": {
-                        "type": "string"
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimestampedDuneQuantities"
+                },
+                "example": {
+                  "data": {
+                    "5244114:7": "0.01000000",
+                    "5244141:12": "2100000.00000000",
+                    "5244142:13": "2100000.00000000",
+                    "5244142:14": "2100000.00000000",
+                    "5244144:12": "2100000.00000000"
+                  },
+                  "last_updated": {
+                    "block_hash": "85bd0d5594a7cd024ee6b3f345ea2e8ca0725a96fe751f5487202064dbb64b1c",
+                    "block_height": 5251959
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/addresses/{address}/dunes/{dune}": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Dune UTxOs by Address and Dune",
+        "description": "Return all UTxOs controlled by the specified address or script pubkey which\ncontain some of a specific kind of dune.",
+        "operationId": "dune_utxos_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          },
+          {
+            "name": "dune",
+            "in": "path",
+            "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2519999:31"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted (by height at which UTxO was produced)",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only UTxOs created on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only UTxOs created on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedAddressDuneUtxo"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "confirmations": 3597,
+                      "dune_amount": "0.00001000",
+                      "height": 5280972,
+                      "satoshis": "100000",
+                      "txid": "cd990aa533ffb733934344fafbc07350ba5945a5a50fca3adb9845573a99e545",
+                      "vout": 1
                     }
+                  ],
+                  "last_updated": {
+                    "block_hash": "e45be2dac59c8b6a2090a6cee4c5c035c6d285b9ca4690fe7d454d9d6ad67a42",
+                    "block_height": 5284569
+                  },
+                  "next_cursor": null
                 }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/addresses/{address}/inscriptions": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Inscriptions by Address",
+        "description": "List of all inscriptions which reside at the specified address or script pubkey.",
+        "operationId": "inscriptions_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
             },
-            "Drc20Info": {
-                "type": "object",
-                "required": [
-                    "ticker",
-                    "ticker_hex",
-                    "deploy_inscription",
-                    "holders",
-                    "minted_supply",
-                    "terms"
-                ],
-                "properties": {
-                    "deploy_inscription": {
-                        "type": "string"
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedInscriptionByAddress"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "inscription_id": "f02da3d6bebab13d5d604be1ed73d9a9c677dadf6ca71bc5fff7d99cdead11b0i0",
+                      "satoshis": 546,
+                      "utxo_block_height": 843010,
+                      "utxo_confirmations": 23701,
+                      "utxo_sat_offset": 0,
+                      "utxo_txid": "e2283e7c915ef074806136e0002cbc69f5fdd2e9f70f14b0eab48cdcbe867cc1",
+                      "utxo_vout": 0
                     },
-                    "holders": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
+                    {
+                      "inscription_id": "7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0",
+                      "satoshis": 546,
+                      "utxo_block_height": 850976,
+                      "utxo_confirmations": 15735,
+                      "utxo_sat_offset": 0,
+                      "utxo_txid": "3c7c0f5c6a0d3f0ab5c8bcef0adf3be56f5aeed8b2dd1504b7a950fc4fee1f46",
+                      "utxo_vout": 1
                     },
-                    "minted_supply": {
-                        "type": "string"
+                    {
+                      "inscription_id": "360550a31c9510ed5052c4351619bf68d5ae3f218bf2e9c1092090dbcf86acb3i0",
+                      "satoshis": 546,
+                      "utxo_block_height": 850976,
+                      "utxo_confirmations": 15735,
+                      "utxo_sat_offset": 0,
+                      "utxo_txid": "3c7c0f5c6a0d3f0ab5c8bcef0adf3be56f5aeed8b2dd1504b7a950fc4fee1f46",
+                      "utxo_vout": 1
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7",
+                    "block_height": 866710
+                  },
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/addresses/{address}/transfer_inscriptions": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "DRC20 Transfer Inscriptions by Address",
+        "description": "List of all unused transfer inscriptions which reside at the specified address or script pubkey.",
+        "operationId": "transfer_inscriptions_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          },
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "DRC20 ticker string",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "example": "TUAH"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedTransferInscriptionByAddress"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "inscription_id": "f02da3d6bebab13d5d604be1ed73d9a9c677dadf6ca71bc5fff7d99cdead11b0i0",
+                      "sat_amount": 5678,
+                      "ticker": "TUAH",
+                      "token_amount": 1234,
+                      "utxo_block_height": 843010,
+                      "utxo_confirmations": 23700,
+                      "utxo_sat_offset": 0,
+                      "utxo_txid": "e2283e7c915ef074806136e0002cbc69f5fdd2e9f70f14b0eab48cdcbe867cc1",
+                      "utxo_vout": 0
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7",
+                    "block_height": 866710
+                  },
+                  "next_cursor": "BFRVQUhgfQot2JciKRPVj8lXsEKVJhF6CmHJZGQv6TsHfzKMzsEAAAAA"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/addresses/{address}/txs": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "Transactions by Address",
+        "description": "List of all transactions which consumed or produced a UTxO controlled\nby the specified address or script pubkey.",
+        "operationId": "txs_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted (by height at which transaction was included in a block)",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only transactions included on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only transactions included on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedInvolvedTransaction"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "height": 5277680,
+                      "input": true,
+                      "output": true,
+                      "tx_hash": "1cd3a819876660e98d3d5d9e4d36ddbd1ae6f96e58de0d3977f0ef2ce6e4194a"
                     },
+                    {
+                      "height": 5277682,
+                      "input": true,
+                      "output": true,
+                      "tx_hash": "ad7b8037fc7551fd9e644ddd39bc0501bc6aac865284fd79dde8b732af45acd9"
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "8ac9689a7901531013c3cd621eae8b8e75b1994f477d616a4faa2a10afd9be58",
+                    "block_height": 5277710
+                  },
+                  "next_cursor": "AAAAAABQh_JgAAlg2axFrzK36N15_YRShqxqvAEFvDndTWSe_VF1_DeAe60"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/addresses/{address}/utxos": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "summary": "UTxOs by Address",
+        "description": "List of all UTxOs which reside at the specified address or script pubkey.",
+        "operationId": "utxos_by_address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "Dogecoin address or hex encoded script pubkey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb"
+          },
+          {
+            "name": "filter_dust",
+            "in": "query",
+            "description": "Ignore UTxOs containing less than 100000 shibes",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "filter_dust_threshold",
+            "in": "query",
+            "description": "Ignore UTxOs containing less than specified shibes",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "exclude_metaprotocols",
+            "in": "query",
+            "description": "Exclude metaprotocol UTxOs (UTxOs involved in metaprotocols like dunes or inscriptions)",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted (by height at which UTxO was produced)",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only UTxOs created on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only UTxOs created on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedUtxo"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "address": "DEvbE2KyPKAzDsj511wijyF1NSBN9qMcix",
+                      "confirmations": 121,
+                      "dunes": [
+                        {
+                          "amount": "5.00000000",
+                          "dune_id": "5095478:8"
+                        }
+                      ],
+                      "height": 5095478,
+                      "inscriptions": [],
+                      "satoshis": "100000",
+                      "script_pubkey": "76a9146b53cbbe67beef7079e6ea3e39bdfdc34bf2707b88ac",
+                      "txid": "ee4b62b6e221eb92ea821ecb7932eb325647d9fdce5632747905146a561b8a4b",
+                      "vout": 1
+                    },
+                    {
+                      "address": "DEvbE2KyPKAzDsj511wijyF1NSBN9qMcix",
+                      "confirmations": 121,
+                      "dunes": [],
+                      "height": 5095478,
+                      "inscriptions": [],
+                      "satoshis": "1999441400000",
+                      "script_pubkey": "76a9146b53cbbe67beef7079e6ea3e39bdfdc34bf2707b88ac",
+                      "txid": "ee4b62b6e221eb92ea821ecb7932eb325647d9fdce5632747905146a561b8a4b",
+                      "vout": 2
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "cedd9ed0572e357af2e383382053ee40cb0ab38a07f58bae74314117c878fbd5",
+                    "block_height": 5095599
+                  },
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/assets/drc20": {
+      "get": {
+        "tags": [
+          "DRC20"
+        ],
+        "summary": "List DRC20",
+        "description": "List of tickers of all deployed DRC20 assets.",
+        "operationId": "list_drc20s",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDrc20Ticker"
+                },
+                "example": {
+                  "data": [
+                    "aosi",
+                    "ap'q",
+                    "fctb"
+                  ],
+                  "last_updated": {
+                    "block_hash": "0000000000000000000235c5edb5c89ef52715452a2aca610949194b3361ef7d",
+                    "block_height": 850368
+                  },
+                  "next_cursor": "BGZjdGI"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/assets/drc20/{ticker}": {
+      "get": {
+        "tags": [
+          "DRC20"
+        ],
+        "summary": "DRC20 Info",
+        "description": "Information about the specified DRC20 asset.",
+        "operationId": "drc20_info",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "description": "DRC20 ticker string",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "FCTB"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimestampedDrc20Info"
+                },
+                "example": {
+                  "data": {
+                    "deploy_inscription": "f86ac394543faf363d18b9bebfe160f6e57539f69642ce9a3d23f2e4e92c12c5i0",
+                    "holders": 86,
+                    "minted_supply": "7969155.000000000000000000",
                     "terms": {
-                        "$ref": "#/components/schemas/Drc20Terms"
+                      "dec": 18,
+                      "limit": "69.000000000000000000",
+                      "max": "20420420.000000000000000000"
                     },
-                    "ticker": {
-                        "type": "string"
-                    },
-                    "ticker_hex": {
-                        "type": "string"
-                    }
+                    "ticker": "$yod",
+                    "ticker_hex": "24796f64"
+                  },
+                  "last_updated": {
+                    "block_hash": "bdb39d4aaf7dc588c3732a27fd57b7cdc0c93bec20c98526e3af45217590500a",
+                    "block_height": 5288700
+                  }
                 }
-            },
-            "Drc20Terms": {
-                "type": "object",
-                "required": ["max", "limit", "dec"],
-                "properties": {
-                    "dec": {
-                        "type": "integer",
-                        "format": "int32",
-                        "minimum": 0
-                    },
-                    "limit": {
-                        "type": "string"
-                    },
-                    "max": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Drc20Ticker": {
-                "type": "string"
-            },
-            "DuneAndAmount": {
-                "type": "object",
-                "required": ["dune_id", "amount"],
-                "properties": {
-                    "amount": {
-                        "type": "string"
-                    },
-                    "dune_id": {
-                        "type": "string"
-                    }
-                }
-            },
-            "DuneHolder": {
-                "type": "object",
-                "required": ["script_pubkey", "balance"],
-                "properties": {
-                    "address": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "balance": {
-                        "type": "string"
-                    },
-                    "script_pubkey": {
-                        "type": "string"
-                    }
-                }
-            },
-            "DuneIdAndName": {
-                "type": "object",
-                "required": ["id", "spaced_name"],
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "spaced_name": {
-                        "type": "string"
-                    }
-                }
-            },
-            "DuneInfo": {
-                "type": "object",
-                "required": [
-                    "id",
-                    "etching_cenotaph",
-                    "etching_tx",
-                    "etching_height",
-                    "name",
-                    "spaced_name",
-                    "divisibility",
-                    "terms",
-                    "circulating_supply",
-                    "mints",
-                    "unique_holders"
-                ],
-                "properties": {
-                    "circulating_supply": {
-                        "type": "string"
-                    },
-                    "divisibility": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "If no divisibility was specified, then this equals 0",
-                        "minimum": 0
-                    },
-                    "etching_cenotaph": {
-                        "type": "boolean"
-                    },
-                    "etching_height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "etching_tx": {
-                        "type": "string"
-                    },
-                    "id": {
-                        "type": "string"
-                    },
-                    "max_supply": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "mints": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "spaced_name": {
-                        "type": "string"
-                    },
-                    "symbol": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "terms": {
-                        "$ref": "#/components/schemas/Terms"
-                    },
-                    "unique_holders": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    }
-                }
-            },
-            "DuneUtxo": {
-                "type": "object",
-                "required": [
-                    "txid",
-                    "vout",
-                    "script_pubkey",
-                    "satoshis",
-                    "confirmations",
-                    "height",
-                    "dune_amount"
-                ],
-                "properties": {
-                    "address": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "dune_amount": {
-                        "type": "string"
-                    },
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "satoshis": {
-                        "type": "string"
-                    },
-                    "script_pubkey": {
-                        "type": "string"
-                    },
-                    "txid": {
-                        "type": "string"
-                    },
-                    "vout": {
-                        "type": "integer",
-                        "format": "int32",
-                        "minimum": 0
-                    }
-                }
-            },
-            "InscriptionAndOffset": {
-                "type": "object",
-                "required": ["offset", "inscription_id"],
-                "properties": {
-                    "inscription_id": {
-                        "type": "string"
-                    },
-                    "offset": {
-                        "type": "integer",
-                        "format": "int32",
-                        "minimum": 0
-                    }
-                }
-            },
-            "InscriptionByAddress": {
-                "type": "object",
-                "required": [
-                    "inscription_id",
-                    "satoshis",
-                    "utxo_sat_offset",
-                    "utxo_txid",
-                    "utxo_vout",
-                    "utxo_block_height",
-                    "utxo_confirmations"
-                ],
-                "properties": {
-                    "inscription_id": {
-                        "type": "string",
-                        "description": "String representation of the inscription ID, whose first coordinate is the reveal\ntransaction hash, and the second coordinate is the index of inscription in the reveal\ntransaction."
-                    },
-                    "satoshis": {
-                        "type": "string",
-                        "description": "Total number of satoshis in the UTxO containing the inscription."
-                    },
-                    "utxo_block_height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Block height of the UTxO containing the inscription.",
-                        "minimum": 0
-                    },
-                    "utxo_confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of confirmations of the block where the UTxO containing the inscription was created.",
-                        "minimum": 0
-                    },
-                    "utxo_sat_offset": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Inscribed sat offset in the UTxO containing it.",
-                        "minimum": 0
-                    },
-                    "utxo_txid": {
-                        "type": "string",
-                        "description": "Tx ID of the UTxO containing the inscription."
-                    },
-                    "utxo_vout": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Output index of the UTxO containing the inscription.",
-                        "minimum": 0
-                    }
-                }
-            },
-            "InscriptionInfo": {
-                "type": "object",
-                "required": [
-                    "inscription_id",
-                    "created_at",
-                    "inscription_num",
-                    "content_length"
-                ],
-                "properties": {
-                    "content_body_preview": {
-                        "type": "string",
-                        "description": "Preview of inscription content body raw data. Max: 100 bytes.\nSupported types: \"text/plain\", \"text/plain;charset=utf-8\", \"application/json\".",
-                        "nullable": true
-                    },
-                    "content_length": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Length of entire inscription content body bytes array.",
-                        "minimum": 0
-                    },
-                    "content_type": {
-                        "type": "string",
-                        "description": "Type of the content body.",
-                        "nullable": true
-                    },
-                    "created_at": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Block height of the reveal transaction.",
-                        "minimum": 0
-                    },
-                    "inscription_id": {
-                        "type": "string",
-                        "description": "String representation of the inscription ID, whose first coordinate is the reveal\ntransaction hash, and the second coordinate is the index of inscription in the reveal\ntransaction."
-                    },
-                    "inscription_num": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Global inscription number.",
-                        "minimum": 0
-                    }
-                }
-            },
-            "InvolvedTransaction": {
-                "type": "object",
-                "required": ["tx_hash", "height", "input", "output"],
-                "properties": {
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Height of the block which included the transaction",
-                        "minimum": 0
-                    },
-                    "input": {
-                        "type": "boolean",
-                        "description": "Address/pubkey controlled an input UTxO"
-                    },
-                    "output": {
-                        "type": "boolean",
-                        "description": "Address/pubkey controlled an output UTxO"
-                    },
-                    "tx_hash": {
-                        "type": "string",
-                        "description": "The transaction's txid"
-                    }
-                }
-            },
-            "LastUpdated": {
-                "type": "object",
-                "required": ["block_hash", "block_height"],
-                "properties": {
-                    "block_hash": {
-                        "type": "string"
-                    },
-                    "block_height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    }
-                }
-            },
-            "Network": {
-                "type": "string",
-                "enum": ["Mainnet", "Testnet", "Signet", "Regtest"]
-            },
-            "PaginatedAddressDuneUtxo": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/AddressDuneUtxo"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedContentBody": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "$ref": "#/components/schemas/ContentBody"
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedDrc20Holder": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Drc20Holder"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedDrc20Ticker": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Drc20Ticker"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedDuneHolder": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/DuneHolder"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedDuneIdAndName": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/DuneIdAndName"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedDuneUtxo": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/DuneUtxo"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedInscriptionByAddress": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/InscriptionByAddress"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedInvolvedTransaction": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/InvolvedTransaction"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedTransferInscriptionByAddress": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/TransferInscriptionByAddress"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "PaginatedUtxo": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Utxo"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    },
-                    "next_cursor": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "Payload": {
-                "oneOf": [
-                    {
-                        "type": "object",
-                        "required": ["PubkeyHash"],
-                        "properties": {
-                            "PubkeyHash": {
-                                "$ref": "#/components/schemas/PubkeyHash"
-                            }
-                        }
-                    },
-                    {
-                        "type": "object",
-                        "required": ["ScriptHash"],
-                        "properties": {
-                            "ScriptHash": {
-                                "$ref": "#/components/schemas/ScriptHash"
-                            }
-                        }
-                    },
-                    {
-                        "type": "object",
-                        "required": ["WitnessProgram"],
-                        "properties": {
-                            "WitnessProgram": {
-                                "type": "object",
-                                "description": "Segwit addresses",
-                                "required": ["version", "program"],
-                                "properties": {
-                                    "program": {
-                                        "type": "string",
-                                        "format": "binary",
-                                        "description": "The witness program"
-                                    },
-                                    "version": {
-                                        "type": "integer",
-                                        "format": "int32",
-                                        "description": "The witness program version",
-                                        "minimum": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                ]
-            },
-            "PubkeyHash": {
-                "type": "string",
-                "format": "binary"
-            },
-            "Script": {
-                "type": "string",
-                "format": "binary"
-            },
-            "ScriptHash": {
-                "type": "string",
-                "format": "binary"
-            },
-            "SignedAmount": {
-                "type": "integer",
-                "format": "int64"
-            },
-            "Terms": {
-                "type": "object",
-                "properties": {
-                    "amount_per_mint": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "end_height": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "end_offset": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "mint_txs_cap": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "start_height": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "start_offset": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
-            },
-            "TimestampedDrc20Info": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "$ref": "#/components/schemas/Drc20Info"
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    }
-                }
-            },
-            "TimestampedDrc20Quantities": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    }
-                }
-            },
-            "TimestampedDuneInfo": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "$ref": "#/components/schemas/DuneInfo"
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    }
-                }
-            },
-            "TimestampedDuneQuantities": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        }
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    }
-                }
-            },
-            "TimestampedInscriptionInfo": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "$ref": "#/components/schemas/InscriptionInfo"
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    }
-                }
-            },
-            "TimestampedTotalBalanceByAddress": {
-                "type": "object",
-                "required": ["data", "last_updated"],
-                "properties": {
-                    "data": {
-                        "type": "string"
-                    },
-                    "last_updated": {
-                        "$ref": "#/components/schemas/LastUpdated"
-                    }
-                }
-            },
-            "TransactionId": {
-                "type": "string"
-            },
-            "TransferInscriptionByAddress": {
-                "type": "object",
-                "required": [
-                    "ticker",
-                    "inscription_id",
-                    "token_amount",
-                    "sat_amount",
-                    "utxo_txid",
-                    "utxo_vout",
-                    "utxo_sat_offset",
-                    "utxo_block_height",
-                    "utxo_confirmations"
-                ],
-                "properties": {
-                    "inscription_id": {
-                        "type": "string",
-                        "description": "String representation of an inscription ID, whose first coordinate is the reveal\ntransaction hash, and the second coordinate is the index of the new inscription."
-                    },
-                    "sat_amount": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of sats locked in the UTxO.",
-                        "minimum": 0
-                    },
-                    "ticker": {
-                        "type": "string"
-                    },
-                    "token_amount": {
-                        "type": "string",
-                        "description": "Number of tokens locked in the UTxO."
-                    },
-                    "utxo_block_height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Block height of the UTxO containing the inscription.",
-                        "minimum": 0
-                    },
-                    "utxo_confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Number of confirmations of the block where the UTxO containing the inscription was created.",
-                        "minimum": 0
-                    },
-                    "utxo_sat_offset": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Offset of inscribed sat in the UTxO containing it.",
-                        "minimum": 0
-                    },
-                    "utxo_txid": {
-                        "type": "string",
-                        "description": "Tx ID of the UTxO containing the inscription."
-                    },
-                    "utxo_vout": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Output index of the UTxO containing the inscription.",
-                        "minimum": 0
-                    }
-                }
-            },
-            "Utxo": {
-                "type": "object",
-                "required": [
-                    "txid",
-                    "vout",
-                    "script_pubkey",
-                    "satoshis",
-                    "confirmations",
-                    "height",
-                    "dunes",
-                    "inscriptions"
-                ],
-                "properties": {
-                    "address": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "confirmations": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "dunes": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/DuneAndAmount"
-                        }
-                    },
-                    "height": {
-                        "type": "integer",
-                        "format": "int64",
-                        "minimum": 0
-                    },
-                    "inscriptions": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/InscriptionAndOffset"
-                        }
-                    },
-                    "satoshis": {
-                        "type": "string"
-                    },
-                    "script_pubkey": {
-                        "type": "string"
-                    },
-                    "txid": {
-                        "type": "string"
-                    },
-                    "vout": {
-                        "type": "integer",
-                        "format": "int32",
-                        "minimum": 0
-                    }
-                }
+              }
             }
-        },
-        "securitySchemes": {
-            "api-key": {
-                "type": "apiKey",
-                "in": "header",
-                "name": "api-key",
-                "description": "Project API Key"
-            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
         }
+      }
     },
-    "security": [
-        {
-            "api-key": []
+    "/assets/drc20/{ticker}/holders": {
+      "get": {
+        "tags": [
+          "DRC20"
+        ],
+        "summary": "DRC20 Holders",
+        "description": "Script pubkeys or addresses that hold the specified DRC20\ntoken and corresponding total balances.",
+        "operationId": "drc20_holders_by_ticker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "description": "DRC20 ticker string",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "TUAH"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDrc20Holder"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "address": "DNG3G7pKc1DgciyWs36GFUnVyvJieDhKdb",
+                      "balance": "9000000.000000000000000000",
+                      "script_pubkey": "0014f6aa24e0d1e39edc330dbfa7376e896437f7e14b"
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "00000000000000000002747b9e3c0097172bc23489d686e8b885a6fa89c2c4da",
+                    "block_height": 850534
+                  },
+                  "next_cursor": "19FwuaejD9hE1R4ckTQKaqe0ecA"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
         }
-    ]
+      }
+    },
+    "/assets/dunes": {
+      "get": {
+        "tags": [
+          "Dunes"
+        ],
+        "summary": "List Dunes",
+        "description": "Returns a list of ID and names of all deployed Dune assets.",
+        "operationId": "list_dunes",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDuneIdAndName"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "5228806:44",
+                      "spaced_name": "JUST•SEND•ITTTT"
+                    },
+                    {
+                      "id": "5228811:6",
+                      "spaced_name": "MOMMAWEMADEIT"
+                    },
+                    {
+                      "id": "5228827:57",
+                      "spaced_name": "BOOK•ON•DUNESSS"
+                    },
+                    {
+                      "id": "5228850:19",
+                      "spaced_name": "TODAY•TOMORROW"
+                    },
+                    {
+                      "id": "5228851:15",
+                      "spaced_name": "TOMORROW•TODAY"
+                    },
+                    {
+                      "id": "5229366:35",
+                      "spaced_name": "PEPE•MEME•KING"
+                    },
+                    {
+                      "id": "5244144:12",
+                      "spaced_name": "DOGECOIN•FIWB"
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "85bd0d5594a7cd024ee6b3f345ea2e8ca0725a96fe751f5487202064dbb64b1c",
+                    "block_height": 5251959
+                  },
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/assets/dunes/{dune}": {
+      "get": {
+        "tags": [
+          "Dunes"
+        ],
+        "summary": "Dunes Info",
+        "description": "Returns information about the specified Dune, including etching information,\ncurrent supply and number of holders.",
+        "operationId": "info_by_dune",
+        "parameters": [
+          {
+            "name": "dune",
+            "in": "path",
+            "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2519999:31"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimestampedDuneInfo"
+                },
+                "example": {
+                  "data": {
+                    "divisibility": 8,
+                    "etching_cenotaph": false,
+                    "etching_height": 5280961,
+                    "etching_tx": "39a7cc8155a9e68692ee280e2dfb5a4007cfa5f83f2801abf10fb2682ee3fabc",
+                    "id": "5280961:140",
+                    "max_supply": "1000000000000.00000000",
+                    "mints": 2,
+                    "name": "TESTTESTTEEST",
+                    "spaced_name": "TEST•TEST•TEEST",
+                    "symbol": "a",
+                    "terms": {
+                      "amount_per_mint": "1000.00000000",
+                      "end_height": "5290000",
+                      "end_offset": null,
+                      "mint_txs_cap": "1000000000",
+                      "start_height": "5280850",
+                      "start_offset": null
+                    },
+                    "unique_holders": 2
+                  },
+                  "last_updated": {
+                    "block_hash": "304f07cefebe68472f2ceb02706f9a3b5a9e9ecb3534ec34923799c8ecd7f27d",
+                    "block_height": 5303197
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/assets/dunes/{dune}/holders": {
+      "get": {
+        "tags": [
+          "Dunes"
+        ],
+        "summary": "Holders by Dune",
+        "description": "List of all addresses that hold the specified Dune, with the respective amounts.",
+        "operationId": "holders_by_dune",
+        "parameters": [
+          {
+            "name": "dune",
+            "in": "path",
+            "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5095478:8"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDuneHolder"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "address": "bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v",
+                      "balance": "9000000.000000000000000000",
+                      "script_pubkey": "0014f6aa24e0d1e39edc330dbfa7376e896437f7e14b"
+                    },
+                    {
+                      "address": "bc1pqfhj6tlxgpvc72mvn9hh0z666k45fpxgsej92d9q08sfe572mhlqca68ld",
+                      "balance": "420000.000000000000000000",
+                      "script_pubkey": "5120026f2d2fe640598f2b6c996f778b5ad5ab4484c886645534a079e09cd3caddfe"
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "00000000000000000002747b9e3c0097172bc23489d686e8b885a6fa89c2c4da",
+                    "block_height": 850534
+                  },
+                  "next_cursor": "19FwuaejD9hE1R4ckTQKaqe0ecA"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/assets/dunes/{dune}/utxos": {
+      "get": {
+        "tags": [
+          "Dunes"
+        ],
+        "summary": "UTxOs by Dunes",
+        "description": "Returns a list of UTxOs which contain some of the specified Dune.",
+        "operationId": "utxos_by_dune",
+        "parameters": [
+          {
+            "name": "dune",
+            "in": "path",
+            "description": "Dune, specified either by the Dune ID (etching block number and transaction index) or name (spaced or un-spaced)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2519999:31"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of results per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "The order in which the results are sorted (by height at which UTxO was produced)",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "default": "asc",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Return only UTxOs created on or after a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Return only UTxOs created on or before a specific height",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string, use the cursor included in a page of results to fetch the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDuneUtxo"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "address": "D8UC42uehZdBYAfMBJumQKuBNs9vvarxtt",
+                      "confirmations": 1336,
+                      "dune_amount": "0.00001000",
+                      "height": 5280972,
+                      "satoshis": "100000",
+                      "script_pubkey": "76a9142484e20925fa4d816f04b313b07162a0f5f0961a88ac",
+                      "txid": "cd990aa533ffb733934344fafbc07350ba5945a5a50fca3adb9845573a99e545",
+                      "vout": 1
+                    },
+                    {
+                      "address": "D8vgB8Viu2ZGMKBUHh4khtS9FzR6B1D4cK",
+                      "confirmations": 1323,
+                      "dune_amount": "1000.00000000",
+                      "height": 5280985,
+                      "satoshis": "100000",
+                      "script_pubkey": "76a91429872c5e5a0a611372348ae5afd278a446dd155f88ac",
+                      "txid": "55e0351b8904a44a337491da372d53138991f642a4eafb5d4a86c66cd30eb1fd",
+                      "vout": 1
+                    }
+                  ],
+                  "last_updated": {
+                    "block_hash": "caf5db9cfd306cccaec5f4fc92a3f47d9aa8e4007b3b74b6bdf97aab5f68808f",
+                    "block_height": 5282308
+                  },
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/assets/inscriptions/{inscription_id}": {
+      "get": {
+        "tags": [
+          "Inscriptions"
+        ],
+        "summary": "Inscription Info",
+        "description": "Information about an inscription. A preview of the content body is given only if its type is\n\"text/plain\". For the whole content, use the complementary endpoint, namely\n`/assets/inscriptions/{inscription_id}/content_body`.",
+        "operationId": "inscription_info",
+        "parameters": [
+          {
+            "name": "inscription_id",
+            "in": "path",
+            "description": "Inscription ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimestampedInscriptionInfo"
+                },
+                "example": {
+                  "data": {
+                    "content_body_preview": null,
+                    "content_length": 3035,
+                    "content_type": "text/html;charset=utf-8",
+                    "created_at": 842166,
+                    "inscription_id": "7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0",
+                    "inscription_num": 70634325
+                  },
+                  "last_updated": {
+                    "block_hash": "00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7",
+                    "block_height": 866710
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/assets/inscriptions/{inscription_id}/content_body": {
+      "get": {
+        "tags": [
+          "Inscriptions"
+        ],
+        "summary": "Content by Inscription ID",
+        "description": "Paginated response of the content body byte array of an inscription. This endpoint is\ncomplementary to the \"Inscription Information\" endpoint.",
+        "operationId": "content_by_inscription_id",
+        "parameters": [
+          {
+            "name": "inscription_id",
+            "in": "path",
+            "description": "Inscription ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "7d0a2dd897222913d58fc957b0429526117a0a61c964642fe93b077f328ccec1i0"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "The max number of bytes per page",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "type": "integer",
+                  "default": 100,
+                  "minimum": 0
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Pagination cursor string: the offset in the content body. Use the cursor to query for the next page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requested data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedContentBody"
+                },
+                "example": {
+                  "data": {
+                    "content_body_page": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiYw==",
+                    "remaining_bytes": 2935,
+                    "total_length": 3035
+                  },
+                  "last_updated": {
+                    "block_hash": "00000000000000000000ec10254178fe52253f40c1fad252e892d9aa22ee8fa7",
+                    "block_height": 866710
+                  },
+                  "next_cursor": "AAAAAAAAAGQ"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "404": {
+            "description": "Requested entity not found on-chain"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "required": [
+          "payload",
+          "network"
+        ],
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/Payload"
+          }
+        }
+      },
+      "AddressDuneUtxo": {
+        "type": "object",
+        "required": [
+          "txid",
+          "vout",
+          "satoshis",
+          "confirmations",
+          "height",
+          "dune_amount"
+        ],
+        "properties": {
+          "confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "dune_amount": {
+            "type": "string"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "satoshis": {
+            "type": "string"
+          },
+          "txid": {
+            "type": "string"
+          },
+          "vout": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
+      "ContentBody": {
+        "type": "object",
+        "required": [
+          "content_body_page",
+          "total_length",
+          "remaining_bytes"
+        ],
+        "properties": {
+          "content_body_page": {
+            "type": "string",
+            "description": "Base64-encoded representation of a slice of the inscription content body. All types supported."
+          },
+          "remaining_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of bytes remaining in the inscription content body.",
+            "minimum": 0
+          },
+          "total_length": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of bytes in entire inscription content body.",
+            "minimum": 0
+          }
+        }
+      },
+      "Drc20Holder": {
+        "type": "object",
+        "required": [
+          "script_pubkey",
+          "balance"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "balance": {
+            "type": "string"
+          },
+          "script_pubkey": {
+            "type": "string"
+          }
+        }
+      },
+      "Drc20Info": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "ticker_hex",
+          "deploy_inscription",
+          "holders",
+          "minted_supply",
+          "terms"
+        ],
+        "properties": {
+          "deploy_inscription": {
+            "type": "string"
+          },
+          "holders": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "minted_supply": {
+            "type": "string"
+          },
+          "terms": {
+            "$ref": "#/components/schemas/Drc20Terms"
+          },
+          "ticker": {
+            "type": "string"
+          },
+          "ticker_hex": {
+            "type": "string"
+          }
+        }
+      },
+      "Drc20Terms": {
+        "type": "object",
+        "required": [
+          "max",
+          "limit",
+          "dec"
+        ],
+        "properties": {
+          "dec": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "string"
+          },
+          "max": {
+            "type": "string"
+          }
+        }
+      },
+      "Drc20Ticker": {
+        "type": "string"
+      },
+      "DuneAndAmount": {
+        "type": "object",
+        "required": [
+          "dune_id",
+          "amount"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "dune_id": {
+            "type": "string"
+          }
+        }
+      },
+      "DuneHolder": {
+        "type": "object",
+        "required": [
+          "script_pubkey",
+          "balance"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "balance": {
+            "type": "string"
+          },
+          "script_pubkey": {
+            "type": "string"
+          }
+        }
+      },
+      "DuneIdAndName": {
+        "type": "object",
+        "required": [
+          "id",
+          "spaced_name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "spaced_name": {
+            "type": "string"
+          }
+        }
+      },
+      "DuneInfo": {
+        "type": "object",
+        "required": [
+          "id",
+          "etching_cenotaph",
+          "etching_tx",
+          "etching_height",
+          "name",
+          "spaced_name",
+          "divisibility",
+          "terms",
+          "circulating_supply",
+          "mints",
+          "unique_holders"
+        ],
+        "properties": {
+          "circulating_supply": {
+            "type": "string"
+          },
+          "divisibility": {
+            "type": "integer",
+            "format": "int32",
+            "description": "If no divisibility was specified, then this equals 0",
+            "minimum": 0
+          },
+          "etching_cenotaph": {
+            "type": "boolean"
+          },
+          "etching_height": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "etching_tx": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "max_supply": {
+            "type": "string",
+            "nullable": true
+          },
+          "mints": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "name": {
+            "type": "string"
+          },
+          "spaced_name": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string",
+            "nullable": true
+          },
+          "terms": {
+            "$ref": "#/components/schemas/Terms"
+          },
+          "unique_holders": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
+      },
+      "DuneUtxo": {
+        "type": "object",
+        "required": [
+          "txid",
+          "vout",
+          "script_pubkey",
+          "satoshis",
+          "confirmations",
+          "height",
+          "dune_amount"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "dune_amount": {
+            "type": "string"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "satoshis": {
+            "type": "string"
+          },
+          "script_pubkey": {
+            "type": "string"
+          },
+          "txid": {
+            "type": "string"
+          },
+          "vout": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
+      "InscriptionAndOffset": {
+        "type": "object",
+        "required": [
+          "offset",
+          "inscription_id"
+        ],
+        "properties": {
+          "inscription_id": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
+      "InscriptionByAddress": {
+        "type": "object",
+        "required": [
+          "inscription_id",
+          "satoshis",
+          "utxo_sat_offset",
+          "utxo_txid",
+          "utxo_vout",
+          "utxo_block_height",
+          "utxo_confirmations"
+        ],
+        "properties": {
+          "inscription_id": {
+            "type": "string",
+            "description": "String representation of the inscription ID, whose first coordinate is the reveal\ntransaction hash, and the second coordinate is the index of inscription in the reveal\ntransaction."
+          },
+          "satoshis": {
+            "type": "string",
+            "description": "Total number of satoshis in the UTxO containing the inscription."
+          },
+          "utxo_block_height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Block height of the UTxO containing the inscription.",
+            "minimum": 0
+          },
+          "utxo_confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of confirmations of the block where the UTxO containing the inscription was created.",
+            "minimum": 0
+          },
+          "utxo_sat_offset": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Inscribed sat offset in the UTxO containing it.",
+            "minimum": 0
+          },
+          "utxo_txid": {
+            "type": "string",
+            "description": "Tx ID of the UTxO containing the inscription."
+          },
+          "utxo_vout": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Output index of the UTxO containing the inscription.",
+            "minimum": 0
+          }
+        }
+      },
+      "InscriptionInfo": {
+        "type": "object",
+        "required": [
+          "inscription_id",
+          "created_at",
+          "inscription_num",
+          "content_length"
+        ],
+        "properties": {
+          "content_body_preview": {
+            "type": "string",
+            "description": "Preview of inscription content body raw data. Max: 100 bytes.\nSupported types: \"text/plain\", \"text/plain;charset=utf-8\", \"application/json\".",
+            "nullable": true
+          },
+          "content_length": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Length of entire inscription content body bytes array.",
+            "minimum": 0
+          },
+          "content_type": {
+            "type": "string",
+            "description": "Type of the content body.",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Block height of the reveal transaction.",
+            "minimum": 0
+          },
+          "inscription_id": {
+            "type": "string",
+            "description": "String representation of the inscription ID, whose first coordinate is the reveal\ntransaction hash, and the second coordinate is the index of inscription in the reveal\ntransaction."
+          },
+          "inscription_num": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Global inscription number.",
+            "minimum": 0
+          }
+        }
+      },
+      "InvolvedTransaction": {
+        "type": "object",
+        "required": [
+          "tx_hash",
+          "height",
+          "input",
+          "output"
+        ],
+        "properties": {
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Height of the block which included the transaction",
+            "minimum": 0
+          },
+          "input": {
+            "type": "boolean",
+            "description": "Address/pubkey controlled an input UTxO"
+          },
+          "output": {
+            "type": "boolean",
+            "description": "Address/pubkey controlled an output UTxO"
+          },
+          "tx_hash": {
+            "type": "string",
+            "description": "The transaction's txid"
+          }
+        }
+      },
+      "LastUpdated": {
+        "type": "object",
+        "required": [
+          "block_hash",
+          "block_height"
+        ],
+        "properties": {
+          "block_hash": {
+            "type": "string"
+          },
+          "block_height": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
+      },
+      "Network": {
+        "type": "string",
+        "enum": [
+          "Mainnet",
+          "Testnet",
+          "Signet",
+          "Regtest"
+        ]
+      },
+      "PaginatedAddressDuneUtxo": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddressDuneUtxo"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedContentBody": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedDrc20Holder": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Drc20Holder"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedDrc20Ticker": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Drc20Ticker"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedDuneHolder": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuneHolder"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedDuneIdAndName": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuneIdAndName"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedDuneUtxo": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuneUtxo"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedInscriptionByAddress": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionByAddress"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedInvolvedTransaction": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvolvedTransaction"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedTransferInscriptionByAddress": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferInscriptionByAddress"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedUtxo": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Utxo"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Payload": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "PubkeyHash"
+            ],
+            "properties": {
+              "PubkeyHash": {
+                "$ref": "#/components/schemas/PubkeyHash"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "ScriptHash"
+            ],
+            "properties": {
+              "ScriptHash": {
+                "$ref": "#/components/schemas/ScriptHash"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "WitnessProgram"
+            ],
+            "properties": {
+              "WitnessProgram": {
+                "type": "object",
+                "description": "Segwit addresses",
+                "required": [
+                  "version",
+                  "program"
+                ],
+                "properties": {
+                  "program": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The witness program"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The witness program version",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PubkeyHash": {
+        "type": "string",
+        "format": "binary"
+      },
+      "Script": {
+        "type": "string",
+        "format": "binary"
+      },
+      "ScriptHash": {
+        "type": "string",
+        "format": "binary"
+      },
+      "SignedAmount": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "Terms": {
+        "type": "object",
+        "properties": {
+          "amount_per_mint": {
+            "type": "string",
+            "nullable": true
+          },
+          "end_height": {
+            "type": "string",
+            "nullable": true
+          },
+          "end_offset": {
+            "type": "string",
+            "nullable": true
+          },
+          "mint_txs_cap": {
+            "type": "string",
+            "nullable": true
+          },
+          "start_height": {
+            "type": "string",
+            "nullable": true
+          },
+          "start_offset": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TimestampedDrc20Info": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Drc20Info"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          }
+        }
+      },
+      "TimestampedDrc20Quantities": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          }
+        }
+      },
+      "TimestampedDuneInfo": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DuneInfo"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          }
+        }
+      },
+      "TimestampedDuneQuantities": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          }
+        }
+      },
+      "TimestampedInscriptionInfo": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/InscriptionInfo"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          }
+        }
+      },
+      "TimestampedTotalBalanceByAddress": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/LastUpdated"
+          }
+        }
+      },
+      "TransactionId": {
+        "type": "string"
+      },
+      "TransferInscriptionByAddress": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "inscription_id",
+          "token_amount",
+          "sat_amount",
+          "utxo_txid",
+          "utxo_vout",
+          "utxo_sat_offset",
+          "utxo_block_height",
+          "utxo_confirmations"
+        ],
+        "properties": {
+          "inscription_id": {
+            "type": "string",
+            "description": "String representation of an inscription ID, whose first coordinate is the reveal\ntransaction hash, and the second coordinate is the index of the new inscription."
+          },
+          "sat_amount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of sats locked in the UTxO.",
+            "minimum": 0
+          },
+          "ticker": {
+            "type": "string"
+          },
+          "token_amount": {
+            "type": "string",
+            "description": "Number of tokens locked in the UTxO."
+          },
+          "utxo_block_height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Block height of the UTxO containing the inscription.",
+            "minimum": 0
+          },
+          "utxo_confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of confirmations of the block where the UTxO containing the inscription was created.",
+            "minimum": 0
+          },
+          "utxo_sat_offset": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Offset of inscribed sat in the UTxO containing it.",
+            "minimum": 0
+          },
+          "utxo_txid": {
+            "type": "string",
+            "description": "Tx ID of the UTxO containing the inscription."
+          },
+          "utxo_vout": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Output index of the UTxO containing the inscription.",
+            "minimum": 0
+          }
+        }
+      },
+      "Utxo": {
+        "type": "object",
+        "required": [
+          "txid",
+          "vout",
+          "script_pubkey",
+          "satoshis",
+          "confirmations",
+          "height",
+          "dunes",
+          "inscriptions"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "confirmations": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "dunes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuneAndAmount"
+            }
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "inscriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InscriptionAndOffset"
+            }
+          },
+          "satoshis": {
+            "type": "string"
+          },
+          "script_pubkey": {
+            "type": "string"
+          },
+          "txid": {
+            "type": "string"
+          },
+          "vout": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api-key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api-key",
+        "description": "Project API Key"
+      }
+    }
+  },
+  "security": [
+    {
+      "api-key": []
+    }
+  ]
 }
