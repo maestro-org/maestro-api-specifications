@@ -17,7 +17,8 @@
             "pathModification": { "prepend": "/rpc" }
         },
         {
-            "inputFile": "../event-manager-api/openapi.json"
+            "inputFile": "../event-manager-api/openapi.json",
+            "pathModification": { "prepend": "/eventmanager" }
         },
         {
             "inputFile": "../market-price-api/openapi.json",
