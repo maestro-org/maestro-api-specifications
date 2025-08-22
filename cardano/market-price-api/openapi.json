@@ -74,9 +74,13 @@
             },
             "api.DexRespBody": {
                 "properties": {
-                    "dex": { "type": "string" },
+                    "dex": {
+                        "type": "string"
+                    },
                     "pairs": {
-                        "items": { "$ref": "#/components/schemas/api.Pair" },
+                        "items": {
+                            "$ref": "#/components/schemas/api.Pair"
+                        },
                         "type": "array",
                         "uniqueItems": false
                     }
@@ -105,8 +109,14 @@
                         "description": "Coin B size",
                         "type": "number"
                     },
-                    "dex": { "description": "DEX", "type": "string" },
-                    "pair": { "description": "Pair", "type": "string" },
+                    "dex": {
+                        "description": "DEX",
+                        "type": "string"
+                    },
+                    "pair": {
+                        "description": "Pair",
+                        "type": "string"
+                    },
                     "receiver_address": {
                         "description": "Receiver address",
                         "type": "string"
@@ -124,17 +134,27 @@
             },
             "api.Pair": {
                 "properties": {
-                    "coin_a_asset_name": { "type": "string" },
-                    "coin_a_policy": { "type": "string" },
-                    "coin_b_asset_name": { "type": "string" },
-                    "coin_b_policy": { "type": "string" },
-                    "pair": { "type": "string" }
+                    "coin_a_asset_name": {
+                        "type": "string"
+                    },
+                    "coin_a_policy": {
+                        "type": "string"
+                    },
+                    "coin_b_asset_name": {
+                        "type": "string"
+                    },
+                    "coin_b_policy": {
+                        "type": "string"
+                    },
+                    "pair": {
+                        "type": "string"
+                    }
                 },
                 "type": "object"
             }
         },
         "securitySchemes": {
-            "": {
+            "api-key": {
                 "description": "Project API Key",
                 "in": "header",
                 "name": "api-key",
@@ -143,7 +163,7 @@
         }
     },
     "info": {
-        "description": "Market endpoints dedicated to Cardano DeFi protocols \u0026 Ingestor.",
+        "description": "Market endpoints dedicated to Cardano DeFi protocols & Ingestor.",
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
@@ -151,7 +171,10 @@
         "title": "Cardano - Market Price API",
         "version": "0.1.0"
     },
-    "externalDocs": { "description": "", "url": "" },
+    "externalDocs": {
+        "description": "",
+        "url": ""
+    },
     "paths": {
         "/dexs": {
             "get": {
@@ -162,7 +185,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "items": { "type": "string" },
+                                    "items": {
+                                        "type": "string"
+                                    },
                                     "type": "array"
                                 }
                             }
@@ -204,14 +229,18 @@
                         "in": "path",
                         "name": "dex",
                         "required": true,
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "ADA-MIN",
                         "in": "path",
                         "name": "pair",
                         "required": true,
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "1h",
@@ -236,13 +265,17 @@
                         "description": "2023-04-01",
                         "in": "query",
                         "name": "from",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "2023-05-15",
                         "in": "query",
                         "name": "to",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "10000",
@@ -259,13 +292,18 @@
                         "description": "desc",
                         "in": "query",
                         "name": "sort",
-                        "schema": { "enum": ["asc", "desc"], "type": "string" }
+                        "schema": {
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "false",
                         "in": "query",
                         "name": "carry",
-                        "schema": { "type": "boolean" }
+                        "schema": {
+                            "type": "boolean"
+                        }
                     }
                 ],
                 "responses": {
@@ -317,26 +355,34 @@
                         "in": "path",
                         "name": "dex",
                         "required": true,
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "ADA-MIN",
                         "in": "path",
                         "name": "pair",
                         "required": true,
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "2023-04-01",
                         "in": "query",
                         "name": "from",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "2023-05-15",
                         "in": "query",
                         "name": "to",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "10000",
@@ -353,7 +399,10 @@
                         "description": "desc",
                         "in": "query",
                         "name": "sort",
-                        "schema": { "enum": ["asc", "desc"], "type": "string" }
+                        "schema": {
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -406,28 +455,39 @@
                         "in": "path",
                         "name": "dex",
                         "required": true,
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "DEX pair",
                         "example": "ADA-GENS",
                         "in": "query",
                         "name": "pair",
-                        "schema": { "maxLength": 8, "type": "string" }
+                        "schema": {
+                            "maxLength": 8,
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "Asset policy ID",
                         "example": "5ac3d4bdca238105a040a565e5d7e734b7c9e1630aec7650e809e34a",
                         "in": "query",
                         "name": "policy",
-                        "schema": { "maxLength": 56, "type": "string" }
+                        "schema": {
+                            "maxLength": 56,
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "Asset name",
                         "example": "534e454b5f53554e4441455f4c51",
                         "in": "query",
                         "name": "asset_name",
-                        "schema": { "maxLength": 56, "type": "string" }
+                        "schema": {
+                            "maxLength": 56,
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -468,5 +528,23 @@
         }
     },
     "openapi": "3.1.0",
-    "servers": [{ "url": "https://mainnet.gomaestro-api.org/v1/markets" }]
+    "servers": [
+        {
+            "description": "Cardano Mainnet",
+            "url": "https://mainnet.gomaestro-api.org/v1/markets"
+        },
+        {
+            "description": "Cardano Preprod",
+            "url": "https://preprod.gomaestro-api.org/v1/markets"
+        },
+        {
+            "description": "Cardano Preview",
+            "url": "https://preview.gomaestro-api.org/v1/markets"
+        }
+    ],
+    "security": [
+        {
+            "api-key": []
+        }
+    ]
 }

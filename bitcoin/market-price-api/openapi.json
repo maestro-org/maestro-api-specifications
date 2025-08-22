@@ -13,15 +13,21 @@
             },
             "bitcoin_api.PriceTimestamp": {
                 "properties": {
-                    "price": { "type": "number" },
-                    "timestamp": { "type": "integer" }
+                    "price": {
+                        "type": "number"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    }
                 },
                 "type": "object"
             },
             "bitcoin_api.PricesByTimestampsParams": {
                 "properties": {
                     "timestamps": {
-                        "items": { "type": "integer" },
+                        "items": {
+                            "type": "integer"
+                        },
                         "maxItems": 101,
                         "minItems": 1,
                         "type": "array",
@@ -45,18 +51,36 @@
             },
             "bitcoin_api.RunePriceRequest": {
                 "properties": {
-                    "rune_id": { "example": "BTC-840000:1", "type": "string" },
-                    "timestamp": { "example": 1746109820, "type": "integer" }
+                    "rune_id": {
+                        "example": "BTC-840000:1",
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "example": 1746109820,
+                        "type": "integer"
+                    }
                 },
                 "required": ["rune_id", "timestamp"],
                 "type": "object"
             },
             "bitcoin_api.RunePriceResponse": {
                 "properties": {
-                    "price_satoshi": { "example": 1654.98, "type": "number" },
-                    "price_usd": { "example": 2.46, "type": "number" },
-                    "rune_id": { "example": "BTC-840000:28", "type": "string" },
-                    "timestamp": { "example": 1746109820, "type": "integer" }
+                    "price_satoshi": {
+                        "example": 1654.98,
+                        "type": "number"
+                    },
+                    "price_usd": {
+                        "example": 2.46,
+                        "type": "number"
+                    },
+                    "rune_id": {
+                        "example": "BTC-840000:28",
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "example": 1746109820,
+                        "type": "integer"
+                    }
                 },
                 "type": "object"
             },
@@ -189,8 +213,10 @@
             "models.SupportedDexList": {
                 "properties": {
                     "data": {
-                        "example": ["magiceden"],
-                        "items": { "type": "string" },
+                        "example": ["all", "magiceden", "dotswap"],
+                        "items": {
+                            "type": "string"
+                        },
                         "type": "array",
                         "uniqueItems": false
                     }
@@ -272,7 +298,7 @@
             }
         },
         "securitySchemes": {
-            "": {
+            "api-key": {
                 "description": "Project API Key",
                 "in": "header",
                 "name": "api-key",
@@ -281,7 +307,7 @@
         }
     },
     "info": {
-        "description": "Maestro’s Market Price API delivers real-time, rollback-protected DEX trading activity alongside historical price mapping for both Bitcoin and Rune assets in USD. It combines deep network-level indexing with robust trade tracking, abstracting away the complexity of UTXO handling.\n#### Key Features:\n- **Mempool Awareness:** Provides insight into the latest trades from the mempool for the most dynamic price discovery.\n- **Rollback Protection:** Ensures price accuracy by tracking chain reorganizations and updating data accordingly—no stale or orphaned block data.\n- **Dual-Pipeline Indexing:** Separately indexes UTXOs and trades for accuracy and real-time responsiveness.\n- **Real-Time DEX Price Feeds:** Continuously updated trade and price data, optimized for wallets, traders, and analytics platforms.\n- **Historical Price Mapping:** Access time-series price data (USD) for both Bitcoin and Rune assets, enabling historical analysis and charting.\n\n#### Key Benefits for Developers:\n- Track accurate, chain-verified prices without maintaining your own indexers.\n- Build DEX-integrated wallets and apps with reliable, real-time market signals.\n- Identify and act on price trends immediately, with confidence the data won’t be invalidated by reorgs.",
+        "description": "Maestro’s Market Price API delivers real-time, rollback-protected DEX trading activity alongside historical price mapping for both Bitcoin and Rune assets in USD. It combines deep network-level indexing with robust trade tracking, abstracting away the complexity of UTXO handling.\n#### Key Features:\n- **Mempool Awareness:** Provides insight into the latest trades from the mempool for the most dynamic price discovery.\n- **Multi-DEX Support:** Query data from supported decentralized exchanges—including Magic Eden and Dotswap—individually or in aggregate.\n- **Rollback Protection:** Ensures price accuracy by tracking chain reorganizations and updating data accordingly—no stale or orphaned block data.\n- **Dual-Pipeline Indexing:** Separately indexes UTXOs and trades for accuracy and real-time responsiveness.\n- **Real-Time DEX Price Feeds:** Continuously updated trade and price data, optimized for wallets, traders, and analytics platforms.\n- **Historical Price Mapping:** Access time-series price data (USD) for both Bitcoin and Rune assets, enabling historical analysis and charting.\n\n#### Key Benefits for Developers:\n- Track accurate, chain-verified prices without maintaining your own indexers.\n- Build DEX-integrated wallets and apps with reliable, real-time market signals.\n- Identify and act on price trends immediately, with confidence the data won’t be invalidated by reorgs.",
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
@@ -289,11 +315,14 @@
         "title": "Bitcoin - Market Price API",
         "version": "0.1.0"
     },
-    "externalDocs": { "description": "", "url": "" },
+    "externalDocs": {
+        "description": "",
+        "url": ""
+    },
     "paths": {
         "/dexs": {
             "get": {
-                "description": "Retrieves a list of all decentralized exchanges (DEXs) currently indexed and supported by the API. This serves as the discovery endpoint for clients to programmatically identify valid DEX identifiers used in other endpoints like trades or OHLC queries.",
+                "description": "Retrieves a list of all options for decentralized exchanges (DEXs) currently indexed and supported by the API. This serves as the discovery endpoint for clients to programmatically identify valid DEX identifiers used in other endpoints like trades or OHLC queries. The all option represents all DEXs combined",
                 "operationId": "mkt-dexs",
                 "responses": {
                     "200": {
@@ -327,7 +356,7 @@
                         "description": "Server Error"
                     }
                 },
-                "summary": "Supported DEXs",
+                "summary": "Supported DEX options",
                 "tags": ["DEX"]
             }
         },
@@ -342,7 +371,11 @@
                         "in": "path",
                         "name": "dex",
                         "required": true,
-                        "schema": { "default": "magiceden", "type": "string" }
+                        "schema": {
+                            "default": "magiceden",
+                            "enum": ["all", "magiceden", "dotswap"],
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "Symbol of the Rune asset trading pair (BTC-Rune ID)",
@@ -393,14 +426,20 @@
                         "example": "1735689600",
                         "in": "query",
                         "name": "from",
-                        "schema": { "default": "1735689600", "type": "string" }
+                        "schema": {
+                            "default": "1735689600",
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "End timestamp in Unix",
                         "example": "1742428800",
                         "in": "query",
                         "name": "to",
-                        "schema": { "default": "1742428800", "type": "string" }
+                        "schema": {
+                            "default": "1742428800",
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "Limit number of Runes returned (min: 1, max: 50000)",
@@ -430,7 +469,10 @@
                         "example": false,
                         "in": "query",
                         "name": "carry",
-                        "schema": { "default": false, "type": "boolean" }
+                        "schema": {
+                            "default": false,
+                            "type": "boolean"
+                        }
                     }
                 ],
                 "responses": {
@@ -480,7 +522,11 @@
                         "in": "path",
                         "name": "dex",
                         "required": true,
-                        "schema": { "default": "magiceden", "type": "string" }
+                        "schema": {
+                            "default": "magiceden",
+                            "enum": ["all", "magiceden", "dotswap"],
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "Symbol of the Rune asset trading pair (BTC-Rune ID)",
@@ -509,14 +555,20 @@
                         "example": "1735689600",
                         "in": "query",
                         "name": "from",
-                        "schema": { "default": "1735689600", "type": "string" }
+                        "schema": {
+                            "default": "1735689600",
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "End timestamp in Unix",
                         "example": "1742428800",
                         "in": "query",
                         "name": "to",
-                        "schema": { "default": "1742428800", "type": "string" }
+                        "schema": {
+                            "default": "1742428800",
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "Limit number of Runes returned (min: 1, max: 50000)",
@@ -586,7 +638,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/bitcoin_api.PricesByTimestampsParams"
+                                "oneOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/bitcoin_api.PricesByTimestampsParams",
+                                        "summary": "request",
+                                        "description": "Array of UTC timestamps"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -634,17 +695,26 @@
         },
         "/prices/runes/batch": {
             "post": {
-                "description": "Returns Rune prices in USD and satoshi for the provided list of Rune ID \u003c\u003e UTC timestamps pairs.",
+                "description": "Returns Rune prices in USD and satoshi for the provided list of Rune ID <> UTC timestamps pairs.",
                 "operationId": "mkt-rune-prices-by-timestamps",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/bitcoin_api.RunePricesParams"
+                                "oneOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/bitcoin_api.RunePricesParams",
+                                        "summary": "request",
+                                        "description": "Array of RuneID <> UTC timestamp pairs"
+                                    }
+                                ]
                             }
                         }
                     },
-                    "description": "Array of RuneID \u003c\u003e UTC timestamp pairs",
+                    "description": "Array of RuneID <> UTC timestamp pairs",
                     "required": true
                 },
                 "responses": {
@@ -692,12 +762,14 @@
                 "operationId": "mkt-rune-price-by-timestamp",
                 "parameters": [
                     {
-                        "description": "Rune ID in the format \u003cetching_block\u003e:\u003cetching_tx\u003e",
+                        "description": "Rune ID in the format <etching_block>:<etching_tx>",
                         "example": "BTC-840000:28",
                         "in": "path",
                         "name": "rune_id",
                         "required": true,
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "description": "Unix timestamp in seconds",
@@ -705,7 +777,9 @@
                         "in": "path",
                         "name": "timestamp",
                         "required": true,
-                        "schema": { "type": "integer" }
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -764,7 +838,9 @@
                         "in": "path",
                         "name": "timestamp",
                         "required": true,
-                        "schema": { "type": "integer" }
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -891,5 +967,19 @@
         }
     },
     "openapi": "3.1.0",
-    "servers": [{ "url": "https://xbt-mainnet.gomaestro-api.org/v0/markets" }]
+    "servers": [
+        {
+            "description": "Bitcoin Mainnet",
+            "url": "https://xbt-mainnet.gomaestro-api.org/v0/markets"
+        },
+        {
+            "description": "Bitcoin Testnet (coming soon)",
+            "url": "https://xbt-testnet.gomaestro-api.org/v0/markets"
+        }
+    ],
+    "security": [
+        {
+            "api-key": []
+        }
+    ]
 }
