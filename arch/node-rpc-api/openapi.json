@@ -750,7 +750,7 @@
             }
         },
         "securitySchemes": {
-            "ApiKeyAuth": {
+            "api-key": {
                 "description": "Project API Key",
                 "in": "header",
                 "name": "api-key",
@@ -776,10 +776,18 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "items": {
-                                    "type": "integer"
-                                },
-                                "type": "array"
+                                "oneOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "title": "_",
+                                        "type": "array"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -837,10 +845,18 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "items": {
-                                    "type": "integer"
-                                },
-                                "type": "array"
+                                "oneOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "title": "_",
+                                        "type": "array"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -1544,7 +1560,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/api_arch.ProgramAccountsRequestBody"
+                                "oneOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/api_arch.ProgramAccountsRequestBody",
+                                        "summary": "_",
+                                        "description": "Program accounts request"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -1918,7 +1943,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
+                                "oneOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/api_arch.RuntimeTransaction",
+                                        "summary": "_",
+                                        "description": "Runtime transaction"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -1986,10 +2020,18 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "items": {
-                                    "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
-                                },
-                                "type": "array"
+                                "oneOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "items": {
+                                            "$ref": "#/components/schemas/api_arch.RuntimeTransaction"
+                                        },
+                                        "title": "_",
+                                        "type": "array"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -2190,8 +2232,17 @@
     "openapi": "3.1.0",
     "servers": [
         {
+            "url": "https://arch-mainnet.gomaestro-api.org/v0/rpc",
+            "description": "Arch Mainnet"
+        },
+        {
             "description": "Arch Testnet",
             "url": "https://arch-testnet.gomaestro-api.org/v0/rpc"
+        }
+    ],
+    "security": [
+        {
+            "api-key": []
         }
     ]
 }
