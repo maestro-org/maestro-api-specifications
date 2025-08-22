@@ -8188,7 +8188,7 @@
     },
     "/markets/dexs": {
       "get": {
-        "description": "Retrieves a list of all decentralized exchanges (DEXs) currently indexed and supported by the API. This serves as the discovery endpoint for clients to programmatically identify valid DEX identifiers used in other endpoints like trades or OHLC queries.",
+        "description": "Retrieves a list of all options for decentralized exchanges (DEXs) currently indexed and supported by the API. This serves as the discovery endpoint for clients to programmatically identify valid DEX identifiers used in other endpoints like trades or OHLC queries. The all option represents all DEXs combined",
         "operationId": "mkt-dexs",
         "responses": {
           "200": {
@@ -8222,7 +8222,7 @@
             "description": "Server Error"
           }
         },
-        "summary": "Supported DEXs",
+        "summary": "Supported DEX options",
         "tags": [
           "DEX"
         ]
@@ -8241,6 +8241,11 @@
             "required": true,
             "schema": {
               "default": "magiceden",
+              "enum": [
+                "all",
+                "magiceden",
+                "dotswap"
+              ],
               "type": "string"
             }
           },
@@ -8400,6 +8405,11 @@
             "required": true,
             "schema": {
               "default": "magiceden",
+              "enum": [
+                "all",
+                "magiceden",
+                "dotswap"
+              ],
               "type": "string"
             }
           },
@@ -8522,7 +8532,16 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bitcoin_api.PricesByTimestampsParams"
+                "oneOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "$ref": "#/components/schemas/bitcoin_api.PricesByTimestampsParams",
+                    "summary": "request",
+                    "description": "Array of UTC timestamps"
+                  }
+                ]
               }
             }
           },
@@ -8578,7 +8597,16 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bitcoin_api.RunePricesParams"
+                "oneOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "$ref": "#/components/schemas/bitcoin_api.RunePricesParams",
+                    "summary": "request",
+                    "description": "Array of RuneID <> UTC timestamp pairs"
+                  }
+                ]
               }
             }
           },
@@ -15806,7 +15834,9 @@
         "properties": {
           "data": {
             "example": [
-              "magiceden"
+              "all",
+              "magiceden",
+              "dotswap"
             ],
             "items": {
               "type": "string"
