@@ -1250,7 +1250,7 @@
             }
         },
         "securitySchemes": {
-            "ApiKeyAuth": {
+            "api-key": {
                 "description": "Project API Key",
                 "in": "header",
                 "name": "api-key",
@@ -2754,6 +2754,15 @@
         {
             "description": "Bitcoin Mainnet",
             "url": "https://xbt-mainnet.gomaestro-api.org/v0/rpc"
+        },
+        {
+            "url": "https://xbt-testnet.gomaestro-api.org/v0/rpc",
+            "description": "Bitcoin Testnet"
+        }
+    ],
+    "security": [
+        {
+            "api-key": []
         }
     ]
 }
