@@ -69,7 +69,6 @@
                                         "stake_address": "stake_test1uzq7mcr5mmj2jeqqf5eaxxd4sdzvszqnd26vnz5nvn0mcaqte3ycr",
                                         "registered": true,
                                         "delegated_pool": "pool1egfg26w0syqly9qc65hz33gqv2qrzyka8tfue3ccsk3c73a56jp",
-                                        "delegated_drep": "drep1ydvwp8x9j8u4flwjqwxf8jdjwp9p4zf2x4rk7vv7fgzk6j2k7c6",
                                         "rewards_available": 24648659341,
                                         "utxo_balance": 249497357989,
                                         "total_balance": 274146017330,
@@ -3187,7 +3186,7 @@
                 }
             }
         },
-        "/chain-tip": {
+        "/general/chain-tip": {
             "get": {
                 "tags": ["General"],
                 "summary": "Chain-tip",
@@ -3587,7 +3586,7 @@
                 }
             }
         },
-        "/era-summaries": {
+        "/general/era-summaries": {
             "get": {
                 "tags": ["General"],
                 "summary": "Era summary",
@@ -3776,20 +3775,6 @@
                     },
                     "500": {
                         "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/healthcheck": {
-            "get": {
-                "tags": ["crate"],
-                "operationId": "healthcheck",
-                "responses": {
-                    "200": {
-                        "description": "Service is working"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
                     }
                 }
             }
@@ -5572,7 +5557,7 @@
                 }
             }
         },
-        "/protocol-parameters": {
+        "/general/protocol-parameters": {
             "get": {
                 "tags": ["General"],
                 "summary": "Protocol parameters",
@@ -5915,7 +5900,7 @@
                 }
             }
         },
-        "/system-start": {
+        "/general/system-start": {
             "get": {
                 "tags": ["General"],
                 "summary": "Blockchain system start",
@@ -7243,11 +7228,6 @@
                     "total_withdrawn"
                 ],
                 "properties": {
-                    "delegated_drep": {
-                        "type": "string",
-                        "description": "Bech32 DRep ID that the stake key is delegated to",
-                        "nullable": true
-                    },
                     "delegated_pool": {
                         "type": "string",
                         "description": "Bech32 pool ID that the stake key is delegated to",
