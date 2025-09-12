@@ -24,6 +24,11 @@
       "api-key": []
     }
   ],
+  "tags": [
+    {
+      "name": "EventManagerService"
+    }
+  ],
   "paths": {
     "/addresses/{address}/activity": {
       "get": {
@@ -7735,271 +7740,31 @@
         ]
       }
     },
-    "/eventmanager/logs": {
+    "/eventmanager/healthcheck": {
       "get": {
         "tags": [
-          "Logs"
+          "Health"
         ],
-        "summary": "User event logs",
-        "operationId": "event_manager_logs",
+        "summary": "Healthcheck",
+        "description": "Healthcheck",
+        "operationId": "EventManagerService_Healthcheck",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/eventLogList"
+                  "$ref": "#/components/schemas/public.event_manager.v1.HealthcheckResponse"
                 }
               }
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/logs/{id}": {
-      "get": {
-        "tags": [
-          "Logs"
-        ],
-        "summary": "Event log info by ID",
-        "operationId": "event_manager_log_info",
-        "parameters": [
-          {
-            "name": "id",
-            "description": "Event log ID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/eventLog"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/managers": {
-      "get": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "User event managers",
-        "operationId": "event_manager_list",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/eventManagerList"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "Create event manager",
-        "operationId": "event_manager_create",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/createEventManagerRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/eventManager"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventmanager/managers/{id}": {
-      "get": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "Event manager info by ID",
-        "operationId": "event_manager_info",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/eventManager"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "Delete event manager",
-        "operationId": "event_manager_delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/eventManager"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Managers"
-        ],
-        "summary": "Update event manager",
-        "operationId": "event_manager_update",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/updateEventManagerBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/eventManager"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/connect.error"
                 }
               }
             }
@@ -8012,25 +7777,26 @@
         "tags": [
           "Triggers"
         ],
-        "summary": "User event manager triggers",
-        "operationId": "event_manager_triggers",
+        "summary": "List Triggers",
+        "description": "List all triggers\n\n Returns all individual triggers associated with your event managers.",
+        "operationId": "EventManagerService_ListTriggers",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/triggerList"
+                  "$ref": "#/components/schemas/public.event_manager.v1.ListTriggersResponse"
                 }
               }
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/connect.error"
                 }
               }
             }
@@ -8041,13 +7807,14 @@
         "tags": [
           "Triggers"
         ],
-        "summary": "Create event manager trigger",
-        "operationId": "event_manager_trigger_create",
+        "summary": "Create Trigger",
+        "description": "Create a new trigger\n\n Adds a trigger to a manager to listen for specific blockchain activity.",
+        "operationId": "EventManagerService_CreateTrigger",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/createTriggerRequest"
+                "$ref": "#/components/schemas/public.event_manager.v1.CreateTriggerRequest"
               }
             }
           },
@@ -8055,21 +7822,21 @@
         },
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/trigger"
+                  "$ref": "#/components/schemas/public.event_manager.v1.CreateTriggerResponse"
                 }
               }
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/connect.error"
                 }
               }
             }
@@ -8082,74 +7849,37 @@
         "tags": [
           "Triggers"
         ],
-        "summary": "Event trigger info by ID",
-        "operationId": "event_manager_trigger_info",
+        "summary": "Get Trigger",
+        "description": "Fetch trigger details\n\n Returns metadata and configuration for a specific trigger identified by its unique `id`.",
+        "operationId": "EventManagerService_GetTrigger",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "title": "id"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/trigger"
+                  "$ref": "#/components/schemas/public.event_manager.v1.GetTriggerResponse"
                 }
               }
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Triggers"
-        ],
-        "summary": "Delete event manager trigger",
-        "operationId": "event_manager_trigger_delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/trigger"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/connect.error"
                 }
               }
             }
@@ -8160,15 +7890,17 @@
         "tags": [
           "Triggers"
         ],
-        "summary": "Update event manager trigger",
-        "operationId": "event_manager_trigger_update",
+        "summary": "Update Trigger",
+        "description": "Update a trigger\n\n Allows modification of a trigger's properties identified by its unique `id`.",
+        "operationId": "EventManagerService_UpdateTrigger",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "title": "id"
             }
           }
         ],
@@ -8176,7 +7908,86 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/updateTriggerBody"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "name"
+                  },
+                  "chain": {
+                    "type": "string",
+                    "examples": [
+                      "bitcoin"
+                    ],
+                    "title": "chain",
+                    "enum": [
+                      "bitcoin"
+                    ],
+                    "description": "Blockchain to listen on (bitcoin)"
+                  },
+                  "network": {
+                    "type": "string",
+                    "examples": [
+                      "mainnet"
+                    ],
+                    "title": "network",
+                    "enum": [
+                      "mainnet",
+                      "testnet"
+                    ],
+                    "description": "Network environment to listen on (mainnet)"
+                  },
+                  "type": {
+                    "type": "string",
+                    "examples": [
+                      "transaction"
+                    ],
+                    "title": "type",
+                    "enum": [
+                      "transaction"
+                    ],
+                    "description": "Trigger type, e.g., transaction"
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "examples": [
+                      "https://webhook.site/your-endpoint"
+                    ],
+                    "title": "webhook_url",
+                    "format": "uri",
+                    "description": "Webhook URL to receive events"
+                  },
+                  "filters": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/public.event_manager.v1.Filter"
+                    },
+                    "title": "filters"
+                  },
+                  "confirmations": {
+                    "type": "integer",
+                    "examples": [
+                      "5"
+                    ],
+                    "title": "confirmations",
+                    "format": "int32",
+                    "description": "Number of confirmations required for the transaction to be matched by this trigger"
+                  },
+                  "status": {
+                    "type": "string",
+                    "examples": [
+                      "active"
+                    ],
+                    "title": "status",
+                    "enum": [
+                      "active",
+                      "paused"
+                    ],
+                    "description": "Status of the trigger, either active or inactive"
+                  }
+                },
+                "title": "UpdateTriggerRequest",
+                "additionalProperties": false
               }
             }
           },
@@ -8184,21 +7995,253 @@
         },
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/trigger"
+                  "$ref": "#/components/schemas/public.event_manager.v1.UpdateTriggerResponse"
                 }
               }
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/connect.error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Triggers"
+        ],
+        "summary": "Delete Trigger",
+        "description": "Remove a trigger\n\n Deletes a specific trigger identified by its unique `id`, leaving the event manager intact.",
+        "operationId": "EventManagerService_DeleteTrigger",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/public.event_manager.v1.DeleteTriggerResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/connect.error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventmanager/triggers/trigger-condition-options": {
+      "get": {
+        "tags": [
+          "Triggers"
+        ],
+        "summary": "List Trigger Condition Options",
+        "description": "Fetch picklist options by name\n\n Returns a list of picklist options identified by its unique `name`.",
+        "operationId": "EventManagerService_GetTriggerConditionOptions",
+        "parameters": [
+          {
+            "name": "trigger_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "examples": [
+                "transaction"
+              ],
+              "title": "trigger_type",
+              "enum": [
+                "transaction"
+              ],
+              "description": "Condition key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/public.event_manager.v1.GetTriggerConditionOptionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/connect.error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventmanager/logs/{id}": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Get Event Log",
+        "description": "Fetch a single event log by ID\n\n Returns the payload, status, and response of a specific event log identified by its unique `id`.",
+        "operationId": "EventManagerService_GetEventLog",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/public.event_manager.v1.GetEventLogResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/connect.error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventmanager/logs": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "List Event Logs",
+        "description": "Fetch all event logs\n\n Returns a list of event logs that have been generated from event manager triggers. Each log captures a payload, response status, and other metadata.",
+        "operationId": "EventManagerService_ListEventLogs",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "examples": [
+                "1"
+              ],
+              "title": "page",
+              "minimum": 1,
+              "format": "int32",
+              "description": "Page number for paginated results (starts from 1)"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "examples": [
+                "20"
+              ],
+              "title": "limit",
+              "maximum": 100,
+              "minimum": 1,
+              "format": "int32",
+              "description": "Number of items per page"
+            }
+          },
+          {
+            "name": "trigger_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "examples": [
+                "trigger123"
+              ],
+              "title": "trigger_id",
+              "description": "Filter logs by trigger ID"
+            }
+          },
+          {
+            "name": "chain",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "examples": [
+                "bitcoin"
+              ],
+              "title": "chain",
+              "description": "Filter logs by chain"
+            }
+          },
+          {
+            "name": "network",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "examples": [
+                "mainnet"
+              ],
+              "title": "network",
+              "description": "Filter logs by network"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/public.event_manager.v1.ListEventLogsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/connect.error"
                 }
               }
             }
@@ -15419,276 +15462,727 @@
         },
         "type": "object"
       },
-      "updateEventManagerBody": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "chain": {
-            "$ref": "#/components/schemas/chain"
-          },
-          "network": {
-            "type": "string"
-          },
-          "webhookUrl": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "triggers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/trigger"
-            }
-          }
-        }
-      },
-      "updateTriggerBody": {
-        "type": "object",
-        "properties": {
-          "eventManagerId": {
-            "type": "string"
-          },
-          "triggerType": {
-            "$ref": "#/components/schemas/triggerType"
-          },
-          "trackedId": {
-            "type": "string"
-          }
-        }
-      },
-      "protobufAny": {
-        "type": "object",
-        "properties": {
-          "@type": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": {}
-      },
-      "rpcStatus": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "details": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/protobufAny"
-            }
-          }
-        }
-      },
-      "chain": {
+      "google.protobuf.NullValue": {
         "type": "string",
+        "title": "NullValue",
         "enum": [
-          "chain_unknown",
-          "bitcoin"
+          "NULL_VALUE"
         ],
-        "default": "chain_unknown"
+        "description": "`NullValue` is a singleton enumeration to represent the null value for the\n `Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`."
       },
-      "createEventManagerRequest": {
+      "google.protobuf.ListValue": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "chain": {
-            "$ref": "#/components/schemas/chain"
-          },
-          "network": {
-            "type": "string"
-          },
-          "webhookUrl": {
-            "type": "string"
-          },
-          "triggers": {
+          "values": {
             "type": "array",
             "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/createTriggerRequest"
-            }
+              "$ref": "#/components/schemas/google.protobuf.Value"
+            },
+            "title": "values",
+            "description": "Repeated field of dynamically typed values."
           }
         },
-        "title": "createEventManagerRequest"
+        "title": "ListValue",
+        "additionalProperties": false,
+        "description": "`ListValue` is a wrapper around a repeated field of values.\n\n The JSON representation for `ListValue` is JSON array."
       },
-      "createTriggerRequest": {
+      "google.protobuf.Struct": {
         "type": "object",
-        "properties": {
-          "eventManagerId": {
-            "type": "string"
-          },
-          "triggerType": {
-            "$ref": "#/components/schemas/triggerType"
-          },
-          "trackedId": {
-            "type": "string"
-          }
-        }
-      },
-      "eventLog": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "eventManagerId": {
-            "type": "string"
-          },
-          "triggerId": {
-            "type": "string"
-          },
-          "payload": {
-            "type": "string"
-          },
-          "response": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          }
+        "additionalProperties": {
+          "$ref": "#/components/schemas/google.protobuf.Value"
         },
-        "title": "eventLog"
+        "description": "`Struct` represents a structured data value, consisting of fields\n which map to dynamically typed values. In some languages, `Struct`\n might be supported by a native representation. For example, in\n scripting languages like JS a struct is represented as an\n object. The details of that representation are described together\n with the proto support for the language.\n\n The JSON representation for `Struct` is JSON object."
       },
-      "eventLogList": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/eventLog"
-            }
-          }
-        }
-      },
-      "eventManager": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "chain": {
-            "$ref": "#/components/schemas/chain"
-          },
-          "network": {
-            "type": "string"
-          },
-          "webhookUrl": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          }
-        }
-      },
-      "eventManagerList": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/eventManager"
-            }
-          }
-        }
-      },
-      "filter": {
+      "google.protobuf.Struct.FieldsEntry": {
         "type": "object",
         "properties": {
           "key": {
-            "type": "string"
-          },
-          "operator": {
-            "type": "string"
+            "type": "string",
+            "title": "key"
           },
           "value": {
-            "type": "string"
+            "title": "value",
+            "$ref": "#/components/schemas/google.protobuf.Value"
           }
-        }
+        },
+        "title": "FieldsEntry",
+        "additionalProperties": false
       },
-      "IDs": {
-        "type": "object",
-        "properties": {
-          "ids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "triggerList": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/trigger"
-            }
-          }
-        }
-      },
-      "trigger": {
-        "type": "object",
-        "properties": {
-          "id": {
+      "google.protobuf.Value": {
+        "oneOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "number"
+          },
+          {
             "type": "string"
           },
-          "eventManagerId": {
-            "type": "string"
+          {
+            "type": "boolean"
           },
-          "triggerType": {
-            "$ref": "#/components/schemas/triggerType"
+          {
+            "type": "array"
           },
-          "trackedId": {
-            "type": "string"
+          {
+            "type": "object",
+            "additionalProperties": true
+          }
+        ],
+        "description": "`Value` represents a dynamically typed value which can be either\n null, a number, a string, a boolean, a recursive struct value, or a\n list of values. A producer of value is expected to set one of these\n variants. Absence of any variant indicates an error.\n\n The JSON representation for `Value` is JSON value."
+      },
+      "public.event_manager.v1.CreateTriggerRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "name"
+          },
+          "chain": {
+            "type": "string",
+            "examples": [
+              "bitcoin"
+            ],
+            "title": "chain",
+            "enum": [
+              "bitcoin"
+            ],
+            "description": "Blockchain to listen on (bitcoin)"
+          },
+          "network": {
+            "type": "string",
+            "examples": [
+              "mainnet"
+            ],
+            "title": "network",
+            "enum": [
+              "mainnet",
+              "testnet"
+            ],
+            "description": "Network environment to listen on (mainnet)"
+          },
+          "type": {
+            "type": "string",
+            "examples": [
+              "transaction"
+            ],
+            "title": "type",
+            "enum": [
+              "transaction"
+            ],
+            "description": "Trigger type, e.g., transaction"
+          },
+          "webhook_url": {
+            "type": "string",
+            "examples": [
+              "https://webhook.site/your-endpoint"
+            ],
+            "title": "webhook_url",
+            "format": "uri",
+            "description": "Webhook URL to receive events"
           },
           "filters": {
             "type": "array",
             "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/filter"
-            }
+              "$ref": "#/components/schemas/public.event_manager.v1.Filter"
+            },
+            "title": "filters"
+          },
+          "confirmations": {
+            "type": "integer",
+            "examples": [
+              "5"
+            ],
+            "title": "confirmations",
+            "format": "int32",
+            "description": "Number of confirmations required for the transaction to be matched by this trigger"
           }
-        }
+        },
+        "title": "CreateTriggerRequest",
+        "additionalProperties": false
       },
-      "triggerType": {
-        "type": "string",
-        "enum": [
-          "trigger_type_unknown",
-          "transaction",
-          "sender",
-          "receiver",
-          "sender_or_receiver"
-        ],
-        "default": "trigger_type_unknown"
-      },
-      "userComputeCreditCounts": {
+      "public.event_manager.v1.CreateTriggerResponse": {
         "type": "object",
         "properties": {
-          "counts": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "format": "int64"
-            }
+          "data": {
+            "title": "data",
+            "$ref": "#/components/schemas/public.event_manager.v1.Trigger"
           }
-        }
+        },
+        "title": "CreateTriggerResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.DeleteTriggerRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "id"
+          }
+        },
+        "title": "DeleteTriggerRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.DeleteTriggerResponse": {
+        "type": "object",
+        "title": "DeleteTriggerResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.EventLog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "id"
+          },
+          "trigger_id": {
+            "type": "string",
+            "title": "trigger_id"
+          },
+          "payload": {
+            "title": "payload",
+            "$ref": "#/components/schemas/google.protobuf.Struct"
+          },
+          "response": {
+            "type": "string",
+            "title": "response"
+          },
+          "response_status": {
+            "type": "integer",
+            "title": "response_status",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "title": "status"
+          }
+        },
+        "title": "EventLog",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.Filter": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "examples": [
+              "sender"
+            ],
+            "title": "key",
+            "enum": [
+              "sender",
+              "receiver",
+              "sender_or_receiver",
+              "transaction_id",
+              "total_input_volume",
+              "fee",
+              "size",
+              "weight"
+            ],
+            "description": "Condition to match on: sender, receiver, sender_or_receiver (addresses), transaction_id, total_input_volume, fee, size, weight"
+          },
+          "operator": {
+            "type": "string",
+            "examples": [
+              "="
+            ],
+            "title": "operator",
+            "enum": [
+              "=",
+              ">",
+              ">=",
+              "<",
+              "<="
+            ],
+            "description": "Condition operation: =, >, >=, <, <=. Fields like receiver and transaction_id can only be exact (=)"
+          },
+          "value": {
+            "type": "string",
+            "title": "value"
+          }
+        },
+        "title": "Filter",
+        "additionalProperties": false,
+        "description": "For key in [sender, receiver, sender_or_receiver, transaction_id], operator must be '=':\n```\n!(this.key in ['sender', 'receiver', 'sender_or_receiver', 'transaction_id']) || this.operator == '='\n```\n\n"
+      },
+      "public.event_manager.v1.GetEventLogRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "id"
+          }
+        },
+        "title": "GetEventLogRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.GetEventLogResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "data",
+            "$ref": "#/components/schemas/public.event_manager.v1.EventLog"
+          }
+        },
+        "title": "GetEventLogResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.GetTriggerConditionOptionsRequest": {
+        "type": "object",
+        "properties": {
+          "trigger_type": {
+            "type": "string",
+            "examples": [
+              "transaction"
+            ],
+            "title": "trigger_type",
+            "enum": [
+              "transaction"
+            ],
+            "description": "Condition key"
+          }
+        },
+        "title": "GetTriggerConditionOptionsRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.GetTriggerConditionOptionsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/public.event_manager.v1.TriggerConditionOption"
+            },
+            "title": "data"
+          }
+        },
+        "title": "GetTriggerConditionOptionsResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.GetTriggerRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "id"
+          }
+        },
+        "title": "GetTriggerRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.GetTriggerResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "data",
+            "$ref": "#/components/schemas/public.event_manager.v1.Trigger"
+          }
+        },
+        "title": "GetTriggerResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.HealthcheckRequest": {
+        "type": "object",
+        "title": "HealthcheckRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.HealthcheckResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "status"
+          }
+        },
+        "title": "HealthcheckResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.ListEventLogsRequest": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "examples": [
+              "1"
+            ],
+            "title": "page",
+            "minimum": 1,
+            "format": "int32",
+            "description": "Page number for paginated results (starts from 1)"
+          },
+          "limit": {
+            "type": "integer",
+            "examples": [
+              "20"
+            ],
+            "title": "limit",
+            "maximum": 100,
+            "minimum": 1,
+            "format": "int32",
+            "description": "Number of items per page"
+          },
+          "trigger_id": {
+            "type": "string",
+            "examples": [
+              "trigger123"
+            ],
+            "title": "trigger_id",
+            "description": "Filter logs by trigger ID",
+            "nullable": true
+          },
+          "chain": {
+            "type": "string",
+            "examples": [
+              "bitcoin"
+            ],
+            "title": "chain",
+            "description": "Filter logs by chain",
+            "nullable": true
+          },
+          "network": {
+            "type": "string",
+            "examples": [
+              "mainnet"
+            ],
+            "title": "network",
+            "description": "Filter logs by network",
+            "nullable": true
+          }
+        },
+        "title": "ListEventLogsRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.ListEventLogsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/public.event_manager.v1.EventLog"
+            },
+            "title": "data"
+          }
+        },
+        "title": "ListEventLogsResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.ListTriggersRequest": {
+        "type": "object",
+        "title": "ListTriggersRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.ListTriggersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/public.event_manager.v1.Trigger"
+            },
+            "title": "data"
+          }
+        },
+        "title": "ListTriggersResponse",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.Trigger": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "id"
+          },
+          "name": {
+            "type": "string",
+            "title": "name"
+          },
+          "chain": {
+            "type": "string",
+            "examples": [
+              "bitcoin"
+            ],
+            "title": "chain",
+            "enum": [
+              "bitcoin"
+            ],
+            "description": "Blockchain to listen on (bitcoin)"
+          },
+          "network": {
+            "type": "string",
+            "examples": [
+              "mainnet"
+            ],
+            "title": "network",
+            "enum": [
+              "mainnet",
+              "testnet"
+            ],
+            "description": "Network environment to listen on (mainnet)"
+          },
+          "type": {
+            "type": "string",
+            "examples": [
+              "transaction"
+            ],
+            "title": "type",
+            "enum": [
+              "transaction"
+            ],
+            "description": "Trigger type, e.g., transaction"
+          },
+          "webhook_url": {
+            "type": "string",
+            "examples": [
+              "https://webhook.site/your-endpoint"
+            ],
+            "title": "webhook_url",
+            "format": "uri",
+            "description": "Webhook URL to receive events"
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/public.event_manager.v1.Filter"
+            },
+            "title": "filters"
+          },
+          "status": {
+            "type": "string",
+            "examples": [
+              "active"
+            ],
+            "title": "status",
+            "enum": [
+              "active",
+              "paused"
+            ],
+            "description": "Status of the trigger, either active or inactive"
+          },
+          "event_count": {
+            "type": [
+              "integer",
+              "string"
+            ],
+            "examples": [
+              "40"
+            ],
+            "title": "event_count",
+            "format": "int64",
+            "description": "Number of events triggered by this trigger"
+          },
+          "confirmations": {
+            "type": "integer",
+            "examples": [
+              "5"
+            ],
+            "title": "confirmations",
+            "format": "int32",
+            "description": "Number of confirmations required for the transaction to be matched by this trigger"
+          }
+        },
+        "title": "Trigger",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.TriggerConditionOption": {
+        "type": "object",
+        "properties": {
+          "trigger_type": {
+            "type": "string",
+            "title": "trigger_type"
+          },
+          "name": {
+            "type": "string",
+            "title": "name"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "display_name"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "values"
+          },
+          "sort_order": {
+            "type": "integer",
+            "title": "sort_order",
+            "format": "int32"
+          }
+        },
+        "title": "TriggerConditionOption",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.UpdateTriggerRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "id"
+          },
+          "name": {
+            "type": "string",
+            "title": "name"
+          },
+          "chain": {
+            "type": "string",
+            "examples": [
+              "bitcoin"
+            ],
+            "title": "chain",
+            "enum": [
+              "bitcoin"
+            ],
+            "description": "Blockchain to listen on (bitcoin)"
+          },
+          "network": {
+            "type": "string",
+            "examples": [
+              "mainnet"
+            ],
+            "title": "network",
+            "enum": [
+              "mainnet",
+              "testnet"
+            ],
+            "description": "Network environment to listen on (mainnet)"
+          },
+          "type": {
+            "type": "string",
+            "examples": [
+              "transaction"
+            ],
+            "title": "type",
+            "enum": [
+              "transaction"
+            ],
+            "description": "Trigger type, e.g., transaction"
+          },
+          "webhook_url": {
+            "type": "string",
+            "examples": [
+              "https://webhook.site/your-endpoint"
+            ],
+            "title": "webhook_url",
+            "format": "uri",
+            "description": "Webhook URL to receive events"
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/public.event_manager.v1.Filter"
+            },
+            "title": "filters"
+          },
+          "confirmations": {
+            "type": "integer",
+            "examples": [
+              "5"
+            ],
+            "title": "confirmations",
+            "format": "int32",
+            "description": "Number of confirmations required for the transaction to be matched by this trigger"
+          },
+          "status": {
+            "type": "string",
+            "examples": [
+              "active"
+            ],
+            "title": "status",
+            "enum": [
+              "active",
+              "paused"
+            ],
+            "description": "Status of the trigger, either active or inactive"
+          }
+        },
+        "title": "UpdateTriggerRequest",
+        "additionalProperties": false
+      },
+      "public.event_manager.v1.UpdateTriggerResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "data",
+            "$ref": "#/components/schemas/public.event_manager.v1.Trigger"
+          }
+        },
+        "title": "UpdateTriggerResponse",
+        "additionalProperties": false
+      },
+      "connect-protocol-version": {
+        "type": "number",
+        "title": "Connect-Protocol-Version",
+        "enum": [
+          1
+        ],
+        "description": "Define the version of the Connect protocol",
+        "const": 1
+      },
+      "connect-timeout-header": {
+        "type": "number",
+        "title": "Connect-Timeout-Ms",
+        "description": "Define the timeout, in ms"
+      },
+      "connect.error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "examples": [
+              "not_found"
+            ],
+            "enum": [
+              "canceled",
+              "unknown",
+              "invalid_argument",
+              "deadline_exceeded",
+              "not_found",
+              "already_exists",
+              "permission_denied",
+              "resource_exhausted",
+              "failed_precondition",
+              "aborted",
+              "out_of_range",
+              "unimplemented",
+              "internal",
+              "unavailable",
+              "data_loss",
+              "unauthenticated"
+            ],
+            "description": "The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]."
+          },
+          "message": {
+            "type": "string",
+            "description": "A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client."
+          },
+          "detail": {
+            "$ref": "#/components/schemas/google.protobuf.Any"
+          }
+        },
+        "title": "Connect Error",
+        "additionalProperties": true,
+        "description": "Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation"
+      },
+      "google.protobuf.Any": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "format": "binary"
+          },
+          "debug": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true,
+        "description": "Contains an arbitrary serialized message along with a @type that describes the type of the serialized message."
       },
       "bitcoin_api.APIError": {
         "properties": {
