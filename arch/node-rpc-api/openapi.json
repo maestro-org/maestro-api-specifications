@@ -2232,10 +2232,6 @@
     "openapi": "3.1.0",
     "servers": [
         {
-            "url": "https://arch-mainnet.gomaestro-api.org/v0/rpc",
-            "description": "Arch Mainnet"
-        },
-        {
             "description": "Arch Testnet",
             "url": "https://arch-testnet.gomaestro-api.org/v0/rpc"
         }
