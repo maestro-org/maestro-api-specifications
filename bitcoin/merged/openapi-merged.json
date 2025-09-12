@@ -1810,6 +1810,16 @@
             }
           },
           {
+            "name": "ignore_used_brc20",
+            "in": "query",
+            "description": "When used with exclude_metaprotocols=true, still include UTXOs which only contain used BRC20 inscriptions",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
             "name": "count",
             "in": "query",
             "description": "The max number of results per page",
@@ -4603,6 +4613,16 @@
             "name": "exclude_metaprotocols",
             "in": "query",
             "description": "Exclude UTxOs involved in metaprotocols (currently only runes and inscriptions will be discovered, more metaprotocols may be supported in future)",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_used_brc20",
+            "in": "query",
+            "description": "When used with exclude_metaprotocols=true, still include UTXOs which only contain used BRC20 inscriptions",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -10537,6 +10557,40 @@
           }
         }
       },
+      "DotswapRuneTrades": {
+        "type": "object",
+        "required": [
+          "block_height",
+          "trade_index",
+          "tx_hash",
+          "trades"
+        ],
+        "properties": {
+          "block_height": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Block height.",
+            "minimum": 0
+          },
+          "trade_index": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Trade tx index in the block.",
+            "minimum": 0
+          },
+          "trades": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Trade"
+            },
+            "description": "List of trades in the tx."
+          },
+          "tx_hash": {
+            "type": "string",
+            "description": "Transaction hash."
+          }
+        }
+      },
       "EstimatedBlock": {
         "type": "object",
         "required": [
@@ -11534,6 +11588,28 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DeprecatedRuneUtxoByAddress"
+            }
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/ChainTip"
+          },
+          "next_cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedDotswapRuneTrades": {
+        "type": "object",
+        "required": [
+          "data",
+          "last_updated"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DotswapRuneTrades"
             }
           },
           "last_updated": {
