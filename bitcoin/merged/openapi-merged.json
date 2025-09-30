@@ -7829,14 +7829,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/api_bitcoin.APIError"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/api_bitcoin.APIError"
                 }
               }
             },
