@@ -6287,6 +6287,38 @@
         ]
       }
     },
+    "/rpc/block/latest/height": {
+      "get": {
+        "description": "Block height of the chain tip.\nUseful for quickly checking the current chain tip without fetching full block data.",
+        "operationId": "rpc_latest_block_height",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_bitcoin.BlockHeightResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_bitcoin.APIError"
+                }
+              }
+            },
+            "description": "Error getting block height."
+          }
+        },
+        "summary": "Latest Block Height",
+        "tags": [
+          "Blocks"
+        ]
+      }
+    },
     "/rpc/block/range/{start_height}/{end_height}": {
       "get": {
         "description": "Fetches basic info for a contiguous block range (start and end height).",
@@ -7735,6 +7767,83 @@
           }
         },
         "summary": "Transaction Info",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/rpc/transaction/{tx_hash}/hex": {
+      "get": {
+        "description": "Raw encoded hex of a transaction.",
+        "operationId": "rpc_transaction_hex",
+        "parameters": [
+          {
+            "description": "Transaction hash.",
+            "in": "path",
+            "name": "tx_hash",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_bitcoin.TxHexResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_bitcoin.NodeRPCError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_bitcoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Invalid request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_bitcoin.APIError"
+                }
+              }
+            },
+            "description": "Transaction not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/api_bitcoin.APIError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/api_bitcoin.APIError"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Error processing transaction response."
+          }
+        },
+        "summary": "Transaction Hex",
         "tags": [
           "Transactions"
         ]
@@ -14607,6 +14716,17 @@
         },
         "type": "object"
       },
+      "api_bitcoin.BlockHeightResponseBody": {
+        "properties": {
+          "data": {
+            "type": "integer"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
+          }
+        },
+        "type": "object"
+      },
       "api_bitcoin.BlockMinerResponseBody": {
         "properties": {
           "data": {
@@ -15311,6 +15431,17 @@
           },
           "modified": {
             "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "api_bitcoin.TxHexResponseBody": {
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "last_updated": {
+            "$ref": "#/components/schemas/api_bitcoin.LastUpdatedBlock"
           }
         },
         "type": "object"
