@@ -4959,6 +4959,44 @@
         }
       }
     },
+    "/mempool/transactions/send": {
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Transaction Propagator",
+        "description": "Propagates a hex-encoded transaction to a globally distributed network of peers using Maestro's Global Mempool (MGM) system.\nRead more about [MGM](https://docs.gomaestro.org/bitcoin/mempool-monitoring-api/overview#global-mempool-infrastructure).",
+        "operationId": "send_transaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendTransactionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed query parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/mempool/transactions/{tx_hash}/metaprotocols": {
       "get": {
         "tags": [
@@ -13836,6 +13874,28 @@
             "type": "integer",
             "format": "int32",
             "minimum": 0
+          }
+        }
+      },
+      "SendTransactionRequest": {
+        "type": "object",
+        "required": [
+          "tx_hex"
+        ],
+        "properties": {
+          "tx_hex": {
+            "type": "string",
+            "description": "Hex-encoded raw transaction bytes"
+          }
+        }
+      },
+      "SendTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "txid": {
+            "type": "string",
+            "description": "Transaction hash (present if success is true)",
+            "nullable": true
           }
         }
       },
