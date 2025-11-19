@@ -897,6 +897,16 @@
               "type": "string"
             },
             "example": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8"
+          },
+          {
+            "name": "include_info",
+            "in": "query",
+            "description": "Include full rune information for each rune (default: false)",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -909,8 +919,28 @@
                 },
                 "example": {
                   "data": {
-                    "2584333:39": "100000.00",
-                    "2585186:140": "100000.000000000000"
+                    "840000:1": {
+                      "balance": "1111.00",
+                      "info": {
+                        "divisibility": 2,
+                        "etching_cenotaph": false,
+                        "etching_height": 840000,
+                        "etching_tx": "2bb85f4b004be6da54f766c17c1e855187327112c231ef2ff35ebad0ea67c69e",
+                        "id": "840000:1",
+                        "name": "ZZZZZFEHUZZZZZ",
+                        "premine": "110000000.00",
+                        "spaced_name": "Z•Z•Z•Z•Z•FEHU•Z•Z•Z•Z•Z",
+                        "symbol": "ᚠ",
+                        "terms": {
+                          "amount_per_mint": "1.00",
+                          "end_height": null,
+                          "end_offset": null,
+                          "mint_txs_cap": "1111111",
+                          "start_height": null,
+                          "start_offset": null
+                        }
+                      }
+                    }
                   },
                   "last_updated": {
                     "block_hash": "0000000088bee3b517745636443c8f11aff45209449300a5d8461c336e467925",
@@ -2956,6 +2986,7 @@
                 },
                 "example": {
                   "data": {
+                    "circulating_supply": "5226.00",
                     "divisibility": 2,
                     "etching_cenotaph": false,
                     "etching_height": 840000,
@@ -4328,6 +4359,16 @@
               "nullable": true,
               "minimum": 0
             }
+          },
+          {
+            "name": "include_info",
+            "in": "query",
+            "description": "Include full rune information for each rune (default: false)",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -4340,7 +4381,28 @@
                 },
                 "example": {
                   "data": {
-                    "867138:1861": "230000"
+                    "840000:1": {
+                      "balance": "1111.00",
+                      "info": {
+                        "divisibility": 2,
+                        "etching_cenotaph": false,
+                        "etching_height": 840000,
+                        "etching_tx": "2bb85f4b004be6da54f766c17c1e855187327112c231ef2ff35ebad0ea67c69e",
+                        "id": "840000:1",
+                        "name": "ZZZZZFEHUZZZZZ",
+                        "premine": "110000000.00",
+                        "spaced_name": "Z•Z•Z•Z•Z•FEHU•Z•Z•Z•Z•Z",
+                        "symbol": "ᚠ",
+                        "terms": {
+                          "amount_per_mint": "1.00",
+                          "end_height": null,
+                          "end_offset": null,
+                          "mint_txs_cap": "1111111",
+                          "start_height": null,
+                          "start_offset": null
+                        }
+                      }
+                    }
                   },
                   "indexer_info": {
                     "chain_tip": {
@@ -12403,6 +12465,58 @@
             "type": "integer",
             "format": "int64",
             "minimum": 0
+          }
+        }
+      },
+      "RuneInfoBrief": {
+        "type": "object",
+        "required": [
+          "id",
+          "etching_cenotaph",
+          "etching_tx",
+          "etching_height",
+          "name",
+          "spaced_name",
+          "divisibility",
+          "terms"
+        ],
+        "properties": {
+          "divisibility": {
+            "type": "integer",
+            "format": "int32",
+            "description": "If no divisibility was specified, then this equals 0",
+            "minimum": 0
+          },
+          "etching_cenotaph": {
+            "type": "boolean"
+          },
+          "etching_height": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "etching_tx": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "premine": {
+            "type": "string",
+            "nullable": true
+          },
+          "spaced_name": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string",
+            "nullable": true
+          },
+          "terms": {
+            "$ref": "#/components/schemas/Terms"
           }
         }
       },
