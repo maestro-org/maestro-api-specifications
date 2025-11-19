@@ -109,6 +109,16 @@
                             "nullable": true,
                             "minimum": 0
                         }
+                    },
+                    {
+                        "name": "include_info",
+                        "in": "query",
+                        "description": "Include full rune information for each rune (default: false)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
                     }
                 ],
                 "responses": {
@@ -121,7 +131,28 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "867138:1861": "230000"
+                                        "840000:1": {
+                                            "balance": "1111.00",
+                                            "info": {
+                                                "divisibility": 2,
+                                                "etching_cenotaph": false,
+                                                "etching_height": 840000,
+                                                "etching_tx": "2bb85f4b004be6da54f766c17c1e855187327112c231ef2ff35ebad0ea67c69e",
+                                                "id": "840000:1",
+                                                "name": "ZZZZZFEHUZZZZZ",
+                                                "premine": "110000000.00",
+                                                "spaced_name": "Z•Z•Z•Z•Z•FEHU•Z•Z•Z•Z•Z",
+                                                "symbol": "ᚠ",
+                                                "terms": {
+                                                    "amount_per_mint": "1.00",
+                                                    "end_height": null,
+                                                    "end_offset": null,
+                                                    "mint_txs_cap": "1111111",
+                                                    "start_height": null,
+                                                    "start_offset": null
+                                                }
+                                            }
+                                        }
                                     },
                                     "indexer_info": {
                                         "chain_tip": {
