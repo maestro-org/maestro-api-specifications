@@ -1,4 +1,4 @@
-name: Postman CI
+name: Postman Conversion CI
 
 on:
     pull_request:
@@ -9,8 +9,8 @@ on:
             - main
 
 jobs:
-    postman-sync:
-        name: Sync Postman Collection
+    postman-validate:
+        name: Validate Postman Conversion
         runs-on: ubuntu-latest
 
         strategy:
@@ -99,20 +99,9 @@ jobs:
             - name: Install Dependencies
               run: npm install -g openapi-to-postmanv2
 
-            - name: Update Postman Collection
-              env:
-                  POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+            - name: Validate OpenAPI to Postman conversion
               run: |
-                  if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-                    echo "Pushing to DEV workspace"
-                    COLLECTION_ID="${{ matrix.collections.dev_collection_id }}"
-                  elif [[ ${{ github.event_name }} == 'push' ]]; then
-                    echo "Pushing to PROD workspace"
-                    COLLECTION_ID="${{ matrix.collections.prod_collection_id }}"
-                  fi
-
-                  bash ./scripts/update_postman_collection.sh ${{ secrets.POSTMAN_API_KEY }} \
-                      "$COLLECTION_ID" \
-                      "${{ matrix.collections.chain }}" \
-                      "${{ matrix.collections.service }}" \
-                      "${{ matrix.collections.filename }}"
+                  openapi2postmanv2 \
+                    -s "${{ matrix.collections.chain }}/${{ matrix.collections.service }}/${{ matrix.collections.filename }}" \
+                    -o /tmp/collection.json \
+                    -O folderStrategy=Tags
